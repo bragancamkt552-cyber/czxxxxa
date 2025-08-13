@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/lp-view", "dest": "/index.html" },
+    { "src": "/lp-wpp", "dest": "/index.html" },
+    { "src": "/gjgkkks-esp", "dest": "/index.html" },
+    { "src": "/gjgks-ch", "dest": "/index.html" },
+    { "src": "/gjgkkks-esp/terms", "dest": "/index.html" },
+    { "src": "/gjgkkks-esp/privacy", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
