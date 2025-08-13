@@ -98,10 +98,10 @@ const ChineseMemoryLanding: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Helmet>
-        <title>Reconquista da Ex - Mapa da Reconquista</title>
+        <title>地图重新找回她</title> {/* Mapa da Reconquista */}
         <meta
           name="description"
-          content="Aprenda as estratégias para reconquistar sua ex com o Mapa da Reconquista."
+          content="学习如何使用地图重新找回她，重新赢回她的心。"
         />
 
         {/* Meta Pixel（Facebook） */}
@@ -134,12 +134,7 @@ fbq('track', 'PageView');
       <section className="relative overflow-hidden py-10 lg:py-14">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center mb-8">
-            <h1 className="text-white font-bold leading-tight text-[clamp(1.2rem,3.8vw,1.9rem)]">
-              Reconquista sua ex
-              <span className="block mt-1 text-[clamp(1rem,3.4vw,1.3rem)] font-semibold opacity-90">
-                Aplique o Mapa da Reconquista
-              </span>
-            </h1>
+            {/* Removido o título acima do player */}
           </div>
 
           {/* Player */}
@@ -154,9 +149,9 @@ fbq('track', 'PageView');
             <div className="animate-fade-in mt-10">
               <div className="max-w-4xl mx-auto bg-gradient-to-r from-red-600/20 to-orange-600/20 border border-red-500/30 rounded-xl p-6 md:p-8">
                 <h3 className="text-white text-[1.2rem] md:text-[1.35rem] font-bold leading-snug mb-5">
-                  Agora é a sua chance de reconquistar sua ex.
+                  现在是您重新找回她的机会。
                   <br />
-                  Garanta seu acesso agora!
+                  马上获取您的访问权限！
                 </h3>
 
                 {/* Timer */}
