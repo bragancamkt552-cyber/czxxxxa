@@ -3,15 +3,14 @@ import { Helmet } from 'react-helmet';
 import { CheckCircle, Clock, Shield } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
-const ChineseMemoryLanding: React.FC = () => {
+const MapaDaReconquistaLanding: React.FC = () => {
   const [showContent, setShowContent] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15 * 60);
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
-  // VTurb Smartplayer（Novo ID do player）
   useEffect(() => {
     const smartEl = document.createElement('vturb-smartplayer');
-    smartEl.id = 'vid-689cf8489c1ba553839b244c';  // Novo ID do player
+    smartEl.id = 'vid-689cf8489c1ba5538391e1a';  // Novo ID do player
     smartEl.setAttribute('style', 'display:block; margin:0 auto; width:100%; max-width:400px;');
 
     if (playerContainerRef.current) {
@@ -21,22 +20,21 @@ const ChineseMemoryLanding: React.FC = () => {
 
     const s = document.createElement('script');
     s.type = 'text/javascript';
-    s.src = 'https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/players/689cf8489c1ba553839b244c/v4/player.js'; // Novo link do script
+    s.src = 'https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/players/689cf8489c1ba5538391e1a/v4/player.js'; // Novo link do script
     s.async = true;
     document.head.appendChild(s);
 
     return () => {
       try {
         if (playerContainerRef.current) playerContainerRef.current.innerHTML = '';
-        const scripts = document.querySelectorAll('script[src*="689cf8489c1ba553839b244c"]');
+        const scripts = document.querySelectorAll('script[src*="689cf8489c1ba5538391e1a"]');
         scripts.forEach((node) => node.parentElement?.removeChild(node));
       } catch {}
     };
   }, []);
 
-  // 达到指定秒数后显示内容
   useEffect(() => {
-    const SECONDS_TO_DISPLAY = 442;
+    const SECONDS_TO_DISPLAY = 600; // Delay aumentado para 10 minutos (600 segundos)
     let attempts = 0;
     let elsDisplayed = false;
     const key = `alreadyElsDisplayedReconquista${SECONDS_TO_DISPLAY}`;
@@ -66,7 +64,6 @@ const ChineseMemoryLanding: React.FC = () => {
     else watchProgress();
   }, []);
 
-  // 倒计时
   useEffect(() => {
     if (!showContent) return;
     const timer = setInterval(() => {
@@ -98,72 +95,49 @@ const ChineseMemoryLanding: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Helmet>
-        <title>Reconquista da Ex - Mapa da Reconquista</title>
-        <meta
-          name="description"
-          content="Aprenda as estratégias para reconquistar sua ex com o Mapa da Reconquista."
-        />
-
-        {/* Meta Pixel（Facebook） */}
-        <script>{`
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1093258939518583');
-fbq('track', 'PageView');
-        `}</script>
-        <noscript>{`<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1" />`}</noscript>
+        <title>重新赢回爱：重获爱情地图</title>
+        <meta name="description" content="发现如何通过重获爱情地图中的独特技巧重新赢回你的前任。" />
       </Helmet>
 
-      {/* 顶部 */}
       <header className="py-6 px-4">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-3">
             <CheckCircle className="w-6 h-6 text-purple-400" />
-            <span className="text-[1.05rem] font-bold text-white">地图重新找回她</span>
+            <span className="text-[1.05rem] font-bold text-white">重获爱情</span>
           </div>
         </div>
       </header>
 
-      {/* Hero 区域 */}
       <section className="relative overflow-hidden py-10 lg:py-14">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center mb-8">
             <h1 className="text-white font-bold leading-tight text-[clamp(1.2rem,3.8vw,1.9rem)]">
-              
+              通过重获爱情地图重新赢回你的前任
               <span className="block mt-1 text-[clamp(1rem,3.4vw,1.3rem)] font-semibold opacity-90">
-                
+                用经过验证的技巧重新掌控你的关系
               </span>
             </h1>
           </div>
 
-          {/* Player */}
           <div className="max-w-[640px] w-full mx-auto">
             <div className="relative">
               <div ref={playerContainerRef} className="w-full" />
             </div>
           </div>
 
-          {/* Vídeo后的内容 */}
           {showContent && (
             <div className="animate-fade-in mt-10">
               <div className="max-w-4xl mx-auto bg-gradient-to-r from-red-600/20 to-orange-600/20 border border-red-500/30 rounded-xl p-6 md:p-8">
                 <h3 className="text-white text-[1.2rem] md:text-[1.35rem] font-bold leading-snug mb-5">
-                  Agora é a sua chance de reconquistar sua ex.
+                  现在是你重新赢回爱的机会。
                   <br />
-                  Garanta seu acesso agora!
+                  查看你的完整计划：
                 </h3>
 
-                {/* Timer */}
                 <div className="flex justify-center items-center gap-4 mb-6">
                   <div className="bg-black/50 rounded-lg p-4 text-center min-w-[84px]">
                     <div className="text-3xl md:text-4xl font-bold text-red-400">{minutes}</div>
-                    <div className="text-xs text-gray-300">分</div>
+                    <div className="text-xs text-gray-300">分钟</div>
                   </div>
                   <div className="text-2xl text-white font-bold">:</div>
                   <div className="bg-black/50 rounded-lg p-4 text-center min-w-[84px]">
@@ -189,17 +163,34 @@ fbq('track', 'PageView');
                 </div>
               </div>
 
-              {/* 结束CTA */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mx-auto mt-10">
+                <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg p-6 text-center">
+                  <CheckCircle className="w-9 h-9 text-purple-400 mx-auto mb-3" />
+                  <h4 className="text-white font-bold mb-1">经过验证的方法</h4>
+                  <p className="text-gray-300 text-sm">基于真实关系的重获爱情技巧。</p>
+                </div>
+                <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg p-6 text-center">
+                  <Clock className="w-9 h-9 text-blue-400 mx-auto mb-3" />
+                  <h4 className="text-white font-bold mb-1">易于跟随</h4>
+                  <p className="text-gray-300 text-sm">快速有效的技巧，今天就能开始。</p>
+                </div>
+                <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg p-6 text-center">
+                  <Shield className="w-9 h-9 text-green-400 mx-auto mb-3" />
+                  <h4 className="text-white font-bold mb-1">全面支持</h4>
+                  <p className="text-gray-300 text-sm">我们会帮助你成功重获爱情。</p>
+                </div>
+              </div>
+
               <div className="text-center mt-10">
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white text-[1.15rem] px-14 py-6 rounded-xl shadow-2xl transform hover:scale-105 transition-all duration-300 animate-pulse"
                   onClick={handleOrderClick}
                 >
-                  立即开始您的征服计划
+                  立即开始你的重获爱情之旅
                 </Button>
                 <p className="text-gray-400 mt-3 text-xs md:text-sm">
-                  * 限时优惠 —— 今天锁定名额。
+                  *限时优惠 — 今天就预定名额。
                 </p>
               </div>
             </div>
@@ -217,7 +208,7 @@ fbq('track', 'PageView');
               隐私政策
             </a>
           </div>
-          <p className="text-gray-500 text-sm">&copy; 2025 地图重新找回她. 保留所有权利。</p>
+          <p className="text-gray-500 text-sm">&copy; 2025 重获爱情地图. 保留所有权利。</p>
         </div>
       </footer>
 
@@ -232,4 +223,4 @@ fbq('track', 'PageView');
   );
 };
 
-export default ChineseMemoryLanding;
+export default MapaDaReconquistaLanding;
