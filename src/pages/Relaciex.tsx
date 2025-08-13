@@ -135,9 +135,9 @@ fbq('track', 'PageView');
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center mb-8">
             <h1 className="text-white font-bold leading-tight text-[clamp(1.2rem,3.8vw,1.9rem)]">
-              Reconquista sua ex
+              
               <span className="block mt-1 text-[clamp(1rem,3.4vw,1.3rem)] font-semibold opacity-90">
-                Aplique o Mapa da Reconquista
+                
               </span>
             </h1>
           </div>
