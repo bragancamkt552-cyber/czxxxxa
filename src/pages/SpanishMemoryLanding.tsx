@@ -8,11 +8,10 @@ const ChineseMemoryLanding: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState(15 * 60);
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
-  // VTurb Smartplayer（新 ID，去除背后的任何背景/容器装饰）
+  // VTurb Smartplayer (NOVO ID)
   useEffect(() => {
-    // Substituir ID do player aqui
     const smartEl = document.createElement('vturb-smartplayer');
-    smartEl.id = 'vid-689c791f4c4ae214c8391e1a';  // Novo ID do player
+    smartEl.id = 'vid-689ea9d23d1881737d6ea2a5'; // Novo ID do player
     smartEl.setAttribute('style', 'display:block; margin:0 auto; width:100%; max-width:400px;');
 
     if (playerContainerRef.current) {
@@ -22,20 +21,20 @@ const ChineseMemoryLanding: React.FC = () => {
 
     const s = document.createElement('script');
     s.type = 'text/javascript';
-    s.src = 'https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/players/689c791f4c4ae214c8391e1a/v4/player.js'; // Novo link do script
+    s.src = 'https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/players/689ea9d23d1881737d6ea2a5/v4/player.js'; // Novo script
     s.async = true;
     document.head.appendChild(s);
 
     return () => {
       try {
         if (playerContainerRef.current) playerContainerRef.current.innerHTML = '';
-        const scripts = document.querySelectorAll('script[src*="689c791f4c4ae214c8391e1a"]');
+        const scripts = document.querySelectorAll('script[src*="689ea9d23d1881737d6ea2a5"]');
         scripts.forEach((node) => node.parentElement?.removeChild(node));
       } catch {}
     };
   }, []);
 
-  // 达到指定秒数后显示内容
+  // Mostrar conteúdo após X segundos de vídeo
   useEffect(() => {
     const SECONDS_TO_DISPLAY = 442;
     let attempts = 0;
@@ -67,7 +66,7 @@ const ChineseMemoryLanding: React.FC = () => {
     else watchProgress();
   }, []);
 
-  // 倒计时
+  // Contagem regressiva
   useEffect(() => {
     if (!showContent) return;
     const timer = setInterval(() => {
@@ -110,7 +109,7 @@ const ChineseMemoryLanding: React.FC = () => {
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+if(!f._fbq)n=f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
 n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
@@ -121,7 +120,7 @@ fbq('track', 'PageView');
         <noscript>{`<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1" />`}</noscript>
       </Helmet>
 
-      {/* 顶部（不再显示任何“Gestación Dorada”相关内容） */}
+      {/* 顶部 */}
       <header className="py-6 px-4">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-3">
@@ -131,7 +130,7 @@ fbq('track', 'PageView');
         </div>
       </header>
 
-      {/* Hero 区域 */}
+      {/* Hero */}
       <section className="relative overflow-hidden py-10 lg:py-14">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center mb-8">
@@ -143,14 +142,14 @@ fbq('track', 'PageView');
             </h1>
           </div>
 
-          {/* Player —— 去除容器圆角/阴影/半透明背景，仅保留播放器本身 */}
+          {/* Player */}
           <div className="max-w-[640px] w-full mx-auto">
             <div className="relative">
               <div ref={playerContainerRef} className="w-full" />
             </div>
           </div>
 
-          {/* 视频后的内容 */}
+          {/* Conteúdo pós-vídeo */}
           {showContent && (
             <div className="animate-fade-in mt-10">
               <div className="max-w-4xl mx-auto bg-gradient-to-r from-red-600/20 to-orange-600/20 border border-red-500/30 rounded-xl p-6 md:p-8">
@@ -190,7 +189,7 @@ fbq('track', 'PageView');
                 </div>
               </div>
 
-              {/* 三大支柱 */}
+              {/* Três pilares */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mx-auto mt-10">
                 <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg p-6 text-center">
                   <CheckCircle className="w-9 h-9 text-purple-400 mx-auto mb-3" />
@@ -209,7 +208,7 @@ fbq('track', 'PageView');
                 </div>
               </div>
 
-              {/* 最终 CTA */}
+              {/* CTA final */}
               <div className="text-center mt-10">
                 <Button
                   size="lg"
@@ -227,7 +226,7 @@ fbq('track', 'PageView');
         </div>
       </section>
 
-      {/* 页脚（已去除旧品牌文案） */}
+      {/* Rodapé */}
       <footer className="border-t border-gray-800 bg-gray-900 py-8 mt-16">
         <div className="container mx-auto px-6 text-center">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-5">
