@@ -6,13 +6,14 @@ import { Button } from '../components/ui/Button';
 const HindiMemoryLanding: React.FC = () => {
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
-  // ----- VTurb Smartplayer (ATUALIZADO p/ novo player "vid-68a1defd2e15e6290634f473") -----
+  // ----- VTurb Smartplayer (ATUALIZADO PARA "ab-test") -----
   useEffect(() => {
+    // cria o custom element com o NOVO ID no formato "ab-..."
     const smartEl = document.createElement('vturb-smartplayer');
-    smartEl.id = 'vid-68a1defd2e15e6290634f473';
+    smartEl.id = 'ab-68a1f56c81401ba8c783d375';
     smartEl.setAttribute(
       'style',
-      'display:block; margin:0 auto; width:100%; max-width:400px;'
+      'display:block; margin:0 auto; width:100%; max-width:640px;'
     );
 
     if (playerContainerRef.current) {
@@ -20,10 +21,11 @@ const HindiMemoryLanding: React.FC = () => {
       playerContainerRef.current.appendChild(smartEl);
     }
 
+    // injeta o script do caminho "ab-test/.../player.js"
     const s = document.createElement('script');
     s.type = 'text/javascript';
     s.src =
-      'https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/players/68a1defd2e15e6290634f473/v4/player.js';
+      'https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/ab-test/68a1f56c81401ba8c783d375/player.js';
     s.async = true;
     document.head.appendChild(s);
 
@@ -31,7 +33,7 @@ const HindiMemoryLanding: React.FC = () => {
       try {
         if (playerContainerRef.current) playerContainerRef.current.innerHTML = '';
         const scripts = document.querySelectorAll(
-          'script[src*="68a1defd2e15e6290634f473"]'
+          'script[src*="68a1f56c81401ba8c783d375"]'
         );
         scripts.forEach((node) => node.parentElement?.removeChild(node));
       } catch {}
@@ -224,7 +226,7 @@ fbq('track', 'PageView');
                     हम किसी भी समय इन शर्तों में बदलाव कर सकते हैं। वेबसाइट का निरंतर उपयोग नवीनतम शर्तों की स्वीकृति माना जाएगा।
                   </p>
 
-                  <h4 className="font-semibold text-white">8. लागू कानून</h4>
+                  <h4 className="font-semibold text-white">8. प्रযोज्य कानून</h4>
                   <p>
                     ये शर्तें लागू कानूनों के अधीन हैं, और विवादों पर हमारे क्षेत्राधिकार की न्यायालयों का विशेष अधिकार होगा।
                   </p>
