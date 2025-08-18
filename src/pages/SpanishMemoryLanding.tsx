@@ -3,17 +3,16 @@ import { Helmet } from 'react-helmet';
 import { CheckCircle } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
-const HindiMemoryLanding: React.FC = () => {
+const IndoMemoryLanding: React.FC = () => {
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
-  // ----- VTurb Smartplayer (ATUALIZADO PARA "ab-test") -----
+  // ----- VTurb Smartplayer (ATUALIZADO) -----
   useEffect(() => {
-    // cria o custom element com o NOVO ID no formato "ab-..."
     const smartEl = document.createElement('vturb-smartplayer');
-    smartEl.id = 'ab-68a1f56c81401ba8c783d375';
+    smartEl.id = 'vid-68a3904af320e081cd011416';
     smartEl.setAttribute(
       'style',
-      'display:block; margin:0 auto; width:100%; max-width:640px;'
+      'display:block; margin:0 auto; width:100%; max-width:400px;'
     );
 
     if (playerContainerRef.current) {
@@ -21,11 +20,10 @@ const HindiMemoryLanding: React.FC = () => {
       playerContainerRef.current.appendChild(smartEl);
     }
 
-    // injeta o script do caminho "ab-test/.../player.js"
     const s = document.createElement('script');
     s.type = 'text/javascript';
     s.src =
-      'https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/ab-test/68a1f56c81401ba8c783d375/player.js';
+      'https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/players/68a3904af320e081cd011416/v4/player.js';
     s.async = true;
     document.head.appendChild(s);
 
@@ -33,14 +31,14 @@ const HindiMemoryLanding: React.FC = () => {
       try {
         if (playerContainerRef.current) playerContainerRef.current.innerHTML = '';
         const scripts = document.querySelectorAll(
-          'script[src*="68a1f56c81401ba8c783d375"]'
+          'script[src*="68a3904af320e081cd011416"]'
         );
         scripts.forEach((node) => node.parentElement?.removeChild(node));
       } catch {}
     };
   }, []);
 
-  // ----- Modal de Termos / Privacidade -----
+  // ----- Modal Termasuk Syarat / Privasi -----
   const [openModal, setOpenModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'terms' | 'privacy'>('terms');
 
@@ -49,14 +47,14 @@ const HindiMemoryLanding: React.FC = () => {
     setOpenModal(true);
   };
 
-  // ----- PÁGINA -----
+  // ----- HALAMAN -----
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
-      <Helmet htmlAttributes={{ lang: 'hi' }}>
-        <title>NASA द्वारा प्रशिक्षित न्यूरोसाइंटिस्ट: 8-सेकंड ब्रेन ट्रिक से याददाश्त तेज़ करें</title>
+      <Helmet htmlAttributes={{ lang: 'id' }}>
+        <title>Neuroscientist dilatih NASA: Trik Otak 8-Detik untuk Memperkuat Ingatan</title>
         <meta
           name="description"
-          content="NASA-प्रशिक्षित न्यूरोसाइंटिस्ट का 8-सेकंड ब्रेन ट्रिक सीखें — जल्दी याद करें और लंबे समय तक याद रखें।"
+          content="Pelajari trik otak 8-detik dari Neuroscientist terlatih NASA — ingat lebih cepat dan tahan lebih lama."
         />
 
         {/* Meta Pixel (Facebook) */}
@@ -75,28 +73,9 @@ fbq('track', 'PageView');
         <noscript>{`<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1" />`}</noscript>
       </Helmet>
 
-      {/* शीर्ष */}
-      <header className="py-6 px-4">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center gap-3">
-            <CheckCircle className="w-6 h-6 text-purple-400" />
-            <span className="text-[1.05rem] font-bold text-white">स्मृति-वृद्धि कार्यक्रम</span>
-          </div>
-        </div>
-      </header>
-
       {/* Hero */}
       <section className="relative overflow-hidden py-10 lg:py-14">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center mb-8">
-            <h1 className="text-white font-bold leading-tight text-[clamp(1.2rem,3.8vw,1.9rem)]">
-              NASA द्वारा प्रशिक्षित न्यूरोसाइंटिस्ट
-              <span className="block mt-1 text-[clamp(1rem,3.4vw,1.3rem)] font-semibold opacity-90">
-                “यह 8-सेकंड का ब्रेन ट्रिक करें” — याददाश्त और तेज़ बनाएं
-              </span>
-            </h1>
-          </div>
-
           {/* Player */}
           <div className="max-w-[640px] w-full mx-auto">
             <div className="relative">
@@ -106,7 +85,7 @@ fbq('track', 'PageView');
         </div>
       </section>
 
-      {/* पाद लेख */}
+      {/* Footer */}
       <footer className="border-t border-gray-800 bg-gray-900 py-8 mt-16">
         <div className="container mx-auto px-6 text-center">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-5">
@@ -114,20 +93,20 @@ fbq('track', 'PageView');
               onClick={() => openWithTab('terms')}
               className="text-gray-400 hover:text-purple-400 transition-colors"
             >
-              उपयोग की शर्तें
+              Syarat Penggunaan
             </button>
             <button
               onClick={() => openWithTab('privacy')}
               className="text-gray-400 hover:text-purple-400 transition-colors"
             >
-              गोपनीयता नीति
+              Kebijakan Privasi
             </button>
           </div>
-          <p className="text-gray-500 text-sm">&copy; 2025 स्मृति-वृद्धि कार्यक्रम. सर्वाधिकार सुरक्षित।</p>
+          <p className="text-gray-500 text-sm">&copy; 2025 Program Peningkatan Memori. Semua hak dilindungi.</p>
         </div>
       </footer>
 
-      {/* Modal: शर्तें / गोपनीयता (हिंदी) */}
+      {/* Modal: Syarat / Privasi */}
       {openModal && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -146,12 +125,12 @@ fbq('track', 'PageView');
             {/* header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
               <h3 id="policy-title" className="text-lg font-bold">
-                {activeTab === 'terms' ? 'नियम एवं शर्तें' : 'गोपनीयता नीति'}
+                {activeTab === 'terms' ? 'Syarat & Ketentuan' : 'Kebijakan Privasi'}
               </h3>
               <button
                 onClick={() => setOpenModal(false)}
                 className="text-gray-400 hover:text-white"
-                aria-label="बंद करें"
+                aria-label="Tutup"
               >
                 ✕
               </button>
@@ -168,7 +147,7 @@ fbq('track', 'PageView');
                       : 'bg-gray-800 text-gray-300 hover:text-white'
                   }`}
                 >
-                  नियम एवं शर्तें
+                  Syarat & Ketentuan
                 </button>
                 <button
                   onClick={() => setActiveTab('privacy')}
@@ -178,7 +157,7 @@ fbq('track', 'PageView');
                       : 'bg-gray-800 text-gray-300 hover:text-white'
                   }`}
                 >
-                  गोपनीयता नीति
+                  Kebijakan Privasi
                 </button>
               </div>
             </div>
@@ -188,88 +167,88 @@ fbq('track', 'PageView');
               {activeTab === 'terms' ? (
                 <div className="space-y-4">
                   <p className="text-gray-300">
-                    यह वेबसाइट (“वेबसाइट”, “हम”) उपयोग करने पर आप इन शर्तों, लागू कानूनों एवं विनियमों से सहमत होते हैं। यदि आप किसी भी शर्त से असहमत हैं, तो कृपया वेबसाइट का उपयोग न करें। इस साइट की सामग्री पर कॉपीराइट एवं ट्रेडमार्क कानून लागू होते हैं।
+                    Dengan menggunakan situs web ini (“Situs”), Anda setuju dengan syarat ini, hukum dan peraturan yang berlaku. Jika Anda tidak setuju, harap jangan gunakan Situs. Konten ini dilindungi oleh hukum hak cipta dan merek dagang.
                   </p>
 
-                  <h4 className="font-semibold text-white">1. उपयोग की शर्त</h4>
+                  <h4 className="font-semibold text-white">1. Syarat Penggunaan</h4>
                   <p>
-                    वेबसाइट का उपयोग करके आप यह घोषित करते हैं कि आप लागू कानूनों का पालन करेंगे और अपने क्षेत्राधिकार के कानूनों का अनुपालन करने के लिए स्वयं जिम्मेदार हैं।
+                    Dengan menggunakan Situs, Anda menyatakan bahwa Anda akan mematuhi hukum yang berlaku dan bertanggung jawab penuh atas kepatuhan tersebut.
                   </p>
 
-                  <h4 className="font-semibold text-white">2. लाइसेंस एवं सीमाएँ</h4>
+                  <h4 className="font-semibold text-white">2. Lisensi & Batasan</h4>
                   <p>
-                    हम आपको व्यक्तिगत, गैर-व्यावसायिक एवं अस्थायी देखने हेतु सामग्री की एक प्रति डाउनलोड करने का सीमित लाइसेंस देते हैं। आप सामग्री में परिवर्तन/प्रतिलिपि, व्यावसायिक उपयोग/सार्वजनिक प्रदर्शन, रिवर्स-इंजीनियरिंग, कॉपीराइट नोटिस हटाने या सामग्री को अन्य सर्वर पर मिरर नहीं कर सकते। उल्लंघन होने पर लाइसेंस स्वतः समाप्त हो जाएगा और आपको डाउनलोड की गई सभी सामग्री हटानी होगी।
+                    Kami memberikan lisensi terbatas untuk mengunduh satu salinan konten untuk penggunaan pribadi dan sementara. Anda tidak boleh mengubah, menyalin, menggunakan secara komersial, menampilkan publik, melakukan reverse-engineering, menghapus hak cipta, atau menyalinnya ke server lain.
                   </p>
 
-                  <h4 className="font-semibold text-white">3. अस्वीकरण</h4>
+                  <h4 className="font-semibold text-white">3. Penyangkalan</h4>
                   <p>
-                    वेबसाइट की सामग्री “जैसी है” आधार पर प्रदान की जाती है। किसी भी प्रकार की वारंटी—प्रत्यक्ष या निहित—नहीं दी जाती, जिसमें व्यापारयोग्यता, किसी विशेष उद्देश्य हेतु उपयुक्तता एवं उल्लंघन-रहित होने की वारंटी शामिल है।
+                    Konten di Situs ini disediakan “sebagaimana adanya”. Kami tidak memberikan jaminan, baik tersurat maupun tersirat, termasuk kelayakan jual, kesesuaian tujuan tertentu, atau non-pelanggaran.
                   </p>
 
-                  <h4 className="font-semibold text-white">4. दायित्व सीमा</h4>
+                  <h4 className="font-semibold text-white">4. Batas Tanggung Jawab</h4>
                   <p>
-                    किसी भी परिस्थिति में वेबसाइट या उसके आपूर्तिकर्ता किसी भी नुकसान (डेटा/लाभ हानि, व्यवसाय रुकावट आदि) के लिए उत्तरदायी नहीं होंगे, भले ही ऐसी क्षति की संभावना के बारे में सूचित किया गया हो।
+                    Kami tidak bertanggung jawab atas kerugian apa pun (kehilangan data/keuntungan, gangguan bisnis, dll.), bahkan jika diberitahu sebelumnya tentang kemungkinan kerugian tersebut.
                   </p>
 
-                  <h4 className="font-semibold text-white">5. सटीकता</h4>
+                  <h4 className="font-semibold text-white">5. Akurasi</h4>
                   <p>
-                    सामग्री में तकनीकी/मुद्रण/चित्रात्मक त्रुटियाँ हो सकती हैं। हम सटीकता, पूर्णता या नवीनता की गारंटी नहीं देते और बिना सूचना संशोधन कर सकते हैं।
+                    Konten mungkin mengandung kesalahan teknis atau tipografi. Kami dapat mengubah konten kapan saja tanpa pemberitahuan.
                   </p>
 
-                  <h4 className="font-semibold text-white">6. लिंक</h4>
+                  <h4 className="font-semibold text-white">6. Tautan</h4>
                   <p>
-                    बाहरी वेबसाइटों के लिंक केवल सुविधा के लिए हैं; उनकी सामग्री के लिए हम जिम्मेदार नहीं हैं। लिंक का उपयोग आपके स्वयं के जोखिम पर है।
+                    Tautan eksternal hanya untuk kenyamanan; kami tidak bertanggung jawab atas kontennya. Penggunaannya adalah risiko Anda sendiri.
                   </p>
 
-                  <h4 className="font-semibold text-white">7. संशोधन</h4>
+                  <h4 className="font-semibold text-white">7. Perubahan</h4>
                   <p>
-                    हम किसी भी समय इन शर्तों में बदलाव कर सकते हैं। वेबसाइट का निरंतर उपयोग नवीनतम शर्तों की स्वीकृति माना जाएगा।
+                    Kami dapat mengubah syarat ini kapan saja. Penggunaan berkelanjutan berarti Anda menerima versi terbaru.
                   </p>
 
-                  <h4 className="font-semibold text-white">8. प्रযोज्य कानून</h4>
+                  <h4 className="font-semibold text-white">8. Hukum yang Berlaku</h4>
                   <p>
-                    ये शर्तें लागू कानूनों के अधीन हैं, और विवादों पर हमारे क्षेत्राधिकार की न्यायालयों का विशेष अधिकार होगा।
+                    Syarat ini tunduk pada hukum yang berlaku, dan setiap sengketa berada di bawah yurisdiksi eksklusif pengadilan kami.
                   </p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   <p className="text-gray-300">
-                    हम आपकी गोपनीयता का सम्मान करते हैं। एकत्रित व्यक्तिगत जानकारी का उपयोग केवल आपकी अनुभव-गुणवत्ता बढ़ाने के लिए किया जाता है। वेबसाइट का उपयोग करते समय आप इस नीति से सहमत होते हैं।
+                    Kami menghormati privasi Anda. Data pribadi yang dikumpulkan hanya digunakan untuk meningkatkan pengalaman Anda. Dengan menggunakan Situs, Anda menyetujui kebijakan ini.
                   </p>
 
-                  <h4 className="font-semibold text-white">1. हम क्या एकत्र करते हैं</h4>
+                  <h4 className="font-semibold text-white">1. Data yang Dikumpulkan</h4>
                   <p>
-                    नाम, ईमेल, फोन, पता, जन्म-तिथि और अन्य आवश्यक विवरण—जिन्हें हम लागू डेटा-संरक्षा कानूनों के अनुसार संसाधित करते हैं।
+                    Nama, email, telepon, alamat, tanggal lahir, dan detail lain yang diperlukan sesuai dengan hukum perlindungan data.
                   </p>
 
-                  <h4 className="font-semibold text-white">2. जानकारी का उपयोग</h4>
+                  <h4 className="font-semibold text-white">2. Penggunaan Data</h4>
                   <p>
-                    सेवाएँ प्रदान/सुधारने, सामग्री व्यक्तिगत बनाने, संचार करने, कानूनी अनुपालन और सुरक्षा के लिए जानकारी का उपयोग किया जा सकता है।
+                    Data digunakan untuk menyediakan/meningkatkan layanan, personalisasi konten, komunikasi, kepatuhan hukum, dan keamanan.
                   </p>
 
-                  <h4 className="font-semibold text-white">3. विज्ञापन एवं लॉग</h4>
+                  <h4 className="font-semibold text-white">3. Iklan & Log</h4>
                   <p>
-                    IP, ISP, ब्राउज़र प्रकार, समय और देखे गए पृष्ठ जैसे डेटा भू-लक्ष्यीकरण और अधिक प्रासंगिक विज्ञापन दिखाने हेतु उपयोग किए जा सकते हैं।
+                    IP, ISP, jenis browser, waktu, dan halaman yang dilihat dapat digunakan untuk penargetan geografis dan iklan relevan.
                   </p>
 
-                  <h4 className="font-semibold text-white">4. कुकीज़</h4>
+                  <h4 className="font-semibold text-white">4. Cookies</h4>
                   <p>
-                    हम कुकीज़ का उपयोग वरीयताएँ संग्रहीत करने और अनुभव सुधारने के लिए करते हैं। तृतीय-पक्ष विज्ञापनदाता कुकीज़/वेब-बीकन का उपयोग कर सकते हैं। आप कुकीज़ निष्क्रिय कर सकते हैं, पर इससे वेबसाइट का उपयोग प्रभावित हो सकता है।
+                    Kami menggunakan cookies untuk menyimpan preferensi dan meningkatkan pengalaman. Pihak ketiga mungkin juga menggunakan cookies/web beacon. Anda dapat menonaktifkannya, tetapi itu dapat memengaruhi fungsi Situs.
                   </p>
 
-                  <h4 className="font-semibold text-white">5. तृतीय-पक्ष लिंक</h4>
+                  <h4 className="font-semibold text-white">5. Tautan Pihak Ketiga</h4>
                   <p>
-                    हमारी साइट पर बाहरी साइटों के लिंक हो सकते हैं; उनकी गोपनीयता प्रथाओं के लिए हम जिम्मेदार नहीं हैं।
+                    Situs kami mungkin berisi tautan ke situs eksternal; kami tidak bertanggung jawab atas praktik privasi mereka.
                   </p>
 
-                  <h4 className="font-semibold text-white">6. आपके अधिकार</h4>
+                  <h4 className="font-semibold text-white">6. Hak Anda</h4>
                   <p>
-                    आप अपनी जानकारी तक पहुँच, सुधार या मिटाने का अनुरोध कर सकते हैं, और प्रसंस्करण का विरोध/सीमा तय कर सकते हैं—हम उचित समय में उत्तर देंगे।
+                    Anda dapat meminta akses, perbaikan, atau penghapusan data pribadi Anda. Anda juga berhak menolak atau membatasi pemrosesan.
                   </p>
 
-                  <h4 className="font-semibold text-white">7. अद्यतन</h4>
+                  <h4 className="font-semibold text-white">7. Pembaruan</h4>
                   <p>
-                    हम समय-समय पर इस नीति को अपडेट कर सकते हैं; अद्यतन संस्करण यहीं प्रकाशित होगा और तुरंत प्रभावी होगा।
+                    Kami dapat memperbarui kebijakan ini dari waktu ke waktu; versi terbaru akan dipublikasikan di sini dan berlaku segera.
                   </p>
                 </div>
               )}
@@ -280,7 +259,7 @@ fbq('track', 'PageView');
                   className="bg-gray-800 hover:bg-gray-700 text-gray-100"
                   onClick={() => setOpenModal(false)}
                 >
-                  बंद करें
+                  Tutup
                 </Button>
               </div>
             </div>
@@ -300,4 +279,4 @@ fbq('track', 'PageView');
   );
 };
 
-export default HindiMemoryLanding;
+export default IndoMemoryLanding;
