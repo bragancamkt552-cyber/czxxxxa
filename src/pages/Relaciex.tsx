@@ -13,9 +13,10 @@ const IndonesiaLanding: React.FC = () => {
     const smartEl = document.createElement('vturb-smartplayer');
     // ID do player novo
     smartEl.id = 'vid-68a4f2feae4be6b5c222531f';
+    // Deixe o elemento ocupar 100% do contêiner; sem limitar a 400px
     smartEl.setAttribute(
       'style',
-      'display:block; margin:0 auto; width:100%; max-width:400px;'
+      'display:block; margin:0 auto; width:100%; height:auto;'
     );
 
     if (playerContainerRef.current) {
@@ -110,9 +111,9 @@ const IndonesiaLanding: React.FC = () => {
     setOpenModal(true);
   };
 
-  // ----- PÁGINA -----
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
+    // Layout em coluna: conteúdo cresce e empurra o rodapé para o final da tela
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Helmet>
         <title>Dream vision</title>
         <meta name="description" content="Tonton presentasi video." />
@@ -155,68 +156,72 @@ fbq('track', 'PageView');
         <noscript>{`<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1" />`}</noscript>
       </Helmet>
 
-      {/* Header limpo (sem títulos/temas) */}
+      {/* Header limpo */}
       <header className="py-4 px-4" />
 
-      {/* Player centralizado */}
-      <section className="relative overflow-hidden py-8 lg:py-12">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-[640px] w-full mx-auto">
-            <div className="relative">
-              <div ref={playerContainerRef} className="w-full" />
+      {/* MAIN cresce e dá respiro antes do rodapé */}
+      <main className="flex-1">
+        {/* Player centralizado, largura maior no desktop */}
+        <section className="relative overflow-hidden py-10 lg:py-16">
+          <div className="container mx-auto px-4 relative z-10">
+            {/* max-w aumenta no desktop; mantém 100% no mobile */}
+            <div className="w-full mx-auto max-w-[960px]">
+              <div className="relative">
+                <div ref={playerContainerRef} className="w-full" />
+              </div>
+
+              {/* Barra "Clique para sair som" (estratégias de clique) */}
+              {showUnmuteBar && (
+                <button
+                  onClick={handleUnmuteClick}
+                  className="group mt-5 w-full flex items-center justify-center gap-3 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 rounded-xl px-5 py-4 transition-all duration-200 ring-1 ring-amber-400/30"
+                  aria-label="Klik untuk menyalakan suara"
+                >
+                  {/* Ícone de som (SVG) */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M11 5l-4 4H4v6h3l4 4V5z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15.54 8.46a5 5 0 010 7.07m2.83-9.9a9 9 0 010 12.73" />
+                  </svg>
+
+                  <div className="text-center">
+                    <div className="text-amber-300 font-semibold text-[15px] leading-tight">
+                      Klik untuk menyalakan suara
+                    </div>
+                    <div className="text-amber-200/80 text-xs mt-0.5 animate-pulse">
+                      Suara mungkin dinonaktifkan oleh browser — ketuk untuk mendengar
+                    </div>
+                  </div>
+
+                  {/* Seta chamando a atenção */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 opacity-80 group-hover:translate-x-0.5 transition-transform"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M10.293 15.707a1 1 0 010-1.414L13.586 11H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Dica secundária para aumentar cliques */}
+              <p className="mt-3 text-center text-xs text-gray-300/80">
+                Tip: jika tidak ada suara, sentuh video atau tombol di atas untuk mengaktifkannya.
+              </p>
             </div>
-
-            {/* Barra "Clique para sair som" (estratégias de clique) */}
-            {showUnmuteBar && (
-              <button
-                onClick={handleUnmuteClick}
-                className="group mt-4 w-full flex items-center justify-center gap-3 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 rounded-xl px-5 py-4 transition-all duration-200 ring-1 ring-amber-400/30"
-                aria-label="Klik untuk menyalakan suara"
-              >
-                {/* Ícone de som (SVG) */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M11 5l-4 4H4v6h3l4 4V5z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15.54 8.46a5 5 0 010 7.07m2.83-9.9a9 9 0 010 12.73" />
-                </svg>
-
-                <div className="text-center">
-                  <div className="text-amber-300 font-semibold text-[15px] leading-tight">
-                    Klik untuk menyalakan suara
-                  </div>
-                  <div className="text-amber-200/80 text-xs mt-0.5 animate-pulse">
-                    Suara mungkin dinonaktifkan oleh browser — ketuk untuk mendengar
-                  </div>
-                </div>
-
-                {/* Seta chamando a atenção */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 opacity-80 group-hover:translate-x-0.5 transition-transform"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M10.293 15.707a1 1 0 010-1.414L13.586 11H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" />
-                </svg>
-              </button>
-            )}
-
-            {/* Dica secundária para aumentar cliques */}
-            <p className="mt-3 text-center text-xs text-gray-300/80">
-              Tip: jika tidak ada suara, sentuh video atau tombol di atas untuk mengaktifkannya.
-            </p>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* Rodapé em indonésio */}
-      <footer className="border-t border-gray-800 bg-gray-900 py-8 mt-16">
+      {/* Rodapé em indonésio (sempre no fim graças ao flex-col + flex-1) */}
+      <footer className="border-t border-gray-800 bg-gray-900 py-10">
         <div className="container mx-auto px-6 text-center">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-5">
             <button
@@ -295,7 +300,7 @@ fbq('track', 'PageView');
             </div>
 
             {/* body */}
-            <div className="max-h=[70vh] overflow-y-auto px-5 pb-6 pt-4 leading-relaxed text-sm text-gray-200">
+            <div className="max-h-[70vh] overflow-y-auto px-5 pb-6 pt-4 leading-relaxed text-sm text-gray-200">
               {activeTab === 'terms' ? (
                 <div className="space-y-4">
                   <p className="text-gray-300">
@@ -440,17 +445,38 @@ fbq('track', 'PageView');
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </section>
+      </main>
 
-      {/* styles */}
+      {/* styles extras para garantir que o vídeo ocupe 100% da largura do contêiner */}
       <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in { animation: fade-in 0.8s ease-out; }
+        vturb-smartplayer, vturb-smartplayer * { max-width: 100%; }
+        /* Alguns players inserem um <video> com width fixo; força 100% */
+        vturb-smartplayer video { width: 100% !important; height: auto !important; }
       `}</style>
+
+      {/* Rodapé */}
+      <footer className="border-t border-gray-800 bg-gray-900 py-10">
+        <div className="container mx-auto px-6 text-center">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-5">
+            <button
+              onClick={() => openWithTab('terms')}
+              className="text-gray-400 hover:text-purple-400 transition-colors"
+            >
+              Syarat & Ketentuan
+            </button>
+            <button
+              onClick={() => openWithTab('privacy')}
+              className="text-gray-400 hover:text-purple-400 transition-colors"
+            >
+              Kebijakan Privasi
+            </button>
+          </div>
+          <p className="text-gray-500 text-sm">
+            &copy; 2025. Semua hak dilindungi.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
