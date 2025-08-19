@@ -13,10 +13,10 @@ const IndonesiaLanding: React.FC = () => {
     const smartEl = document.createElement('vturb-smartplayer');
     // ID do player novo
     smartEl.id = 'vid-68a4f2feae4be6b5c222531f';
-    // Deixe o elemento ocupar 100% do contêiner; sem limitar a 400px
+    // Aumentei o tamanho máximo do player para 800px (fica 100% no mobile)
     smartEl.setAttribute(
       'style',
-      'display:block; margin:0 auto; width:100%; height:auto;'
+      'display:block; margin:0 auto; width:100%; max-width:800px;'
     );
 
     if (playerContainerRef.current) {
@@ -111,8 +111,9 @@ const IndonesiaLanding: React.FC = () => {
     setOpenModal(true);
   };
 
+  // ----- PÁGINA -----
   return (
-    // Layout em coluna: conteúdo cresce e empurra o rodapé para o final da tela
+    // Sticky footer layout
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Helmet>
         <title>Dream vision</title>
@@ -156,16 +157,15 @@ fbq('track', 'PageView');
         <noscript>{`<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1" />`}</noscript>
       </Helmet>
 
-      {/* Header limpo */}
+      {/* Header (vazio) */}
       <header className="py-4 px-4" />
 
-      {/* MAIN cresce e dá respiro antes do rodapé */}
+      {/* Main ocupa o espaço restante para empurrar o rodapé para o fundo */}
       <main className="flex-1">
-        {/* Player centralizado, largura maior no desktop */}
+        {/* Player centralizado */}
         <section className="relative overflow-hidden py-10 lg:py-16">
           <div className="container mx-auto px-4 relative z-10">
-            {/* max-w aumenta no desktop; mantém 100% no mobile */}
-            <div className="w-full mx-auto max-w-[960px]">
+            <div className="max-w-[900px] w-full mx-auto">
               <div className="relative">
                 <div ref={playerContainerRef} className="w-full" />
               </div>
@@ -174,7 +174,7 @@ fbq('track', 'PageView');
               {showUnmuteBar && (
                 <button
                   onClick={handleUnmuteClick}
-                  className="group mt-5 w-full flex items-center justify-center gap-3 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 rounded-xl px-5 py-4 transition-all duration-200 ring-1 ring-amber-400/30"
+                  className="group mt-4 w-full flex items-center justify-center gap-3 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 rounded-xl px-5 py-4 transition-all duration-200 ring-1 ring-amber-400/30"
                   aria-label="Klik untuk menyalakan suara"
                 >
                   {/* Ícone de som (SVG) */}
@@ -220,8 +220,8 @@ fbq('track', 'PageView');
         </section>
       </main>
 
-      {/* Rodapé em indonésio (sempre no fim graças ao flex-col + flex-1) */}
-      <footer className="border-t border-gray-800 bg-gray-900 py-10">
+      {/* Rodapé em indonésio (sempre no fundo) */}
+      <footer className="border-t border-gray-800 bg-gray-900 py-8">
         <div className="container mx-auto px-6 text-center">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-5">
             <button
@@ -448,35 +448,14 @@ fbq('track', 'PageView');
         </section>
       </main>
 
-      {/* styles extras para garantir que o vídeo ocupe 100% da largura do contêiner */}
+      {/* styles */}
       <style>{`
-        vturb-smartplayer, vturb-smartplayer * { max-width: 100%; }
-        /* Alguns players inserem um <video> com width fixo; força 100% */
-        vturb-smartplayer video { width: 100% !important; height: auto !important; }
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fade-in 0.8s ease-out; }
       `}</style>
-
-      {/* Rodapé */}
-      <footer className="border-t border-gray-800 bg-gray-900 py-10">
-        <div className="container mx-auto px-6 text-center">
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-5">
-            <button
-              onClick={() => openWithTab('terms')}
-              className="text-gray-400 hover:text-purple-400 transition-colors"
-            >
-              Syarat & Ketentuan
-            </button>
-            <button
-              onClick={() => openWithTab('privacy')}
-              className="text-gray-400 hover:text-purple-400 transition-colors"
-            >
-              Kebijakan Privasi
-            </button>
-          </div>
-          <p className="text-gray-500 text-sm">
-            &copy; 2025. Semua hak dilindungi.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 };
