@@ -124,7 +124,7 @@ const IndonesiaLanding: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Helmet>
-        <title>Halaman Video</title>
+        <title>Dream vision</title>
         <meta name="description" content="Tonton presentasi video." />
 
         {/* Perf marker + Preloads VTurb */}
