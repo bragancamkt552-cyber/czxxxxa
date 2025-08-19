@@ -5,10 +5,13 @@ import { Button } from '../components/ui/Button';
 const IndonesiaLanding: React.FC = () => {
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
+  // Estado para exibir a barra "Clique para sair som"
+  const [showUnmuteBar, setShowUnmuteBar] = useState(true);
+
   // ----- VTurb Smartplayer (NOVO) -----
   useEffect(() => {
     const smartEl = document.createElement('vturb-smartplayer');
-    // ID do player novo (bate com o path .../players/68a4ac52e4999a94ff65d436/...)
+    // ID do player novo
     smartEl.id = 'vid-68a4ac52e4999a94ff65d436';
     smartEl.setAttribute(
       'style',
@@ -38,6 +41,76 @@ const IndonesiaLanding: React.FC = () => {
     };
   }, []);
 
+  // Observa o player e atualiza a barra de "unmute" conforme status
+  useEffect(() => {
+    let interval: number | undefined;
+
+    const watch = () => {
+      // Tenta pegar a instância VTurb e o <video> interno
+      const sp = (window as any).smartplayer;
+      const container = playerContainerRef.current;
+      const video: HTMLVideoElement | null =
+        container?.querySelector('video') || null;
+
+      // Se não achou ainda, tenta novamente
+      if (!video) {
+        interval = window.setTimeout(watch, 500) as any;
+        return;
+      }
+
+      // Função para atualizar visual do aviso
+      const updateBar = () => {
+        const shouldShow = video.muted || video.paused;
+        setShowUnmuteBar(shouldShow);
+      };
+
+      // Listeners
+      video.addEventListener('playing', updateBar);
+      video.addEventListener('pause', updateBar);
+      video.addEventListener('volumechange', updateBar);
+      // Checagem inicial
+      updateBar();
+    };
+
+    watch();
+    return () => {
+      if (interval) clearTimeout(interval);
+    };
+  }, []);
+
+  // Força Unmute + Play quando clicam na barra
+  const handleUnmuteClick = () => {
+    try {
+      const container = playerContainerRef.current;
+      const video: HTMLVideoElement | null =
+        container?.querySelector('video') || null;
+      if (video) {
+        video.muted = false;
+        // Alguns navegadores exigem interação antes do play; o clique da barra atende isso
+        const p = video.play();
+        if (p && typeof p.then === 'function') {
+          p.catch(() => {
+            // Se falhar, tenta novamente após curto intervalo
+            setTimeout(() => video.play().catch(() => {}), 150);
+          });
+        }
+      } else {
+        // fallback para smartplayer, se disponível
+        const sp = (window as any).smartplayer;
+        if (sp && sp.instances && sp.instances[0]) {
+          try {
+            sp.instances[0].video.muted = false;
+            sp.instances[0].video.play();
+          } catch {}
+        }
+      }
+      setShowUnmuteBar(false);
+    } catch {
+      // mantém a barra se algo falhar
+      setShowUnmuteBar(true);
+    }
+  };
+
   // ----- Modal Syarat & Ketentuan / Kebijakan Privasi -----
   const [openModal, setOpenModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'terms' | 'privacy'>('terms');
@@ -54,7 +127,7 @@ const IndonesiaLanding: React.FC = () => {
         <title>Halaman Video</title>
         <meta name="description" content="Tonton presentasi video." />
 
-        {/* Perf marker + Preloads do VTurb (conforme enviados) */}
+        {/* Perf marker + Preloads VTurb */}
         <script>{`!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);`}</script>
         <link
           rel="preload"
@@ -95,13 +168,59 @@ fbq('track', 'PageView');
       {/* Header limpo (sem títulos/temas) */}
       <header className="py-4 px-4" />
 
-      {/* Player centralizado (nenhum título acima) */}
-      <section className="relative overflow-hidden py-10 lg:py-14">
+      {/* Player centralizado */}
+      <section className="relative overflow-hidden py-8 lg:py-12">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-[640px] w-full mx-auto">
             <div className="relative">
               <div ref={playerContainerRef} className="w-full" />
             </div>
+
+            {/* Barra "Clique para sair som" (estratégias de clique) */}
+            {showUnmuteBar && (
+              <button
+                onClick={handleUnmuteClick}
+                className="group mt-4 w-full flex items-center justify-center gap-3 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 rounded-xl px-5 py-4 transition-all duration-200 ring-1 ring-amber-400/30"
+                aria-label="Klik untuk menyalakan suara"
+              >
+                {/* Ícone de som (SVG) */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M11 5l-4 4H4v6h3l4 4V5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15.54 8.46a5 5 0 010 7.07m2.83-9.9a9 9 0 010 12.73" />
+                </svg>
+
+                <div className="text-center">
+                  <div className="text-amber-300 font-semibold text-[15px] leading-tight">
+                    Klik untuk menyalakan suara
+                  </div>
+                  <div className="text-amber-200/80 text-xs mt-0.5 animate-pulse">
+                    Suara mungkin dinonaktifkan oleh browser — ketuk untuk mendengar
+                  </div>
+                </div>
+
+                {/* Seta chamando a atenção */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 opacity-80 group-hover:translate-x-0.5 transition-transform"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M10.293 15.707a1 1 0 010-1.414L13.586 11H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" />
+                </svg>
+              </button>
+            )}
+
+            {/* Dica secundária para aumentar cliques (copy curtinha) */}
+            <p className="mt-3 text-center text-xs text-gray-300/80">
+              Tip: jika tidak ada suara, sentuh video atau tombol di atas untuk mengaktifkannya.
+            </p>
           </div>
         </div>
       </section>
@@ -129,7 +248,7 @@ fbq('track', 'PageView');
         </div>
       </footer>
 
-      {/* Modal: Syarat & Ketentuan / Kebijakan Privasi (Bahasa Indonesia) */}
+      {/* Modal: Syarat & Ketentuan / Kebijakan Privasi */}
       {openModal && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
