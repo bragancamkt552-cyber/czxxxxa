@@ -2,21 +2,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Button } from '../components/ui/Button';
 
-const IndonesiaLanding: React.FC = () => {
+const GermanLanding: React.FC = () => {
   const playerContainerRef = useRef<HTMLDivElement>(null);
 
-  // Estado para exibir a barra "Clique para sair som"
+  // Status der "Ton einschalten"-Leiste
   const [showUnmuteBar, setShowUnmuteBar] = useState(true);
 
-  // ----- VTurb Smartplayer (NOVO) -----
+  // ----- VTurb Smartplayer (NEU) -----
   useEffect(() => {
     const smartEl = document.createElement('vturb-smartplayer');
-    // ID do player novo
-    smartEl.id = 'vid-68a4f2feae4be6b5c222531f';
-    // Aumentei o tamanho máximo do player para 800px (fica 100% no mobile)
+    // Neuer Player-ID
+    smartEl.id = 'vid-68a7156a758079d62739f3b7';
+    // Stil laut Snippet (max 400px)
     smartEl.setAttribute(
       'style',
-      'display:block; margin:0 auto; width:100%; max-width:800px;'
+      'display:block; margin:0 auto; width:100%; max-width:400px;'
     );
 
     if (playerContainerRef.current) {
@@ -27,7 +27,7 @@ const IndonesiaLanding: React.FC = () => {
     const s = document.createElement('script');
     s.type = 'text/javascript';
     s.src =
-      'https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/players/68a4f2feae4be6b5c222531f/v4/player.js';
+      'https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/players/68a7156a758079d62739f3b7/v4/player.js';
     s.async = true;
     document.head.appendChild(s);
 
@@ -35,14 +35,14 @@ const IndonesiaLanding: React.FC = () => {
       try {
         if (playerContainerRef.current) playerContainerRef.current.innerHTML = '';
         const scripts = document.querySelectorAll(
-          'script[src*="68a4f2feae4be6b5c222531f"]'
+          'script[src*="68a7156a758079d62739f3b7"]'
         );
         scripts.forEach((node) => node.parentElement?.removeChild(node));
       } catch {}
     };
   }, []);
 
-  // Observa o player e atualiza a barra de "unmute" conforme status
+  // Beobachtet den Player und zeigt/verbirgt die Unmute-Leiste
   useEffect(() => {
     let interval: number | undefined;
 
@@ -73,7 +73,7 @@ const IndonesiaLanding: React.FC = () => {
     };
   }, []);
 
-  // Força Unmute + Play quando clicam na barra
+  // Unmute + Play beim Klick
   const handleUnmuteClick = () => {
     try {
       const container = playerContainerRef.current;
@@ -102,7 +102,7 @@ const IndonesiaLanding: React.FC = () => {
     }
   };
 
-  // ----- Modal Syarat & Ketentuan / Kebijakan Privasi -----
+  // ----- Modal AGB / Datenschutz -----
   const [openModal, setOpenModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'terms' | 'privacy'>('terms');
 
@@ -111,19 +111,18 @@ const IndonesiaLanding: React.FC = () => {
     setOpenModal(true);
   };
 
-  // ----- PÁGINA -----
+  // ----- SEITE -----
   return (
-    // Sticky footer layout
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
       <Helmet>
-        <title>Dream vision</title>
-        <meta name="description" content="Tonton presentasi video." />
+        <title>Dream Vision</title>
+        <meta name="description" content="Sehen Sie sich die Videopräsentation an." />
 
-        {/* Perf marker + Preloads VTurb (NOVOS) */}
+        {/* Performance-Marker + Preloads für den neuen VTurb-Player */}
         <script>{`!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);`}</script>
         <link
           rel="preload"
-          href="https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/players/68a4f2feae4be6b5c222531f/v4/player.js"
+          href="https://scripts.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/players/68a7156a758079d62739f3b7/v4/player.js"
           as="script"
         />
         <link
@@ -131,17 +130,13 @@ const IndonesiaLanding: React.FC = () => {
           href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js"
           as="script"
         />
-        <link
-          rel="preload"
-          href="https://cdn.converteai.net/6e999b30-1d79-497a-a68a-97fe5248857e/68a4f2e2c31744b04d6fb0ab/main.m3u8"
-          as="fetch"
-        />
+        {/* Kein .m3u8-Preload, da keine neue URL übergeben wurde */}
         <link rel="dns-prefetch" href="https://cdn.converteai.net" />
         <link rel="dns-prefetch" href="https://scripts.converteai.net" />
         <link rel="dns-prefetch" href="https://images.converteai.net" />
         <link rel="dns-prefetch" href="https://api.vturb.com.br" />
 
-        {/* Meta Pixel (mantido) */}
+        {/* Meta Pixel (beibehalten) */}
         <script>{`
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -157,93 +152,90 @@ fbq('track', 'PageView');
         <noscript>{`<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1" />`}</noscript>
       </Helmet>
 
-      {/* Header (vazio) */}
+      {/* Header leer */}
       <header className="py-4 px-4" />
 
-      {/* Main ocupa o espaço restante para empurrar o rodapé para o fundo */}
-      <main className="flex-1">
-        {/* Player centralizado */}
-        <section className="relative overflow-hidden py-10 lg:py-16">
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-[900px] w-full mx-auto">
-              <div className="relative">
-                <div ref={playerContainerRef} className="w-full" />
-              </div>
-
-              {/* Barra "Clique para sair som" (estratégias de clique) */}
-              {showUnmuteBar && (
-                <button
-                  onClick={handleUnmuteClick}
-                  className="group mt-4 w-full flex items-center justify-center gap-3 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 rounded-xl px-5 py-4 transition-all duration-200 ring-1 ring-amber-400/30"
-                  aria-label="Klik untuk menyalakan suara"
-                >
-                  {/* Ícone de som (SVG) */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 flex-shrink-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M11 5l-4 4H4v6h3l4 4V5z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15.54 8.46a5 5 0 010 7.07m2.83-9.9a9 9 0 010 12.73" />
-                  </svg>
-
-                  <div className="text-center">
-                    <div className="text-amber-300 font-semibold text-[15px] leading-tight">
-                      Klik untuk menyalakan suara
-                    </div>
-                    <div className="text-amber-200/80 text-xs mt-0.5 animate-pulse">
-                      Suara mungkin dinonaktifkan oleh browser — ketuk untuk mendengar
-                    </div>
-                  </div>
-
-                  {/* Seta chamando a atenção */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 opacity-80 group-hover:translate-x-0.5 transition-transform"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path d="M10.293 15.707a1 1 0 010-1.414L13.586 11H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" />
-                  </svg>
-                </button>
-              )}
-
-              {/* Dica secundária para aumentar cliques */}
-              <p className="mt-3 text-center text-xs text-gray-300/80">
-                Tip: jika tidak ada suara, sentuh video atau tombol di atas untuk mengaktifkannya.
-              </p>
+      {/* Player zentriert */}
+      <section className="relative overflow-hidden py-8 lg:py-12">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-[640px] w-full mx-auto">
+            <div className="relative">
+              <div ref={playerContainerRef} className="w-full" />
             </div>
-          </div>
-        </section>
-      </main>
 
-      {/* Rodapé em indonésio (sempre no fundo) */}
-      <footer className="border-t border-gray-800 bg-gray-900 py-8">
+            {/* Leiste "Klicken, um den Ton einzuschalten" */}
+            {showUnmuteBar && (
+              <button
+                onClick={handleUnmuteClick}
+                className="group mt-4 w-full flex items-center justify-center gap-3 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 rounded-xl px-5 py-4 transition-all duration-200 ring-1 ring-amber-400/30"
+                aria-label="Klicken, um den Ton einzuschalten"
+              >
+                {/* Lautsprecher-Icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M11 5l-4 4H4v6h3l4 4V5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15.54 8.46a5 5 0 010 7.07m2.83-9.9a9 9 0 010 12.73" />
+                </svg>
+
+                <div className="text-center">
+                  <div className="text-amber-300 font-semibold text-[15px] leading-tight">
+                    Klicken, um den Ton einzuschalten
+                  </div>
+                  <div className="text-amber-200/80 text-xs mt-0.5 animate-pulse">
+                    Ton wurde vom Browser möglicherweise stummgeschaltet — tippen, um zu hören
+                  </div>
+                </div>
+
+                {/* Pfeil als visueller Hinweis */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 opacity-80 group-hover:translate-x-0.5 transition-transform"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M10.293 15.707a1 1 0 010-1.414L13.586 11H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" />
+                </svg>
+              </button>
+            )}
+
+            {/* Zweiter Hinweis */}
+            <p className="mt-3 text-center text-xs text-gray-300/80">
+              Tipp: Wenn Sie keinen Ton hören, tippen Sie auf das Video oder auf die Schaltfläche oben.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer auf Deutsch */}
+      <footer className="border-t border-gray-800 bg-gray-900 py-8 mt-16">
         <div className="container mx-auto px-6 text-center">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-5">
             <button
               onClick={() => openWithTab('terms')}
               className="text-gray-400 hover:text-purple-400 transition-colors"
             >
-              Syarat & Ketentuan
+              Allgemeine Geschäftsbedingungen
             </button>
             <button
               onClick={() => openWithTab('privacy')}
               className="text-gray-400 hover:text-purple-400 transition-colors"
             >
-              Kebijakan Privasi
+              Datenschutzerklärung
             </button>
           </div>
           <p className="text-gray-500 text-sm">
-            &copy; 2025. Semua hak dilindungi.
+            &copy; 2025. Alle Rechte vorbehalten.
           </p>
         </div>
       </footer>
 
-      {/* Modal: Syarat & Ketentuan / Kebijakan Privasi */}
+      {/* Modal: AGB / Datenschutz (Deutsch) */}
       {openModal && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -251,29 +243,29 @@ fbq('track', 'PageView');
           aria-modal="true"
           aria-labelledby="policy-title"
         >
-          {/* backdrop */}
+          {/* Hintergrund */}
           <div
             className="absolute inset-0 bg-black/70"
             onClick={() => setOpenModal(false)}
           />
 
-          {/* content */}
+          {/* Inhalt */}
           <div className="relative z-10 w-full max-w-3xl bg-gray-900 text-gray-100 rounded-2xl shadow-2xl border border-gray-700">
-            {/* header */}
+            {/* Kopf */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
               <h3 id="policy-title" className="text-lg font-bold">
-                {activeTab === 'terms' ? 'Syarat & Ketentuan' : 'Kebijakan Privasi'}
+                {activeTab === 'terms' ? 'Allgemeine Geschäftsbedingungen' : 'Datenschutzerklärung'}
               </h3>
               <button
                 onClick={() => setOpenModal(false)}
                 className="text-gray-400 hover:text-white"
-                aria-label="Tutup"
+                aria-label="Schließen"
               >
                 ✕
               </button>
             </div>
 
-            {/* tabs */}
+            {/* Tabs */}
             <div className="px-5 pt-4">
               <div className="inline-flex rounded-lg overflow-hidden border border-gray-700">
                 <button
@@ -284,7 +276,7 @@ fbq('track', 'PageView');
                       : 'bg-gray-800 text-gray-300 hover:text-white'
                   }`}
                 >
-                  Syarat & Ketentuan
+                  AGB
                 </button>
                 <button
                   onClick={() => setActiveTab('privacy')}
@@ -294,161 +286,147 @@ fbq('track', 'PageView');
                       : 'bg-gray-800 text-gray-300 hover:text-white'
                   }`}
                 >
-                  Kebijakan Privasi
+                  Datenschutz
                 </button>
               </div>
             </div>
 
-            {/* body */}
+            {/* Body */}
             <div className="max-h-[70vh] overflow-y-auto px-5 pb-6 pt-4 leading-relaxed text-sm text-gray-200">
               {activeTab === 'terms' ? (
                 <div className="space-y-4">
                   <p className="text-gray-300">
-                    Dengan mengakses situs ini, Anda setuju untuk terikat oleh syarat layanan ini,
-                    semua hukum serta peraturan yang berlaku, dan Anda bertanggung jawab untuk
-                    mematuhi hukum setempat yang relevan. Jika Anda tidak setuju dengan syarat ini,
-                    mohon tidak menggunakan situs ini. Materi pada situs ini dilindungi oleh hukum
-                    hak cipta dan merek dagang yang berlaku.
+                    Durch den Zugriff auf diese Website erklären Sie sich mit diesen Nutzungsbedingungen,
+                    allen geltenden Gesetzen und Vorschriften einverstanden und sind für deren Einhaltung verantwortlich.
+                    Wenn Sie diesen Bedingungen nicht zustimmen, dürfen Sie diese Website nicht nutzen. Die Inhalte sind
+                    durch geltende Urheber- und Markenrechte geschützt.
                   </p>
 
-                  <h4 className="font-semibold text-white">1. Lisensi Penggunaan</h4>
+                  <h4 className="font-semibold text-white">1. Lizenznutzung</h4>
                   <p>
-                    Izin diberikan untuk mengunduh sementara satu salinan materi (informasi atau
-                    perangkat lunak) di situs ini untuk keperluan tampilan pribadi dan non-komersial
-                    secara sementara. Ini adalah pemberian lisensi, bukan pengalihan hak milik, dan
-                    di bawah lisensi ini Anda tidak boleh: memodifikasi atau menyalin materi;
-                    menggunakan materi untuk tujuan komersial atau untuk tampilan publik
-                    (komersial/non-komersial); mencoba membongkar atau merekayasa balik perangkat
-                    lunak apa pun di situs; menghapus tanda hak cipta atau kepemilikan; memindahkan
-                    materi ke orang lain atau “mirror” materi di server lain. Lisensi berakhir
-                    otomatis jika Anda melanggar ketentuan ini dan dapat dihentikan kapan pun. Saat
-                    berakhir, Anda harus menghapus semua materi yang diunduh, baik elektronik maupun
-                    cetak.
+                    Es wird die Erlaubnis erteilt, vorübergehend eine Kopie der Materialien (Informationen oder Software)
+                    auf dieser Website für den persönlichen, nicht-kommerziellen, vorübergehenden Gebrauch herunterzuladen.
+                    Dies stellt eine Lizenz dar, keinen Eigentumsübergang. Unter dieser Lizenz dürfen Sie die Materialien
+                    nicht verändern oder kopieren; nicht für kommerzielle Zwecke oder öffentliche Vorführung verwenden;
+                    keine Software rückentwickeln; Urheberrechtsvermerke nicht entfernen; die Materialien nicht übertragen
+                    oder auf einem anderen Server spiegeln. Die Lizenz endet automatisch bei Verstoß und kann jederzeit
+                    beendet werden. Nach Beendigung müssen alle heruntergeladenen Materialien gelöscht werden.
                   </p>
 
-                  <h4 className="font-semibold text-white">2. Disclaimer</h4>
+                  <h4 className="font-semibold text-white">2. Haftungsausschluss</h4>
                   <p>
-                    Materi di situs ini disediakan “sebagaimana adanya”. Kami tidak membuat jaminan
-                    apa pun, tersurat maupun tersirat, termasuk namun tidak terbatas pada jaminan
-                    kelayakan diperjualbelikan, kesesuaian untuk tujuan tertentu, atau
-                    non-pelanggaran hak. Kami juga tidak menjamin akurasi, hasil yang mungkin
-                    terjadi, atau keandalan penggunaan materi di situs ini atau terkait dengan
-                    materi tersebut di situs tertaut.
+                    Die Materialien werden „wie besehen“ bereitgestellt. Wir geben keinerlei ausdrückliche oder
+                    stillschweigende Garantien, einschließlich, aber nicht beschränkt auf Gewährleistungen der
+                    Marktgängigkeit, Eignung für einen bestimmten Zweck oder Nichtverletzung von Rechten. Zudem
+                    übernehmen wir keine Gewähr für Genauigkeit, Ergebnisse oder Zuverlässigkeit der Nutzung der
+                    Materialien auf dieser oder verlinkten Websites.
                   </p>
 
-                  <h4 className="font-semibold text-white">3. Batasan</h4>
+                  <h4 className="font-semibold text-white">3. Beschränkungen</h4>
                   <p>
-                    Dalam keadaan apa pun kami atau pemasok kami tidak akan bertanggung jawab atas
-                    kerusakan apa pun (termasuk, tanpa batasan, kehilangan data atau keuntungan, atau
-                    gangguan bisnis) yang timbul dari penggunaan atau ketidakmampuan menggunakan
-                    materi di situs ini, bahkan jika kami telah diberitahu tentang kemungkinan
-                    kerusakan tersebut. Beberapa yurisdiksi tidak mengizinkan pembatasan jaminan
-                    tersirat atau tanggung jawab atas kerusakan insidental/konsekuensial, sehingga
-                    pembatasan ini mungkin tidak berlaku bagi Anda.
+                    In keinem Fall haften wir oder unsere Lieferanten für Schäden (einschließlich, aber nicht
+                    beschränkt auf Daten- oder Gewinnverluste oder Betriebsunterbrechungen), die aus der Nutzung
+                    oder Unmöglichkeit der Nutzung der Materialien entstehen, selbst wenn wir auf die Möglichkeit
+                    solcher Schäden hingewiesen wurden. Manche Rechtsordnungen erlauben keine Beschränkung
+                    stillschweigender Gewährleistungen oder Haftung; dann gelten diese Beschränkungen ggf. nicht.
                   </p>
 
-                  <h4 className="font-semibold text-white">4. Akurasi Materi</h4>
+                  <h4 className="font-semibold text-white">4. Genauigkeit der Materialien</h4>
                   <p>
-                    Materi di situs ini dapat mencakup kesalahan teknis, tipografis, atau
-                    fotografis. Kami tidak menjamin bahwa materi apa pun akurat, lengkap, atau
-                    terkini. Kami dapat mengubah materi kapan saja tanpa pemberitahuan, namun tidak
-                    berkomitmen untuk memperbaruinya.
+                    Die Materialien können technische, typografische oder fotografische Fehler enthalten. Wir übernehmen
+                    keine Gewähr für Vollständigkeit, Aktualität oder Richtigkeit. Änderungen können jederzeit ohne
+                    Ankündigung erfolgen, ohne Verpflichtung zur Aktualisierung.
                   </p>
 
-                  <h4 className="font-semibold text-white">5. Tautan</h4>
+                  <h4 className="font-semibold text-white">5. Links</h4>
                   <p>
-                    Kami belum meninjau semua situs yang ditautkan ke situs ini dan tidak bertanggung
-                    jawab atas konten situs tertaut. Pencantuman tautan tidak menyiratkan dukungan.
-                    Penggunaan situs tertaut sepenuhnya merupakan risiko Anda sendiri.
+                    Wir haben nicht alle mit dieser Website verlinkten Seiten geprüft und sind nicht für deren Inhalte
+                    verantwortlich. Die Aufnahme eines Links bedeutet keine Billigung. Die Nutzung verlinkter Websites
+                    erfolgt auf eigenes Risiko.
                   </p>
 
-                  <h4 className="font-semibold text-white">6. Perubahan</h4>
+                  <h4 className="font-semibold text-white">6. Änderungen</h4>
                   <p>
-                    Kami dapat merevisi syarat layanan situs ini kapan saja tanpa pemberitahuan.
-                    Dengan menggunakan situs ini, Anda setuju untuk terikat pada versi syarat yang
-                    berlaku saat itu.
+                    Wir können diese Bedingungen jederzeit ohne Vorankündigung ändern. Durch die Nutzung der Website
+                    stimmen Sie der jeweils gültigen Fassung zu.
                   </p>
 
-                  <h4 className="font-semibold text-white">7. Hukum yang Berlaku</h4>
+                  <h4 className="font-semibold text-white">7. Anwendbares Recht</h4>
                   <p>
-                    Syarat ini diatur dan ditafsirkan sesuai dengan hukum yang berlaku. Anda setuju
-                    untuk tunduk pada yurisdiksi eksklusif pengadilan di wilayah kami.
+                    Diese Bedingungen unterliegen dem anwendbaren Recht und werden entsprechend ausgelegt. Sie
+                    unterwerfen sich der ausschließlichen Zuständigkeit der Gerichte an unserem Sitz.
                   </p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   <p className="text-gray-300">
-                    Kami menghormati privasi Anda. Semua informasi pribadi yang dikumpulkan akan
-                    digunakan untuk membantu membuat kunjungan Anda lebih produktif dan menyenangkan.
-                    Dengan menggunakan situs ini, Anda menyetujui Kebijakan Privasi ini.
+                    Wir respektieren Ihre Privatsphäre. Alle erhobenen personenbezogenen Daten werden verwendet,
+                    um Ihren Besuch produktiver und angenehmer zu gestalten. Durch die Nutzung dieser Website
+                    stimmen Sie dieser Datenschutzerklärung zu.
                   </p>
 
-                  <h4 className="font-semibold text-white">1. Informasi yang Kami Kumpulkan</h4>
+                  <h4 className="font-semibold text-white">1. Welche Daten wir erheben</h4>
                   <p>
-                    Kami dapat mengumpulkan nama, email, telepon/ponsel, alamat, tanggal lahir, dan
-                    informasi lain yang diperlukan. Data diproses sesuai hukum perlindungan data yang
-                    berlaku.
+                    Wir können u. a. Ihren Namen, E-Mail-Adresse, Telefon/Handy, Anschrift, Geburtsdatum und weitere
+                    erforderliche Informationen erheben. Die Verarbeitung erfolgt gemäß den geltenden Datenschutzgesetzen.
                   </p>
 
-                  <h4 className="font-semibold text-white">2. Penggunaan Informasi</h4>
+                  <h4 className="font-semibold text-white">2. Wie wir Daten nutzen</h4>
                   <p>
-                    Informasi digunakan untuk menyediakan/meningkatkan layanan, personalisasi konten,
-                    komunikasi, kepatuhan hukum, dan keamanan situs. Kami dapat memperbarui kebijakan
-                    ini tanpa pemberitahuan sebelumnya.
+                    Zur Bereitstellung und Verbesserung von Leistungen, Personalisierung von Inhalten, Kommunikation,
+                    rechtlichen Compliance-Zwecken und zur Erhöhung der Sicherheit der Website. Wir behalten uns
+                    Aktualisierungen dieser Erklärung ohne vorherige Ankündigung vor.
                   </p>
 
-                  <h4 className="font-semibold text-white">3. Iklan</h4>
+                  <h4 className="font-semibold text-white">3. Werbung & Protokolle</h4>
                   <p>
-                    Seperti situs lain, kami dapat mengumpulkan data terkait iklan (IP, ISP, jenis
-                    browser, waktu kunjungan, halaman yang dilihat) untuk penargetan geografis atau
-                    audiens tertentu.
+                    Wie andere Websites können wir Daten im Zusammenhang mit Werbung erfassen (z. B. IP, ISP, Browsertyp,
+                    Zeitpunkt des Besuchs, aufgerufene Seiten), u. a. für Geotargeting oder zielgruppenspezifische Anzeigen.
                   </p>
 
                   <h4 className="font-semibold text-white">4. Cookies & Web Beacons</h4>
                   <p>
-                    Kami menggunakan cookies untuk menyimpan preferensi dan meningkatkan pengalaman.
-                    Pihak ketiga (mis. Google AdSense) mungkin menggunakan cookies/Web Beacons dan
-                    menerima sebagian informasi Anda guna penayangan iklan yang relevan. Anda dapat
-                    menonaktifkan cookies di pengaturan browser/perangkat lunak keamanan, namun ini
-                    dapat memengaruhi cara Anda berinteraksi dengan situs.
+                    Wir verwenden Cookies zur Speicherung von Präferenzen und zur Verbesserung der Nutzererfahrung.
+                    Drittanbieter (z. B. Google AdSense) können Cookies/Web Beacons einsetzen und Teile Ihrer
+                    Informationen erhalten, um relevante Werbung auszuspielen. Sie können Cookies im Browser/AV-Software
+                    deaktivieren; dies kann die Nutzung der Website beeinträchtigen.
                   </p>
 
-                  <h4 className="font-semibold text-white">5. Tautan ke Situs Pihak Ketiga</h4>
+                  <h4 className="font-semibold text-white">5. Links zu Drittseiten</h4>
                   <p>
-                    Situs kami mungkin berisi tautan ke situs lain. Kami tidak bertanggung jawab atas
-                    kebijakan privasi atau konten situs pihak ketiga. Silakan tinjau kebijakan privasi
-                    mereka saat mengunjunginya.
+                    Unsere Website kann Links zu anderen Seiten enthalten. Für deren Inhalte oder Datenschutzpraktiken
+                    sind wir nicht verantwortlich. Bitte prüfen Sie deren Datenschutzerklärungen.
                   </p>
 
-                  <h4 className="font-semibold text-white">6. Hak Anda</h4>
+                  <h4 className="font-semibold text-white">6. Ihre Rechte</h4>
                   <p>
-                    Anda dapat menghubungi kami untuk mengakses, memperbaiki, atau meminta penghapusan
-                    data pribadi Anda serta, jika berlaku, menolak atau membatasi pemrosesan data.
+                    Sie können uns kontaktieren, um Zugriff auf Ihre Daten zu erhalten, diese zu berichtigen oder löschen
+                    zu lassen und – soweit anwendbar – der Verarbeitung zu widersprechen oder sie einzuschränken.
                   </p>
 
-                  <h4 className="font-semibold text-white">7. Pembaruan Kebijakan</h4>
+                  <h4 className="font-semibold text-white">7. Aktualisierungen</h4>
                   <p>
-                    Kebijakan ini dapat diperbarui secara berkala. Versi terbaru berlaku sejak
-                    dipublikasikan di halaman ini. Disarankan memeriksa secara rutin.
+                    Diese Erklärung kann periodisch aktualisiert werden. Die jeweils aktuelle Version gilt ab Veröffentlichung
+                    auf dieser Seite. Wir empfehlen regelmäßige Prüfung.
                   </p>
                 </div>
               )}
 
-              {/* footer buttons */}
+              {/* Footer-Buttons */}
               <div className="mt-6 flex items-center justify-end gap-3">
                 <Button
                   className="bg-gray-800 hover:bg-gray-700 text-gray-100"
                   onClick={() => setOpenModal(false)}
                 >
-                  Tutup
+                  Schließen
                 </Button>
               </div>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      )}
 
-      {/* styles */}
+      {/* Styles */}
       <style>{`
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(20px); }
@@ -460,4 +438,4 @@ fbq('track', 'PageView');
   );
 };
 
-export default IndonesiaLanding;
+export default GermanLanding;
