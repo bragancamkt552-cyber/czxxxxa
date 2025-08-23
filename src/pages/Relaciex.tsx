@@ -1,9 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 /**
- * Página: LiveClass (TSX)
- * - Ajustes solicitados: sem overlay de pergunta no player, sem timer no player, sem indicadores de cidades.
- * - Restante preservado: chat (fase1/fase2), enquete no chat, CTA, countdown, ticker, popup, bônus, responsividade.
+ * LiveClass — versão ajustada
+ * - Sem overlay/timer no player
+ * - Sem cidades
+ * - Enquete interativa dentro do chat (estilo Instagram)
+ * - Rodapé com Política e Termos
+ * - Espaçamento extra quando barras flutuantes estão ativas, evitando “cortar” o rodapé
  */
 
 const LiveClass: React.FC = () => {
@@ -21,8 +24,28 @@ const LiveClass: React.FC = () => {
   const [bonusActive, setBonusActive] = useState(false);
   const [tickerActive, setTickerActive] = useState(false);
 
+  // ====== ENQUETE (chat) ======
+  const pollBase = useMemo(
+    () => ({
+      question: "Qual sua maior dificuldade com este tema?",
+      options: [
+        "Sou iniciante",
+        "Falta de tempo",
+        "Não sei por onde começar",
+        "Já tentei e não deu certo",
+      ],
+      // base “não real” para social proof
+      baseVotes: [42, 67, 51, 39],
+    }),
+    []
+  );
+  const [userVoted, setUserVoted] = useState(false);
+  const [userChoice, setUserChoice] = useState<number | null>(null);
+  const [tallies, setTallies] = useState<number[]>(pollBase.baseVotes);
+
   // Refs
   const chatInputRef = useRef<HTMLInputElement | null>(null);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const lastMessageTime = useRef<number>(0);
   const timersRef = useRef<number[]>([]);
   const intervalsRef = useRef<number[]>([]);
@@ -30,14 +53,15 @@ const LiveClass: React.FC = () => {
   // ====== CONFIG TEMPOS ======
   const TIMING = useMemo(
     () => ({
-      preCta: 600000, // 10:00 (ms)
-      showCta: 780000, // 13:00 (ms)
+      preCta: 600000, // 10:00
+      showCta: 780000, // 13:00
       urgentMode: 780000,
+      pollAtMs: 360000, // 6:00 — momento estratégico no meio da conversa
     }),
     []
   );
   // Para testes rápidos:
-  // const TIMING = { preCta: 10000, showCta: 20000, urgentMode: 20000 };
+  // const TIMING = { preCta: 10000, showCta: 20000, urgentMode: 20000, pollAtMs: 5000 };
 
   // ====== DADOS MOCK ======
   const chatMessagesPhase1 = useMemo(
@@ -116,8 +140,7 @@ const LiveClass: React.FC = () => {
     []
   );
 
-  // ====== CHAT ======
-  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  // ====== CHAT (imperativo igual ao seu) ======
   const appendChat = (author: string, text: string, admin = false) => {
     const container = chatContainerRef.current;
     if (!container) return;
@@ -130,22 +153,82 @@ const LiveClass: React.FC = () => {
     container.appendChild(wrap);
     container.scrollTop = container.scrollHeight;
 
-    // Limpa overflow de mensagens
     const msgs = container.querySelectorAll(".chat-message");
-    if (msgs.length > 50) {
-      msgs[0].remove();
-    }
+    if (msgs.length > 50) msgs[0].remove();
   };
 
-  // Fase 1
+  // Enquete como um “chat-message” interativo
+  const insertPollIntoChat = () => {
+    if (!chatContainerRef.current) return;
+
+    const container = chatContainerRef.current;
+    const pollWrap = document.createElement("div");
+    pollWrap.className = "chat-message poll-card";
+
+    const currentTallies = [...tallies];
+
+    const total = currentTallies.reduce((a, b) => a + b, 0);
+    const optionHtml = pollBase.options
+      .map((opt, idx) => {
+        const pct = Math.round((currentTallies[idx] / Math.max(1, total)) * 100);
+        return `
+          <button class="poll-option" data-idx="${idx}">
+            <span class="poll-label">${opt}</span>
+            <span class="poll-bar"><i style="width:${pct}%"></i></span>
+            <span class="poll-pct">${pct}%</span>
+          </button>
+        `;
+      })
+      .join("");
+
+    pollWrap.innerHTML = `
+      <div class="message-author" style="color:#9fe39f">Enquete · Moderador</div>
+      <div class="poll-question">${pollBase.question}</div>
+      <div class="poll-options">${optionHtml}</div>
+      <div class="poll-hint">Toque para votar • Resultados parciais de outros participantes</div>
+    `;
+
+    container.appendChild(pollWrap);
+    container.scrollTop = container.scrollHeight;
+
+    // listeners de voto
+    pollWrap.querySelectorAll<HTMLButtonElement>(".poll-option").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (userVoted) return;
+        const idx = Number(btn.dataset.idx);
+        setUserVoted(true);
+        setUserChoice(idx);
+
+        // atualiza estado + UI com animação das barras
+        setTallies((prev) => {
+          const next = [...prev];
+          next[idx] += 1; // voto do usuário
+          const sum = next.reduce((a, b) => a + b, 0);
+
+          // atualiza barra/pct visual
+          pollWrap.querySelectorAll(".poll-option").forEach((opt, i) => {
+            const width = Math.round((next[i] / sum) * 100);
+            (opt.querySelector("i") as HTMLElement).style.width = width + "%";
+            (opt.querySelector(".poll-pct") as HTMLElement).textContent = width + "%";
+            opt.classList.toggle("selected", i === idx);
+          });
+          (pollWrap.querySelector(".poll-hint") as HTMLElement).textContent =
+            "Obrigado por votar! Estes são os resultados parciais.";
+          return next;
+        });
+      });
+    });
+  };
+
+  // ====== EFEITOS ======
+  // Fase 1 + marca de tempo para mostrar enquete
   useEffect(() => {
     chatMessagesPhase1.forEach((m) => {
       const t = window.setTimeout(() => appendChat(m.author, m.text, m.admin), m.delay);
       timersRef.current.push(t);
     });
 
-    // Poll visível após 6 minutos
-    const pollT = window.setTimeout(() => setPollVisible(true), 360000);
+    const pollT = window.setTimeout(() => setPollVisible(true), TIMING.pollAtMs);
     timersRef.current.push(pollT);
 
     return () => {
@@ -155,10 +238,16 @@ const LiveClass: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Quando a enquete ficar visível, inserir no chat
+  useEffect(() => {
+    if (pollVisible) insertPollIntoChat();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pollVisible]);
+
   // Perguntas do usuário
   const handleUserMessage = (msg: string) => {
     const now = Date.now();
-    if (now - lastMessageTime.current < 3000) return; // anti-spam
+    if (now - lastMessageTime.current < 3000) return;
     lastMessageTime.current = now;
 
     appendChat("Você", msg, false);
@@ -208,11 +297,9 @@ const LiveClass: React.FC = () => {
     timersRef.current.push(t);
   };
 
-  // Input listeners (interação)
+  // Interação
   useEffect(() => {
-    const handler = () => {
-      if (!userInteracted) setUserInteracted(true);
-    };
+    const handler = () => !userInteracted && setUserInteracted(true);
     document.addEventListener("click", handler);
     document.addEventListener("scroll", handler);
     document.addEventListener("keydown", handler);
@@ -223,7 +310,7 @@ const LiveClass: React.FC = () => {
     };
   }, [userInteracted]);
 
-  // Indicador de digitação aleatório
+  // “Alguém está digitando…”
   useEffect(() => {
     const typing = window.setInterval(() => {
       if (Math.random() > 0.6 && chatContainerRef.current) {
@@ -241,7 +328,7 @@ const LiveClass: React.FC = () => {
     return () => window.clearInterval(typing);
   }, []);
 
-  // Viewers e online (com aceleração quando o usuário está ativo)
+  // Viewers/online
   useEffect(() => {
     const baseViewers = window.setInterval(() => {
       setViewerCount((v) => {
@@ -276,19 +363,17 @@ const LiveClass: React.FC = () => {
     return () => window.clearTimeout(id);
   }, [TIMING.preCta]);
 
-  // CTA e urgência
+  // CTA, countdown, spots, ticker, bônus
   const activateCTA = () => {
     if (ctaActivated) return;
     setCtaActivated(true);
     setUrgencyLevel(2);
 
-    // Mensagens fase 2
     chatMessagesPhase2.forEach((m) => {
       const t = window.setTimeout(() => appendChat(m.author, m.text, m.admin), m.delay);
       timersRef.current.push(t);
     });
 
-    // Countdown
     const countdownId = window.setInterval(() => {
       setCountdown((c) => {
         let min = c.min;
@@ -297,13 +382,12 @@ const LiveClass: React.FC = () => {
           sec = 59;
           min -= 1;
         }
-        if (min < 0) return { min: 14, sec: 59 }; // reinicia
+        if (min < 0) return { min: 14, sec: 59 };
         return { min, sec };
       });
     }, 1000);
     intervalsRef.current.push(countdownId);
 
-    // Redução de vagas programada
     const reduce = () =>
       setSpots((s) => {
         if (s <= 5) return s;
@@ -322,7 +406,6 @@ const LiveClass: React.FC = () => {
     }, 120000);
     timersRef.current.push(loopReduce);
 
-    // Notificações de compra
     const firstNotif = window.setTimeout(() => {
       const idx = Math.floor(Math.random() * buyerNames.length);
       setBuyerName(buyerNames[idx]);
@@ -331,7 +414,6 @@ const LiveClass: React.FC = () => {
     const notifInt = window.setInterval(() => {
       const idx = Math.floor(Math.random() * buyerNames.length);
       setBuyerName(buyerNames[idx]);
-      // vibra CTA
       const btn = document.getElementById("mainCta");
       if (btn) {
         btn.classList.add("pulse-effect");
@@ -340,7 +422,6 @@ const LiveClass: React.FC = () => {
     }, 15000 + Math.random() * 10000);
     intervalsRef.current.push(notifInt);
 
-    // Ticker e bônus
     setTickerActive(true);
     const bonusT = window.setTimeout(() => setBonusActive(true), 3000);
     timersRef.current.push(bonusT);
@@ -355,15 +436,15 @@ const LiveClass: React.FC = () => {
 
   // Replay date (amanhã 23:59)
   const replayDate = useMemo(() => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const day = String(tomorrow.getDate()).padStart(2, "0");
-    const month = String(tomorrow.getMonth() + 1).padStart(2, "0");
-    const year = tomorrow.getFullYear();
-    return `${day}/${month}/${year} 23:59`;
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    const dia = String(d.getDate()).padStart(2, "0");
+    const mes = String(d.getMonth() + 1).padStart(2, "0");
+    const ano = d.getFullYear();
+    return `${dia}/${mes}/${ano} 23:59`;
   }, []);
 
-  // Ticker items
+  // Ticker
   const tickerItems = useMemo(() => {
     const all = [
       ...buyerNames,
@@ -376,7 +457,6 @@ const LiveClass: React.FC = () => {
       "Eduardo B.",
     ];
     const states = ["SP", "RJ", "MG", "PR", "SC", "RS", "ES", "BA", "CE", "DF", "GO", "PE", "AM"];
-
     const items: string[] = [];
     for (let i = 0; i < 25; i++) {
       const name = all[Math.floor(Math.random() * all.length)];
@@ -387,7 +467,7 @@ const LiveClass: React.FC = () => {
     return items;
   }, [buyerNames]);
 
-  // Limpeza de timers/intervalos ao desmontar
+  // Limpeza
   useEffect(() => {
     return () => {
       timersRef.current.forEach((t) => window.clearTimeout(t));
@@ -395,22 +475,17 @@ const LiveClass: React.FC = () => {
     };
   }, []);
 
-  // Handlers UI
+  // CTA click
   const handleCtaClick = (e: React.MouseEvent) => {
     e.preventDefault();
-
     const loading = document.getElementById("buttonLoading");
     const btn = e.currentTarget as HTMLAnchorElement;
-
     if (loading) loading.classList.add("active");
     btn.style.opacity = "0.7";
     (btn.style as any).pointerEvents = "none";
 
     window.setTimeout(() => {
-      // Substitua pelo link real do checkout:
       window.open("https://seudominio.com/checkout", "_blank");
-
-      // Restaurar botão
       window.setTimeout(() => {
         if (loading) loading.classList.remove("active");
         btn.style.opacity = "1";
@@ -425,34 +500,28 @@ const LiveClass: React.FC = () => {
 
   return (
     <>
-      {/* Barra Superior */}
       <div className="top-bar" id="topBar">
         {ctaActivated
           ? "⚠️ OFERTA LIBERADA! Vagas limitadas - Desconto exclusivo AO VIVO!"
           : "📚 Aula Exclusiva ao Vivo - Preste atenção nas dicas!"}
       </div>
 
-      {/* Prova social */}
       <div className="social-proof-strip">
         <span>
           <strong>+3.250</strong> pessoas já assistiram esta aula exclusiva nas últimas semanas
         </span>
       </div>
 
-      {/* Container */}
-      <div className="main-container">
-        {/* Seção do Vídeo */}
+      <div className={`main-container ${ctaActivated ? "with-bottom-bars" : ""}`}>
+        {/* Vídeo */}
         <div className="video-section">
-          {/* Badge AO VIVO */}
           <div className="live-badge">
-            <div className="live-dot"></div>
+            <div className="live-dot" />
             <span>AO VIVO</span>
           </div>
 
-          {/* Badge Exclusividade */}
           <div className="exclusive-badge">🔒 Conteúdo restrito — não listado no YouTube</div>
 
-          {/* Contador de Viewers */}
           <div className="viewer-count">
             <span className="viewer-eye">👁</span>
             <span className="viewer-number" id="viewerCount">
@@ -461,13 +530,12 @@ const LiveClass: React.FC = () => {
             <span>assistindo</span>
           </div>
 
-          {/* Vídeo (placeholder clicável para manter UX, sem overlays bugados) */}
           <div className="video-placeholder" onClick={handleVideoClick}>
             <div>▶️</div>
           </div>
         </div>
 
-        {/* Chat Lateral */}
+        {/* Chat */}
         <div className="chat-section">
           <div className="chat-header">
             <div>
@@ -475,17 +543,17 @@ const LiveClass: React.FC = () => {
               <div className="pin-message">📌 No final: presente especial + condição exclusiva</div>
               {pollVisible && (
                 <div className="poll-badge" id="pollBadge">
-                  🗳️ Enquete: <strong>70%</strong> disseram que já tentaram antes e não conseguiram sozinho.
+                  🗳️ Enquete aberta no chat — participe!
                 </div>
               )}
             </div>
             <div className="online-indicator">
-              <div className="online-dot"></div>
-              <span id="onlineCount">{onlineCount}</span> online
+              <div className="online-dot" />
+              <span id="onlineCount">{onlineCount}</span>&nbsp;online
             </div>
           </div>
 
-          <div className="chat-messages" id="chatMessages" ref={chatContainerRef}></div>
+          <div className="chat-messages" id="chatMessages" ref={chatContainerRef} />
 
           <div className="chat-input-container">
             <input
@@ -499,8 +567,6 @@ const LiveClass: React.FC = () => {
                   const target = e.currentTarget;
                   const val = target.value.trim();
                   if (!val) return;
-
-                  // Easter-egg "acelerar"
                   if (val === "acelerar" && !ctaActivated) {
                     appendChat("Sistema", "🚀 Modo teste ativado! Acelerando timeline...", true);
                     target.value = "";
@@ -508,7 +574,6 @@ const LiveClass: React.FC = () => {
                     window.setTimeout(() => activateCTA(), 5000);
                     return;
                   }
-
                   handleUserMessage(val);
                   target.value = "";
                 }
@@ -517,8 +582,6 @@ const LiveClass: React.FC = () => {
             />
           </div>
         </div>
-
-        {/* (REMOVIDO conforme pedido) Indicadores de atividade por cidades */}
 
         {/* Pre-CTA */}
         <div className={`pre-cta-message ${preCtaActive ? "active" : ""}`} id="preCta">
@@ -605,10 +668,23 @@ const LiveClass: React.FC = () => {
         </div>
       </div>
 
-      {/* Bônus */}
-      <div className={`bonus-banner ${bonusActive ? "active" : ""}`} id="bonusBanner">
-        🎁 Além disso, quem garantir hoje leva <strong>bônus exclusivo</strong>!
-      </div>
+      {/* Rodapé (Política/Termos) */}
+      <footer className="site-footer">
+        <div className="footer-inner">
+          <span>© {new Date().getFullYear()} Sua Marca</span>
+          <nav>
+            <a href="/politica-de-privacidade" target="_blank" rel="noreferrer">
+              Política de Privacidade
+            </a>
+            <a href="/termos-de-uso" target="_blank" rel="noreferrer">
+              Termos de Uso
+            </a>
+            <a href="/suporte" target="_blank" rel="noreferrer">
+              Suporte
+            </a>
+          </nav>
+        </div>
+      </footer>
 
       {/* ====== ESTILOS ====== */}
       <style>{`
@@ -625,8 +701,6 @@ const LiveClass: React.FC = () => {
           padding:12px;text-align:center;font-weight:bold;font-size:14px;z-index:1000;transition:.5s;
           box-shadow:0 2px 10px rgba(0,0,0,.3)
         }
-        .top-bar.urgent{background:linear-gradient(90deg,#ff0000,#ff3333);animation:pulse 2s infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.85}}
 
         .social-proof-strip{
           margin-top:50px;background:linear-gradient(90deg,#111,#1a1a1a);border-bottom:1px solid #333;
@@ -641,8 +715,10 @@ const LiveClass: React.FC = () => {
 
         .main-container{
           max-width:1400px;margin:10px auto 0;padding:20px;
-          display:grid;grid-template-columns:1fr 360px;gap:20px
+          display:grid;grid-template-columns:1fr 360px;gap:20px;
         }
+        /* evita cortar o rodapé quando barras flutuantes estiverem visíveis */
+        .with-bottom-bars { padding-bottom: 180px; }
 
         .video-section{
           background:linear-gradient(135deg,#000,#111);border-radius:16px;overflow:hidden;
@@ -656,9 +732,7 @@ const LiveClass: React.FC = () => {
           cursor:pointer;transition:.3s
         }
         .video-placeholder:hover{transform:scale(1.01)}
-        .video-placeholder > div{
-          font-size:64px;text-shadow:0 0 20px rgba(255,255,255,.3);animation:playPulse 2s infinite
-        }
+        .video-placeholder > div{font-size:64px;text-shadow:0 0 20px rgba(255,255,255,.3);animation:playPulse 2s infinite}
         @keyframes playPulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.1);opacity:1}}
 
         .live-badge{
@@ -680,8 +754,6 @@ const LiveClass: React.FC = () => {
           backdrop-filter:blur(10px);padding:8px 14px;border-radius:12px;
           font-size:12px;color:#FFD700;z-index:10;text-shadow:0 0 10px rgba(255,215,0,.3)
         }
-
-        /* (REMOVIDO) .question-overlay e .video-timer */
 
         .viewer-count{
           position:absolute;top:70px;right:16px;
@@ -744,6 +816,30 @@ const LiveClass: React.FC = () => {
         .message-admin .message-author{color:#FFD700}
         .message-admin .message-author::before{content:"⭐ "}
 
+        /* ENQUETE NO CHAT */
+        .poll-card{
+          background:linear-gradient(135deg,#141a14,#0f140f);
+          border:1px solid rgba(159,227,159,.25);
+        }
+        .poll-question{
+          font-weight:600;margin:6px 2px 10px;color:#c8f0c8
+        }
+        .poll-options{
+          display:flex;flex-direction:column;gap:10px
+        }
+        .poll-option{
+          display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;
+          background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+          border-radius:10px;padding:10px;cursor:pointer;transition:.2s
+        }
+        .poll-option:hover{transform:translateY(-1px);background:rgba(255,255,255,.06)}
+        .poll-option.selected{outline:2px solid #9fe39f;background:rgba(159,227,159,.12)}
+        .poll-label{font-size:14px;color:#e7ffe7}
+        .poll-bar{height:8px;border-radius:8px;background:#1e2a1e;overflow:hidden}
+        .poll-bar i{display:block;height:100%;width:0;transition:width .5s ease;background:#36c36c}
+        .poll-pct{font-weight:700;color:#9fe39f;font-size:13px}
+        .poll-hint{margin-top:8px;font-size:12px;color:#9fe39f;opacity:.9}
+
         .chat-input-container{padding:16px;background:linear-gradient(135deg,#252525,#2a2a2a);border-radius:0 0 16px 16px}
         .chat-input{
           width:100%;padding:12px 16px;background:rgba(255,255,255,.08);
@@ -755,8 +851,6 @@ const LiveClass: React.FC = () => {
           background:rgba(255,255,255,.12)
         }
         .chat-input::placeholder{color:#999}
-
-        /* (REMOVIDOS) activity-indicators, indicator, indicator-icon */
 
         .pre-cta-message{
           grid-column:1/-1;text-align:center;padding:24px;
@@ -792,10 +886,7 @@ const LiveClass: React.FC = () => {
           background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
           animation:shine 2.5s infinite
         }
-        .cta-button:hover{
-          transform:scale(1.05) translateY(-3px);
-          box-shadow:0 20px 50px rgba(255,215,0,.6)
-        }
+        .cta-button:hover{transform:scale(1.05) translateY(-3px);box-shadow:0 20px 50px rgba(255,215,0,.6)}
         .cta-button:active{transform:scale(.98)}
         .limited-spots{
           background:linear-gradient(135deg,rgba(255,0,0,.1),rgba(255,0,0,.2));
@@ -808,11 +899,7 @@ const LiveClass: React.FC = () => {
           background:linear-gradient(90deg,transparent,rgba(255,0,0,.1),transparent);
           animation:shine 4s infinite
         }
-        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-        .spots-number{
-          font-size:32px;font-weight:bold;color:#FFD700;
-          text-shadow:0 0 20px rgba(255,215,0,.5);animation:numberPulse 2s infinite
-        }
+        .spots-number{font-size:32px;font-weight:bold;color:#FFD700;text-shadow:0 0 20px rgba(255,215,0,.5);animation:numberPulse 2s infinite}
         @keyframes numberPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
         .button-loading{display:none;margin-top:15px;font-size:14px;color:#999;animation:loadingPulse 1s infinite}
         .button-loading.active{display:block}
@@ -821,20 +908,19 @@ const LiveClass: React.FC = () => {
         .countdown-timer{
           position:fixed;bottom:20px;right:20px;
           background:linear-gradient(135deg,rgba(255,0,0,.95),rgba(255,51,51,.95));
-          padding:12px 20px;border-radius:25px;font-weight:bold;z-index:1000;
+          padding:12px 20px;border-radius:25px;font-weight:bold;z-index:1200;
           display:none;animation:slideInRight .5s ease-out;
           box-shadow:0 10px 30px rgba(255,0,0,.4);backdrop-filter:blur(10px);
           border:1px solid rgba(255,255,255,.2)
         }
         .countdown-timer.active{display:block}
-        @keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
 
         .notification-popup{
           position:fixed;bottom:20px;left:20px;
           background:linear-gradient(135deg,#1e3c72,#2a5298);
           padding:16px 24px;border-radius:12px;
           box-shadow:0 10px 30px rgba(0,0,0,.4);transform:translateX(-400px);
-          z-index:999;transition:transform .5s ease;backdrop-filter:blur(10px);
+          z-index:1200;transition:transform .5s ease;backdrop-filter:blur(10px);
           border:1px solid rgba(255,255,255,.1)
         }
         .notification-popup.active{animation:notificationSlide 10s infinite}
@@ -843,33 +929,15 @@ const LiveClass: React.FC = () => {
         .ticker{
           position:fixed;left:0;right:0;bottom:0;
           background:linear-gradient(90deg,#0f0f0f,#1a1a1a);
-          border-top:1px solid rgba(255,215,0,.3);padding:10px 0;z-index:1200;display:none;
+          border-top:1px solid rgba(255,215,0,.3);padding:10px 0;z-index:1100;display:none;
           box-shadow:0 -5px 20px rgba(0,0,0,.3)
         }
         .ticker.active{display:block}
         .ticker-track{white-space:nowrap;overflow:hidden;position:relative}
-        .ticker-content{
-          display:inline-block;padding-left:100%;
-          animation:tickerMove 30s linear infinite
-        }
+        .ticker-content{display:inline-block;padding-left:100%;animation:tickerMove 30s linear infinite}
         @keyframes tickerMove{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
-        .ticker-item{
-          display:inline-block;margin-right:50px;color:#ddd;font-size:13px;
-          background:rgba(255,255,255,.05);padding:5px 10px;border-radius:15px;
-          border:1px solid rgba(255,255,255,.1)
-        }
+        .ticker-item{display:inline-block;margin-right:50px;color:#ddd;font-size:13px;background:rgba(255,255,255,.05);padding:5px 10px;border-radius:15px;border:1px solid rgba(255,255,255,.1)}
         .ticker-item strong{color:#9fe39f}
-
-        .bonus-banner{
-          position:fixed;top:80px;left:50%;transform:translateX(-50%);
-          background:linear-gradient(135deg,#1b2838,#243b55);
-          border:1px solid #2b4a6a;color:#fff;padding:12px 20px;
-          border-radius:15px;box-shadow:0 15px 35px rgba(0,0,0,.4);
-          z-index:1100;display:none;backdrop-filter:blur(10px);
-          animation:bonusBounce 2s infinite
-        }
-        .bonus-banner.active{display:block;animation:fadeIn .4s ease-out, bonusBounce 3s infinite 1s}
-        @keyframes bonusBounce{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.02)}}
 
         .replay-strip{
           position:fixed;left:0;right:0;bottom:50px;
@@ -879,6 +947,19 @@ const LiveClass: React.FC = () => {
           box-shadow:0 -3px 15px rgba(0,0,0,.3)
         }
         .replay-strip.active{display:block}
+
+        /* RODAPÉ */
+        .site-footer{
+          margin:30px auto 0; padding:20px 16px; border-top:1px solid rgba(255,255,255,.08);
+          background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+        }
+        .footer-inner{
+          max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;
+          color:#bbb;font-size:13px;
+        }
+        .footer-inner nav{display:flex;gap:16px;flex-wrap:wrap}
+        .footer-inner a{color:#ddd;text-decoration:none}
+        .footer-inner a:hover{text-decoration:underline}
 
         @media (max-width: 1200px){
           .main-container{max-width:100%;padding:15px}
@@ -910,21 +991,12 @@ const LiveClass: React.FC = () => {
           }
           .limited-spots{padding:16px;margin-top:15px}
           .spots-number{font-size:28px}
-          .countdown-timer{
-            bottom:15px;right:15px;padding:8px 15px;font-size:13px;
-            border-radius:20px
-          }
-          .notification-popup{
-            bottom:15px;left:15px;padding:12px 16px;font-size:13px;
-            max-width:calc(100vw - 30px)
-          }
-          .bonus-banner{
-            top:60px;padding:10px 15px;font-size:13px;
-            max-width:calc(100vw - 30px)
-          }
+          .countdown-timer{bottom:15px;right:15px;padding:8px 15px;font-size:13px;border-radius:20px}
+          .notification-popup{bottom:15px;left:15px;padding:12px 16px;font-size:13px;max-width:calc(100vw - 30px)}
           .replay-strip{bottom:45px;padding:8px;font-size:12px}
           .ticker{padding:8px 0}
           .ticker-item{margin-right:30px;font-size:12px;padding:4px 8px}
+          .site-footer{padding-bottom:80px} /* mais respiro no mobile */
         }
         @media (max-width: 480px){
           .top-bar{font-size:11px}
@@ -939,8 +1011,6 @@ const LiveClass: React.FC = () => {
           .pre-cta-message h3{font-size:16px}
           .spots-number{font-size:24px}
           .countdown-timer{font-size:12px;padding:6px 12px}
-          .notification-popup{font-size:12px}
-          .bonus-banner{font-size:12px;top:55px}
         }
 
         .pulse-effect{animation:ctaPulse 2s infinite;}
@@ -949,20 +1019,9 @@ const LiveClass: React.FC = () => {
           50%{box-shadow:0 20px 50px rgba(255,215,0,.7)}
           100%{box-shadow:0 15px 40px rgba(255,215,0,.4)}
         }
-        .urgency-shake{animation:urgencyShake .5s ease-in-out}
-        @keyframes urgencyShake{
-          0%,100%{transform:translateX(0)}
-          25%{transform:translateX(-5px)}
-          75%{transform:translateX(5px)}
-        }
-        .loading-dots::after{
-          content:'...';animation:loadingDots 1.5s infinite
-        }
+        .loading-dots::after{content:'...';animation:loadingDots 1.5s infinite}
         @keyframes loadingDots{
-          0%{content:'...'}
-          33%{content:'.'}
-          66%{content:'..'}
-          100%{content:'...'}
+          0%{content:'...'}33%{content:'.'}66%{content:'..'}100%{content:'...'}
         }
         html{scroll-behavior:smooth}
       `}</style>
