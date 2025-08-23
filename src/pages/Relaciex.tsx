@@ -1,196 +1,96 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 /**
- * Página LiveClass
- * - 100% client-side, compatível com Vite + React + TS (Vercel)
- * - Player sem overlays bugados
- * - Enquete dentro do chat (interativa)
- * - CTA, countdown, ticker, popup e bônus refinados
+ * Página: LiveClass (TSX)
+ * - Ajustes solicitados: sem overlay de pergunta no player, sem timer no player, sem indicadores de cidades.
+ * - Restante preservado: chat (fase1/fase2), enquete no chat, CTA, countdown, ticker, popup, bônus, responsividade.
  */
 
-type LiveClassProps = {
-  /** URL de embed (YouTube, Vimeo, Vturb etc). Ex: "https://www.youtube.com/embed/ID?rel=0&autoplay=0" */
-  videoUrl?: string;
-  /** Link do checkout */
-  checkoutUrl?: string;
-};
-
-const LiveClass: React.FC<LiveClassProps> = ({
-  videoUrl,
-  checkoutUrl = "https://seudominio.com/checkout",
-}) => {
-  // ======= ESTADOS PRINCIPAIS =======
+const LiveClass: React.FC = () => {
+  // ====== ESTADOS PRINCIPAIS ======
+  const [userInteracted, setUserInteracted] = useState(false);
   const [ctaActivated, setCtaActivated] = useState(false);
-  const [preCtaActive, setPreCtaActive] = useState(false);
-
+  const [urgencyLevel, setUrgencyLevel] = useState(0);
   const [viewerCount, setViewerCount] = useState(847);
   const [onlineCount, setOnlineCount] = useState(187);
-
+  const [preCtaActive, setPreCtaActive] = useState(false);
   const [countdown, setCountdown] = useState({ min: 14, sec: 59 });
   const [spots, setSpots] = useState(47);
-
   const [buyerName, setBuyerName] = useState("Maria Silva");
+  const [pollVisible, setPollVisible] = useState(false);
   const [bonusActive, setBonusActive] = useState(false);
   const [tickerActive, setTickerActive] = useState(false);
 
-  // ======= ENQUETE (dentro do chat) =======
-  const [pollVisible, setPollVisible] = useState(false);
-  const [poll, setPoll] = useState({
-    total: 0,
-    options: [
-      { id: "tempo", label: "Falta de tempo", votes: 0 },
-      { id: "consistencia", label: "Falta de consistência", votes: 0 },
-      { id: "guia", label: "Não ter um passo a passo", votes: 0 },
-      { id: "outro", label: "Outro", votes: 0 },
-    ],
-    voted: false,
-  });
+  // Refs
+  const chatInputRef = useRef<HTMLInputElement | null>(null);
+  const lastMessageTime = useRef<number>(0);
+  const timersRef = useRef<number[]>([]);
+  const intervalsRef = useRef<number[]>([]);
 
-  // ======= CHAT =======
-  const chatRef = useRef<HTMLDivElement | null>(null);
-  const lastMsgAt = useRef<number>(0);
-
-  const pushChat = (author: string, text: string, admin = false) => {
-    const box = chatRef.current;
-    if (!box) return;
-    const el = document.createElement("div");
-    el.className = `chat-message ${admin ? "message-admin" : ""}`;
-    el.innerHTML = `<div class="message-author">${author}</div><div class="message-text">${text}</div>`;
-    box.appendChild(el);
-    box.scrollTop = box.scrollHeight;
-
-    const max = box.querySelectorAll(".chat-message");
-    if (max.length > 70) max[0].remove();
-  };
-
-  // Seeds de mensagens (fase 1 e 2)
-  const phase1 = useMemo(
-    () => [
-      { d: 2000, a: "João Pedro", t: "Oi pessoal! Primeira vez aqui 👋", ad: false },
-      { d: 5000, a: "Maria Santos", t: "Vim pela indicação de uma amiga", ad: false },
-      { d: 8000, a: "Moderador", t: "Bem-vindos! A aula vai ser direta ao ponto 👇", ad: true },
-      { d: 15000, a: "Ana Clara", t: "Som e vídeo perfeitos por aqui! 🔊", ad: false },
-      { d: 30000, a: "Carlos Silva", t: "Gostando do formato, bem claro!", ad: false },
-      { d: 45000, a: "Luciana Reis", t: "Anotando tudo 📝", ad: false },
-      { d: 56000, a: "Pedro Oliveira", t: "Isso serve para iniciantes?", ad: false },
-      { d: 59000, a: "Moderador", t: "Serve! Mostramos o passo a passo do zero 🚀", ad: true },
-      { d: 88000, a: "Fernanda Costa", t: "Funciona para quem tem pouco tempo?", ad: false },
-      { d: 91000, a: "Moderador", t: "Sim! Método pensado para 10–15 min/dia ⏰", ad: true },
-      { d: 120000, a: "Roberto Lima", t: "Está clareando muita coisa 💡", ad: false },
-    ],
-    []
-  );
-
-  const phase2 = useMemo(
-    () => [
-      { d: 1000, a: "Ricardo Mendes", t: "APARECEU o botão! Vou garantir minha vaga! 🟡", ad: false },
-      { d: 3000, a: "Moderador", t: "🎉 Vagas limitadas enquanto o desconto estiver ativo!", ad: true },
-      { d: 7000, a: "Carla Mendes", t: "Nossa, achei que seria mais caro 😱", ad: false },
-      { d: 11000, a: "Bruno Souza", t: "Menos que uma pizza por mês 🍕", ad: false },
-      { d: 16000, a: "Moderador", t: "Garantia total de 7 dias 🛡️", ad: true },
-      { d: 22000, a: "Paula Ferreira", t: "COMPREI! Melhor investimento ✅", ad: false },
-      { d: 30000, a: "Roberto Lima", t: "Gente, as vagas estão acabando! ⚠️", ad: false },
-    ],
-    []
-  );
-
-  // ======= TIMINGS =======
+  // ====== CONFIG TEMPOS ======
   const TIMING = useMemo(
-    () => ({ preCta: 600000, showCta: 780000 }), // 10:00 / 13:00
+    () => ({
+      preCta: 600000, // 10:00 (ms)
+      showCta: 780000, // 13:00 (ms)
+      urgentMode: 780000,
+    }),
     []
   );
-  // Para teste rápido, troque por:
-  // const TIMING = { preCta: 10000, showCta: 20000 };
+  // Para testes rápidos:
+  // const TIMING = { preCta: 10000, showCta: 20000, urgentMode: 20000 };
 
-  // ======= EFEITOS =======
-  // Mensagens fase 1 + mostrar enquete com atraso
-  useEffect(() => {
-    const timeouts: number[] = [];
-    phase1.forEach((m) => timeouts.push(window.setTimeout(() => pushChat(m.a, m.t, m.ad), m.d)));
-    timeouts.push(
-      window.setTimeout(() => {
-        setPollVisible(true);
-        // também fixa um aviso no chat quando a enquete abre
-        pushChat("Moderador", "🗳️ Enquete aberta! Vote acima do chat e conte sua maior dificuldade.", true);
-      }, 360000) // 6 min
-    );
-    return () => timeouts.forEach((t) => window.clearTimeout(t));
-  }, [phase1]);
+  // ====== DADOS MOCK ======
+  const chatMessagesPhase1 = useMemo(
+    () => [
+      { delay: 2000, author: "João Pedro", text: "Oi pessoal! Primeira vez aqui", admin: false },
+      { delay: 4500, author: "Maria Santos", text: "Vim pela indicação de uma amiga 👋", admin: false },
+      { delay: 7000, author: "Moderador", text: "Bem-vindos! A aula já vai entregar conteúdo prático 👇", admin: true },
+      { delay: 12000, author: "Ana Clara", text: "Som e imagem perfeitos aqui! 🔊", admin: false },
+      { delay: 25000, author: "Carlos Silva", text: "Nunca tinha pensado desse jeito... 🤯", admin: false },
+      { delay: 40000, author: "Luciana Reis", text: "Anotando tudo! 📝", admin: false },
+      { delay: 55000, author: "Pedro Oliveira", text: "Isso serve para iniciantes?", admin: false },
+      { delay: 58000, author: "Moderador", text: "Serve sim! Inclusive mostramos o passo a passo do zero 🚀", admin: true },
+      { delay: 85000, author: "Fernanda Costa", text: "Funciona para quem tem pouco tempo?", admin: false },
+      { delay: 88000, author: "Moderador", text: "Total! O método foi pensado para rotinas corridas (10–15 min/dia) ⏰", admin: true },
+      { delay: 115000, author: "Roberto Lima", text: "Está clareando muita coisa pra mim 💡", admin: false },
+      { delay: 170000, author: "Juliana Martins", text: "Dá pra aplicar hoje mesmo?", admin: false },
+      { delay: 173000, author: "Moderador", text: "Sim! Tem passo prático ainda nessa aula 🎯", admin: true },
+      { delay: 220000, author: "Bruno Souza", text: "Sensacional! Mudou minha perspectiva 🤯", admin: false },
+      { delay: 280000, author: "Patrícia Alves", text: "Quero saber mais detalhes sobre o método", admin: false },
+      { delay: 340000, author: "Amanda Silva", text: "Isso é revolucionário! Compartilhando com amigos 📱", admin: false },
+      { delay: 400000, author: "Gabriel Santos", text: "Minha esposa precisa ver isso também", admin: false },
+      { delay: 460000, author: "Camila Oliveira", text: "Amando cada minuto! Conteúdo de qualidade 👏", admin: false },
+      { delay: 520000, author: "Felipe Costa", text: "Quando vamos ter acesso ao material completo?", admin: false },
+      { delay: 525000, author: "Moderador", text: "Fica comigo, Felipe! Em instantes libero tudo 🔓", admin: true },
+      { delay: 580000, author: "Daniela Rocha", text: "Ansiosa pelo que vem a seguir! 🤩", admin: false },
+    ],
+    []
+  );
 
-  // Pre-CTA e CTA
-  useEffect(() => {
-    const t1 = window.setTimeout(() => setPreCtaActive(true), TIMING.preCta);
-    const t2 = window.setTimeout(() => activateCTA(), TIMING.showCta);
-    return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-    };
-  }, [TIMING.preCta, TIMING.showCta]);
+  const chatMessagesPhase2 = useMemo(
+    () => [
+      { delay: 1000, author: "Ricardo Mendes", text: "APARECEU O BOTÃO! 🟡 Vou garantir minha vaga!", admin: false },
+      { delay: 3000, author: "Moderador", text: "🎉 As vagas são limitadas! Garanta a sua enquanto o desconto está ativo", admin: true },
+      { delay: 6000, author: "Vanessa Lima", text: "Quanto custa? Vale a pena?", admin: false },
+      { delay: 8000, author: "Carla Mendes", text: "Nossa, achei que seria mais caro! 😱", admin: false },
+      { delay: 11000, author: "Bruno Souza", text: "Menos que uma pizza por mês! Sem desculpas 🍕", admin: false },
+      { delay: 14000, author: "Carlos Silva", text: "Acabei de comprar! Muito barato pelo valor 💰", admin: false },
+      { delay: 18000, author: "Moderador", text: "Tem garantia total de 7 dias. Testa sem risco 🛡️", admin: true },
+      { delay: 25000, author: "Paula Ferreira", text: "COMPREI! Melhor investimento que já fiz! ✅", admin: false },
+      { delay: 32000, author: "Roberto Lima", text: "Gente, as vagas estão acabando mesmo! ⚠️", admin: false },
+      { delay: 40000, author: "Ana Clara", text: "Paguei no PIX, acesso imediato! Funcionou 🚀", admin: false },
+      { delay: 48000, author: "Lucas Souza", text: "Esse desconto é só hoje?", admin: false },
+      { delay: 51000, author: "Moderador", text: "Exclusivo para quem está ao vivo. Aproveita! ⏳", admin: true },
+      { delay: 65000, author: "Thiago Alves", text: "Processando meu pagamento... ansioso! 🔄", admin: false },
+      { delay: 80000, author: "Priscila Dias", text: "Consegui! Era isso que eu precisava 🙌", admin: false },
+      { delay: 95000, author: "Eduardo Santos", text: "Último desconto do ano? Não posso perder!", admin: false },
+      { delay: 110000, author: "Moderador", text: "Restam poucas vagas pessoal! Não deixem para depois ⚡", admin: true },
+      { delay: 300000, author: "Juliana Martins", text: "Só 12 vagas restantes! Corram! 🏃‍♀️💨", admin: false },
+    ],
+    []
+  );
 
-  // Viewers & Online
-  useEffect(() => {
-    const iv1 = window.setInterval(() => {
-      setViewerCount((v) =>
-        !ctaActivated && v < 1450
-          ? v + Math.floor(Math.random() * 12) + 4
-          : Math.max(1200, Math.min(1450, v + (Math.floor(Math.random() * 16) - 8)))
-      );
-    }, 3000);
-    const iv2 = window.setInterval(() => {
-      setOnlineCount((o) =>
-        !ctaActivated && o < 320 ? o + Math.floor(Math.random() * 4) + 1 : Math.max(280, Math.min(350, o + (Math.floor(Math.random() * 6) - 3)))
-      );
-    }, 4500);
-    return () => {
-      window.clearInterval(iv1);
-      window.clearInterval(iv2);
-    };
-  }, [ctaActivated]);
-
-  // ======= CTA activation routine =======
-  const activateCTA = () => {
-    if (ctaActivated) return;
-    setCtaActivated(true);
-
-    // Mensagens fase 2
-    phase2.forEach((m) => window.setTimeout(() => pushChat(m.a, m.t, m.ad), m.d));
-
-    // Countdown
-    const iv = window.setInterval(() => {
-      setCountdown((c) => {
-        let m = c.min,
-          s = c.sec - 1;
-        if (s < 0) {
-          s = 59;
-          m -= 1;
-        }
-        if (m < 0) return { min: 14, sec: 59 };
-        return { min: m, sec: s };
-      });
-    }, 1000);
-    // limpar no unmount
-    const detach = () => window.clearInterval(iv);
-    window.addEventListener("beforeunload", detach, { once: true });
-
-    // Vagas
-    const reduce = () => setSpots((s) => (s <= 5 ? s : Math.max(5, s - (1 + Math.floor(Math.random() * 2)))));
-    [8000, 20000, 40000, 70000, 120000].forEach((ms) => window.setTimeout(reduce, ms));
-    setTimeout(() => {
-      const ivr = window.setInterval(reduce, 60000);
-      window.addEventListener("beforeunload", () => window.clearInterval(ivr), { once: true });
-    }, 120000);
-
-    // Notificações + ticker + bônus
-    setTimeout(() => setBuyerName(randomName()), 4000);
-    const ivn = window.setInterval(() => setBuyerName(randomName()), 18000);
-    window.addEventListener("beforeunload", () => window.clearInterval(ivn), { once: true });
-
-    setTickerActive(true);
-    setTimeout(() => setBonusActive(true), 3000);
-  };
-
-  // ======= UTIL =======
-  const names = useMemo(
+  const buyerNames = useMemo(
     () => [
       "José Santos",
       "Paula Oliveira",
@@ -204,461 +104,867 @@ const LiveClass: React.FC<LiveClassProps> = ({
       "Beatriz Alves",
       "Thiago Reis",
       "Marina Gomes",
+      "Alberto Rocha",
       "Priscila Dias",
       "Fábio Castro",
       "Rafaela Nunes",
       "Eduardo Barbosa",
+      "Camila Torres",
+      "Diego Morais",
+      "Letícia Campos",
     ],
     []
   );
-  const randomName = () => names[Math.floor(Math.random() * names.length)];
 
-  const replayDate = useMemo(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()} 23:59`;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // ====== CHAT ======
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const appendChat = (author: string, text: string, admin = false) => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+    const wrap = document.createElement("div");
+    wrap.className = `chat-message ${admin ? "message-admin" : ""}`;
+    wrap.innerHTML = `
+      <div class="message-author">${author}</div>
+      <div class="message-text">${text}</div>
+    `;
+    container.appendChild(wrap);
+    container.scrollTop = container.scrollHeight;
 
-  const tickerItems = useMemo(() => {
-    const ufs = ["SP", "RJ", "MG", "PR", "SC", "RS", "ES", "BA", "CE", "DF", "GO", "PE", "AM"];
-    return Array.from({ length: 22 }).map(() => {
-      const n = randomName();
-      const uf = ufs[Math.floor(Math.random() * ufs.length)];
-      const t = Math.floor(Math.random() * 30) + 1;
-      return `✅ <strong>${n}</strong> (${uf}) garantiu há ${t}min`;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // ======= HANDLERS =======
-  const onUserSend = (val: string) => {
-    const now = Date.now();
-    if (now - lastMsgAt.current < 1200) return;
-    lastMsgAt.current = now;
-
-    const msg = val.trim();
-    if (!msg) return;
-
-    // Easter egg
-    if (msg === "acelerar" && !ctaActivated) {
-      pushChat("Sistema", "🚀 Modo teste ativado! Acelerando timeline…", true);
-      setTimeout(() => setPreCtaActive(true), 1200);
-      setTimeout(() => activateCTA(), 2500);
-      return;
+    // Limpa overflow de mensagens
+    const msgs = container.querySelectorAll(".chat-message");
+    if (msgs.length > 50) {
+      msgs[0].remove();
     }
-
-    pushChat("Você", msg, false);
-    const m = msg.toLowerCase();
-
-    setTimeout(() => {
-      if (!ctaActivated) {
-        if (m.includes("iniciante")) return pushChat("Moderador", "Perfeito para iniciantes. A aula guia do zero 🚀", true);
-        if (m.includes("tempo")) return pushChat("Moderador", "Pensado para rotina corrida: 10–15 min/dia ⏰", true);
-        if (m.includes("preço") || m.includes("valor")) return pushChat("Moderador", "Falo do investimento já já 😉", true);
-        return pushChat("Moderador", "Ótima pergunta! Vou responder durante a aula 👇", true);
-      } else {
-        if (m.includes("preço") || m.includes("valor"))
-          return pushChat("Moderador", "Hoje 40% OFF: de R$ 497 por R$ 297 (12x sem juros) 💰", true);
-        if (m.includes("garantia")) return pushChat("Moderador", "7 dias de garantia incondicional 🛡️", true);
-        return pushChat("Moderador", "Aproveite o botão enquanto o desconto está ativo! ⬆️", true);
-      }
-    }, 900 + Math.random() * 900);
   };
 
-  const onClickCTA = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const btn = e.currentTarget as HTMLAnchorElement;
-    const spinner = document.getElementById("buttonLoading");
-    btn.style.opacity = "0.75";
-    (btn.style as any).pointerEvents = "none";
-    spinner?.classList.add("active");
-    setTimeout(() => {
-      window.open(checkoutUrl, "_blank");
-      spinner?.classList.remove("active");
-      btn.style.opacity = "1";
-      (btn.style as any).pointerEvents = "auto";
-    }, 2000);
-  };
-
-  // ======= VOTO DA ENQUETE =======
-  const votePoll = (id: string) => {
-    if (poll.voted) return;
-    setPoll((p) => {
-      const options = p.options.map((o) => (o.id === id ? { ...o, votes: o.votes + 1 } : o));
-      const total = p.total + 1;
-      // Mensagem no chat
-      const chosen = options.find((o) => o.id === id)?.label || " — ";
-      pushChat("Moderador", `Voto registrado: "${chosen}". Obrigado por participar!`, true);
-      return { ...p, options, total, voted: true };
+  // Fase 1
+  useEffect(() => {
+    chatMessagesPhase1.forEach((m) => {
+      const t = window.setTimeout(() => appendChat(m.author, m.text, m.admin), m.delay);
+      timersRef.current.push(t);
     });
+
+    // Poll visível após 6 minutos
+    const pollT = window.setTimeout(() => setPollVisible(true), 360000);
+    timersRef.current.push(pollT);
+
+    return () => {
+      timersRef.current.forEach((t) => window.clearTimeout(t));
+      timersRef.current = [];
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Perguntas do usuário
+  const handleUserMessage = (msg: string) => {
+    const now = Date.now();
+    if (now - lastMessageTime.current < 3000) return; // anti-spam
+    lastMessageTime.current = now;
+
+    appendChat("Você", msg, false);
+    const lower = msg.toLowerCase();
+
+    const responder = () => {
+      if (!ctaActivated) {
+        if (lower.includes("iniciante") || lower.includes("começar"))
+          appendChat("Moderador", "Perfeito para iniciantes! Mostramos tudo do zero, sem complicação 🚀", true);
+        else if (lower.includes("tempo") || lower.includes("rápido"))
+          appendChat("Moderador", "Método pensado para quem tem pouco tempo: 10-15 min/dia ⏰", true);
+        else if (lower.includes("funciona") || lower.includes("resultado"))
+          appendChat("Moderador", "Funciona sim! Vou mostrar casos práticos ainda nesta aula 📊", true);
+        else if (lower.includes("quanto") || lower.includes("preço"))
+          appendChat("Moderador", "Calma! Vou falar sobre investimento daqui a pouco 😉", true);
+        else {
+          const responses = [
+            "Ótima pergunta! Continue assistindo que a resposta vem 👀",
+            "Interessante! Vou abordar isso ainda na aula 🎯",
+            "Boa observação! Fique ligado que vou explicar 📚",
+            "Excelente ponto! A resposta prática vem a seguir ⚡",
+          ];
+          appendChat("Moderador", responses[Math.floor(Math.random() * responses.length)], true);
+        }
+      } else {
+        if (lower.includes("preço") || lower.includes("valor") || lower.includes("quanto"))
+          appendChat("Moderador", "Hoje com 40% OFF: de R$ 497 por apenas R$ 297 (12x sem juros) 💰", true);
+        else if (lower.includes("garantia") || lower.includes("risco"))
+          appendChat("Moderador", "7 dias de garantia incondicional. Risco zero! 🛡️", true);
+        else if (lower.includes("funciona") || lower.includes("resultado"))
+          appendChat("Moderador", "Método testado e aprovado! Com garantia total 🏆", true);
+        else if (lower.includes("vaga") || lower.includes("lugar"))
+          appendChat("Moderador", "Vagas limitadas! Garanta a sua no botão dourado ⬆️", true);
+        else {
+          const ctaResponses = [
+            "Aproveita o botão dourado enquanto o desconto está liberado! ⬆️",
+            "Última chance com este valor! Não perca 🔥",
+            "Garanta sua vaga agora — vagas limitadas! ⚡",
+            "Desconto exclusivo para quem está ao vivo! 🎯",
+          ];
+          appendChat("Moderador", ctaResponses[Math.floor(Math.random() * ctaResponses.length)], true);
+        }
+      }
+    };
+
+    const t = window.setTimeout(responder, 1500 + Math.random() * 1000);
+    timersRef.current.push(t);
   };
 
-  // ======= RENDER =======
+  // Input listeners (interação)
+  useEffect(() => {
+    const handler = () => {
+      if (!userInteracted) setUserInteracted(true);
+    };
+    document.addEventListener("click", handler);
+    document.addEventListener("scroll", handler);
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("click", handler);
+      document.removeEventListener("scroll", handler);
+      document.removeEventListener("keydown", handler);
+    };
+  }, [userInteracted]);
+
+  // Indicador de digitação aleatório
+  useEffect(() => {
+    const typing = window.setInterval(() => {
+      if (Math.random() > 0.6 && chatContainerRef.current) {
+        const node = document.createElement("div");
+        node.className = "chat-message";
+        node.style.fontStyle = "italic";
+        node.style.opacity = "0.7";
+        node.innerHTML = '<span style="color:#666;">💭 Alguém está digitando...</span>';
+        chatContainerRef.current.appendChild(node);
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        window.setTimeout(() => node.remove(), 2500);
+      }
+    }, 20000);
+    intervalsRef.current.push(typing);
+    return () => window.clearInterval(typing);
+  }, []);
+
+  // Viewers e online (com aceleração quando o usuário está ativo)
+  useEffect(() => {
+    const baseViewers = window.setInterval(() => {
+      setViewerCount((v) => {
+        if (!ctaActivated && v < 1450) return v + Math.floor(Math.random() * 15) + 5;
+        const change = Math.floor(Math.random() * 20) - 10;
+        const next = Math.max(1200, Math.min(1450, v + change));
+        return ctaActivated ? next : v;
+      });
+    }, userInteracted ? 2000 : 4000);
+    const baseOnline = window.setInterval(() => {
+      setOnlineCount((o) => {
+        if (!ctaActivated && o < 320) return o + Math.floor(Math.random() * 5) + 1;
+        const next = o + (Math.floor(Math.random() * 8) - 3);
+        return ctaActivated ? Math.max(280, Math.min(350, next)) : o;
+      });
+    }, userInteracted ? 3000 : 6000);
+
+    intervalsRef.current.push(baseViewers, baseOnline);
+    return () => {
+      window.clearInterval(baseViewers);
+      window.clearInterval(baseOnline);
+    };
+  }, [ctaActivated, userInteracted]);
+
+  // Pre-CTA
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      setPreCtaActive(true);
+      setUrgencyLevel(1);
+    }, TIMING.preCta);
+    timersRef.current.push(id);
+    return () => window.clearTimeout(id);
+  }, [TIMING.preCta]);
+
+  // CTA e urgência
+  const activateCTA = () => {
+    if (ctaActivated) return;
+    setCtaActivated(true);
+    setUrgencyLevel(2);
+
+    // Mensagens fase 2
+    chatMessagesPhase2.forEach((m) => {
+      const t = window.setTimeout(() => appendChat(m.author, m.text, m.admin), m.delay);
+      timersRef.current.push(t);
+    });
+
+    // Countdown
+    const countdownId = window.setInterval(() => {
+      setCountdown((c) => {
+        let min = c.min;
+        let sec = c.sec - 1;
+        if (sec < 0) {
+          sec = 59;
+          min -= 1;
+        }
+        if (min < 0) return { min: 14, sec: 59 }; // reinicia
+        return { min, sec };
+      });
+    }, 1000);
+    intervalsRef.current.push(countdownId);
+
+    // Redução de vagas programada
+    const reduce = () =>
+      setSpots((s) => {
+        if (s <= 5) return s;
+        let next = s - (Math.floor(Math.random() * 3) + 1);
+        if (next < 5) next = 5;
+        return next;
+      });
+
+    [8000, 20000, 40000, 70000, 120000].forEach((ms) => {
+      const t = window.setTimeout(reduce, ms);
+      timersRef.current.push(t);
+    });
+    const loopReduce = window.setTimeout(() => {
+      const int = window.setInterval(reduce, 45000 + Math.random() * 30000);
+      intervalsRef.current.push(int);
+    }, 120000);
+    timersRef.current.push(loopReduce);
+
+    // Notificações de compra
+    const firstNotif = window.setTimeout(() => {
+      const idx = Math.floor(Math.random() * buyerNames.length);
+      setBuyerName(buyerNames[idx]);
+    }, 4000);
+    timersRef.current.push(firstNotif);
+    const notifInt = window.setInterval(() => {
+      const idx = Math.floor(Math.random() * buyerNames.length);
+      setBuyerName(buyerNames[idx]);
+      // vibra CTA
+      const btn = document.getElementById("mainCta");
+      if (btn) {
+        btn.classList.add("pulse-effect");
+        window.setTimeout(() => btn.classList.remove("pulse-effect"), 3000);
+      }
+    }, 15000 + Math.random() * 10000);
+    intervalsRef.current.push(notifInt);
+
+    // Ticker e bônus
+    setTickerActive(true);
+    const bonusT = window.setTimeout(() => setBonusActive(true), 3000);
+    timersRef.current.push(bonusT);
+  };
+
+  useEffect(() => {
+    const t = window.setTimeout(activateCTA, TIMING.showCta);
+    timersRef.current.push(t);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [TIMING.showCta]);
+
+  // Replay date (amanhã 23:59)
+  const replayDate = useMemo(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const day = String(tomorrow.getDate()).padStart(2, "0");
+    const month = String(tomorrow.getMonth() + 1).padStart(2, "0");
+    const year = tomorrow.getFullYear();
+    return `${day}/${month}/${year} 23:59`;
+  }, []);
+
+  // Ticker items
+  const tickerItems = useMemo(() => {
+    const all = [
+      ...buyerNames,
+      "Thiago A.",
+      "Marina G.",
+      "Alberto R.",
+      "Priscila D.",
+      "Fábio C.",
+      "Rafaela N.",
+      "Eduardo B.",
+    ];
+    const states = ["SP", "RJ", "MG", "PR", "SC", "RS", "ES", "BA", "CE", "DF", "GO", "PE", "AM"];
+
+    const items: string[] = [];
+    for (let i = 0; i < 25; i++) {
+      const name = all[Math.floor(Math.random() * all.length)];
+      const uf = states[Math.floor(Math.random() * states.length)];
+      const t = Math.floor(Math.random() * 30) + 1;
+      items.push(`✅ <strong>${name}</strong> (${uf}) garantiu há ${t}min`);
+    }
+    return items;
+  }, [buyerNames]);
+
+  // Limpeza de timers/intervalos ao desmontar
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach((t) => window.clearTimeout(t));
+      intervalsRef.current.forEach((i) => window.clearInterval(i));
+    };
+  }, []);
+
+  // Handlers UI
+  const handleCtaClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    const loading = document.getElementById("buttonLoading");
+    const btn = e.currentTarget as HTMLAnchorElement;
+
+    if (loading) loading.classList.add("active");
+    btn.style.opacity = "0.7";
+    (btn.style as any).pointerEvents = "none";
+
+    window.setTimeout(() => {
+      // Substitua pelo link real do checkout:
+      window.open("https://seudominio.com/checkout", "_blank");
+
+      // Restaurar botão
+      window.setTimeout(() => {
+        if (loading) loading.classList.remove("active");
+        btn.style.opacity = "1";
+        (btn.style as any).pointerEvents = "auto";
+      }, 2000);
+    }, 2500);
+  };
+
+  const handleVideoClick = () => {
+    alert("🎬 Aqui você integraria com seu player de vídeo real!");
+  };
+
   return (
     <>
-      {/* TOP BAR */}
-      <div className={`top-bar ${ctaActivated ? "urgent" : ""}`}>
+      {/* Barra Superior */}
+      <div className="top-bar" id="topBar">
         {ctaActivated
-          ? "⚠️ OFERTA LIBERADA! Vagas limitadas — Desconto exclusivo AO VIVO"
-          : "📚 Aula Exclusiva — preste atenção nas dicas!"}
+          ? "⚠️ OFERTA LIBERADA! Vagas limitadas - Desconto exclusivo AO VIVO!"
+          : "📚 Aula Exclusiva ao Vivo - Preste atenção nas dicas!"}
       </div>
 
-      {/* PROVA SOCIAL */}
+      {/* Prova social */}
       <div className="social-proof-strip">
         <span>
           <strong>+3.250</strong> pessoas já assistiram esta aula exclusiva nas últimas semanas
         </span>
       </div>
 
-      {/* GRID PRINCIPAL */}
-      <div className="container">
-        {/* PLAYER */}
-        <section className="player-card">
-          <div className="badge live">
-            <span className="dot" /> AO VIVO
-          </div>
-          <div className="badge lock">🔒 Conteúdo restrito — não listado no YouTube</div>
-
-          <div className="viewers">
-            👁 <span className="num">{viewerCount.toLocaleString("pt-BR")}</span> assistindo
+      {/* Container */}
+      <div className="main-container">
+        {/* Seção do Vídeo */}
+        <div className="video-section">
+          {/* Badge AO VIVO */}
+          <div className="live-badge">
+            <div className="live-dot"></div>
+            <span>AO VIVO</span>
           </div>
 
-          {videoUrl ? (
-            <div className="frame-wrap">
-              <iframe
-                className="frame"
-                src={videoUrl}
-                title="Aula Exclusiva"
-                allow="autoplay; encrypted-media; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          ) : (
-            <button
-              className="placeholder"
-              onClick={() => alert("Conecte seu player (YouTube/Vimeo/VTurb) passando a prop 'videoUrl'.")}
-            >
-              <span className="play">▶</span>
-              <span className="hint">Clique para pré-visualizar (sem player real)</span>
-            </button>
-          )}
-        </section>
+          {/* Badge Exclusividade */}
+          <div className="exclusive-badge">🔒 Conteúdo restrito — não listado no YouTube</div>
 
-        {/* CHAT */}
-        <aside className="chat">
-          <header className="chat-head">
-            <div className="left">
+          {/* Contador de Viewers */}
+          <div className="viewer-count">
+            <span className="viewer-eye">👁</span>
+            <span className="viewer-number" id="viewerCount">
+              {viewerCount.toLocaleString("pt-BR")}
+            </span>
+            <span>assistindo</span>
+          </div>
+
+          {/* Vídeo (placeholder clicável para manter UX, sem overlays bugados) */}
+          <div className="video-placeholder" onClick={handleVideoClick}>
+            <div>▶️</div>
+          </div>
+        </div>
+
+        {/* Chat Lateral */}
+        <div className="chat-section">
+          <div className="chat-header">
+            <div>
               <h3>Chat ao Vivo</h3>
-              <div className="pin">📌 No final: presente especial + condição exclusiva</div>
-
-              {/* BLOCO DE ENQUETE */}
+              <div className="pin-message">📌 No final: presente especial + condição exclusiva</div>
               {pollVisible && (
-                <div className="poll-box">
-                  <div className="poll-title">🗳️ Enquete: Qual sua maior dificuldade?</div>
-
-                  <div className={`poll-options ${poll.voted ? "voted" : ""}`}>
-                    {poll.options.map((o) => {
-                      const pct = poll.total ? Math.round((o.votes / poll.total) * 100) : 0;
-                      return (
-                        <button
-                          key={o.id}
-                          className={`poll-option ${poll.voted ? "disabled" : ""}`}
-                          onClick={() => votePoll(o.id)}
-                          disabled={poll.voted}
-                          aria-label={`Votar em ${o.label}`}
-                        >
-                          <span className="label">{o.label}</span>
-                          <span className="bar">
-                            <i style={{ width: `${pct}%` }} />
-                          </span>
-                          <span className="pct">{pct}%</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {poll.voted ? <small className="poll-thanks">✅ Obrigado por votar! Resultados em tempo real acima.</small> : null}
+                <div className="poll-badge" id="pollBadge">
+                  🗳️ Enquete: <strong>70%</strong> disseram que já tentaram antes e não conseguiram sozinho.
                 </div>
               )}
             </div>
-
-            <div className="online">
-              <span className="dot" /> {onlineCount} online
+            <div className="online-indicator">
+              <div className="online-dot"></div>
+              <span id="onlineCount">{onlineCount}</span> online
             </div>
-          </header>
+          </div>
 
-          <div className="messages" ref={chatRef} />
+          <div className="chat-messages" id="chatMessages" ref={chatContainerRef}></div>
 
-          <div className="chat-input">
+          <div className="chat-input-container">
             <input
+              ref={chatInputRef}
               type="text"
-              placeholder="Digite sua pergunta… (dica: escreva 'acelerar' para testar)"
-              maxLength={240}
+              className="chat-input"
+              placeholder="Digite sua pergunta..."
+              maxLength={200}
               onKeyDown={(e) => {
-                if (e.key !== "Enter") return;
-                onUserSend((e.currentTarget.value || "").trim());
-                e.currentTarget.value = "";
+                if (e.key === "Enter") {
+                  const target = e.currentTarget;
+                  const val = target.value.trim();
+                  if (!val) return;
+
+                  // Easter-egg "acelerar"
+                  if (val === "acelerar" && !ctaActivated) {
+                    appendChat("Sistema", "🚀 Modo teste ativado! Acelerando timeline...", true);
+                    target.value = "";
+                    window.setTimeout(() => setPreCtaActive(true), 2000);
+                    window.setTimeout(() => activateCTA(), 5000);
+                    return;
+                  }
+
+                  handleUserMessage(val);
+                  target.value = "";
+                }
               }}
+              onInput={() => !userInteracted && setUserInteracted(true)}
             />
           </div>
-        </aside>
+        </div>
 
-        {/* PRE-CTA */}
-        {preCtaActive && (
-          <div className="precta">
-            <h4>🎯 Prepare-se!</h4>
-            <p>Nos próximos minutos vou revelar como aplicar tudo isso de forma completa…</p>
-          </div>
-        )}
+        {/* (REMOVIDO conforme pedido) Indicadores de atividade por cidades */}
+
+        {/* Pre-CTA */}
+        <div className={`pre-cta-message ${preCtaActive ? "active" : ""}`} id="preCta">
+          <h3>🎯 Prepare-se!</h3>
+          <p>Nos próximos minutos vou revelar como aplicar tudo isso de forma completa…</p>
+        </div>
 
         {/* CTA */}
-        <section className={`cta ${ctaActivated ? "active" : ""}`}>
-          <h2>🎁 CHEGOU O MOMENTO!</h2>
-          <p>Acesso liberado APENAS para quem está assistindo ao vivo agora</p>
-
-          <a href="#" id="mainCta" className="cta-btn" onClick={onClickCTA}>
+        <div className={`cta-section ${ctaActivated ? "active" : ""}`} id="ctaSection">
+          <h2 style={{ marginBottom: 15, color: "#FFD700", fontSize: 24 }}>🎁 CHEGOU O MOMENTO!</h2>
+          <p style={{ marginBottom: 20, fontSize: 18 }}>
+            Acesso liberado APENAS para quem está assistindo ao vivo agora
+          </p>
+          <a href="#" className="cta-button" id="mainCta" onClick={handleCtaClick}>
             QUERO ACESSO COMPLETO AO MÉTODO
           </a>
-          <div id="buttonLoading" className="loading">
+          <div className="button-loading loading-dots" id="buttonLoading">
             ⏳ Processando
           </div>
-
-          <div className="limit">
-            <p>⚠️ Por questões de suporte, estamos limitando as vagas</p>
-            <p>
-              Restam <span className={`spots ${spots <= 15 ? "low" : ""}`}>{spots}</span> vagas com 40% de desconto
+          <div className="limited-spots">
+            <p style={{ marginBottom: 15, fontSize: 16 }}>
+              ⚠️ ATENÇÃO: Por questões de suporte, estamos limitando as vagas
             </p>
-            <small>
-              De <s>R$ 497</s> por <strong>R$ 297</strong>
-            </small>
+            <p>
+              Restam apenas{" "}
+              <span
+                className="spots-number"
+                id="spotsNumber"
+                style={{
+                  color: spots <= 15 ? "#ff4d4d" : undefined,
+                  animation: spots <= 8 ? "numberPulse 1s infinite" : undefined,
+                }}
+              >
+                {spots}
+              </span>{" "}
+              vagas com 40% de desconto
+            </p>
+            <p style={{ fontSize: 14, marginTop: 15, color: "#ccc" }}>
+              Preço normal: <s>R$ 497</s> | Hoje apenas: <strong style={{ color: "#FFD700" }}>R$ 297</strong>
+            </p>
           </div>
-        </section>
+        </div>
       </div>
 
-      {/* FLOATING ELEMENTS */}
-      <div className={`countdown ${ctaActivated ? "show" : ""}`}>
+      {/* Countdown */}
+      <div className={`countdown-timer ${ctaActivated ? "active" : ""}`} id="countdownTimer">
         ⏰ Desconto expira em:{" "}
-        <b className={countdown.min < 5 ? "critical" : ""}>
-          {String(countdown.min).padStart(2, "0")}:{String(countdown.sec).padStart(2, "0")}
-        </b>
+        <span
+          id="countdown"
+          style={{
+            color: countdown.min < 5 ? "#ff4d4d" : undefined,
+            fontWeight: countdown.min < 5 ? "bold" : undefined,
+          }}
+        >
+          {`${String(countdown.min).padStart(2, "0")}:${String(countdown.sec).padStart(2, "0")}`}
+        </span>
       </div>
 
-      <div className={`replay ${ctaActivated ? "show" : ""}`}>
-        📺 Replay disponível até <strong>{replayDate}</strong>. Depois sai do ar.
+      {/* Replay */}
+      <div className={`replay-strip ${ctaActivated ? "active" : ""}`} id="replayStrip">
+        📺 Replay disponível até <strong id="replayDate">{replayDate}</strong>. Depois, sai do ar.
       </div>
 
-      <div className={`popup ${ctaActivated ? "show" : ""}`}>
-        <span>🎉</span> <strong>{buyerName}</strong> acabou de garantir sua vaga!
+      {/* Notificação popup */}
+      <div className={`notification-popup ${ctaActivated ? "active" : ""}`} id="notificationPopup">
+        <div className="notification-content">
+          <span style={{ fontSize: 20 }}>🎉</span>
+          <span>
+            <strong id="buyerName">{buyerName}</strong> acabou de garantir sua vaga!
+          </span>
+        </div>
       </div>
 
-      <div className={`ticker ${tickerActive ? "show" : ""}`}>
-        <div className="track">
+      {/* Ticker */}
+      <div className={`ticker ${tickerActive ? "active" : ""}`} id="ticker">
+        <div className="ticker-track">
           <div
-            className="line"
+            className="ticker-content"
+            id="tickerContent"
             dangerouslySetInnerHTML={{
-              __html: tickerItems.map((i) => `<span class="item">${i}</span>`).join(""),
+              __html: tickerItems.map((i) => `<span class="ticker-item">${i}</span>`).join(""),
             }}
           />
         </div>
       </div>
 
-      {bonusActive && (
-        <div className="bonus">🎁 Quem garantir hoje leva <strong>bônus exclusivo</strong>!</div>
-      )}
+      {/* Bônus */}
+      <div className={`bonus-banner ${bonusActive ? "active" : ""}`} id="bonusBanner">
+        🎁 Além disso, quem garantir hoje leva <strong>bônus exclusivo</strong>!
+      </div>
 
-      {/* ======= ESTILOS ======= */}
+      {/* ====== ESTILOS ====== */}
       <style>{`
-        :root{
-          --bg:#0a0a0a; --card:#111418; --muted:#a9b0b8; --text:#f5f7fa;
-          --brand:#ffd54a; --brand2:#ff9f1c; --danger:#ff4d4d; --stroke:#1f2430;
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+          font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+          background:#0a0a0a;color:#fff;overflow-x:hidden;
+          -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale
         }
-        *{box-sizing:border-box}
-        html,body{height:100%}
-        body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
 
         .top-bar{
-          position:fixed;inset:0 0 auto 0;height:48px;display:flex;align-items:center;justify-content:center;
-          font-weight:700;font-size:14px;z-index:50;
-          background:linear-gradient(90deg,#14161a,#1b1f26);
-          border-bottom:1px solid var(--stroke);
+          position:fixed;top:0;left:0;width:100%;
+          background:linear-gradient(90deg,#1a1a1a,#2a2a2a);
+          padding:12px;text-align:center;font-weight:bold;font-size:14px;z-index:1000;transition:.5s;
+          box-shadow:0 2px 10px rgba(0,0,0,.3)
         }
-        .top-bar.urgent{background:linear-gradient(90deg,#7a1010,#b21616)}
+        .top-bar.urgent{background:linear-gradient(90deg,#ff0000,#ff3333);animation:pulse 2s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.85}}
 
         .social-proof-strip{
-          margin-top:48px;height:40px;display:flex;align-items:center;justify-content:center;
-          color:var(--muted);font-size:13px;border-bottom:1px solid var(--stroke);
-          background:linear-gradient(180deg,#0c0f14 0%, #0a0a0a 100%);
+          margin-top:50px;background:linear-gradient(90deg,#111,#1a1a1a);border-bottom:1px solid #333;
+          text-align:center;padding:12px;font-size:13px;color:#ddd;position:relative;overflow:hidden
         }
-        .social-proof-strip strong{color:var(--brand)}
+        .social-proof-strip::before{
+          content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+          background:linear-gradient(90deg,transparent,rgba(255,215,0,.1),transparent);
+          animation:shine 4s infinite
+        }
+        .social-proof-strip strong{color:#FFD700;text-shadow:0 0 10px rgba(255,215,0,.3)}
 
-        .container{
-          max-width:1200px;padding:18px;margin:0 auto;display:grid;gap:20px;
-          grid-template-columns:minmax(0,1fr) 360px;
+        .main-container{
+          max-width:1400px;margin:10px auto 0;padding:20px;
+          display:grid;grid-template-columns:1fr 360px;gap:20px
         }
-        @media (max-width: 980px){ .container{grid-template-columns:1fr} }
 
-        /* PLAYER CARD */
-        .player-card{
-          position:relative;background:linear-gradient(180deg,#0f1218,#0b0e13);
-          border:1px solid var(--stroke);border-radius:16px;overflow:hidden;
-          box-shadow:0 10px 30px rgba(0,0,0,.4);
+        .video-section{
+          background:linear-gradient(135deg,#000,#111);border-radius:16px;overflow:hidden;
+          position:relative;box-shadow:0 20px 40px rgba(0,0,0,.5);
+          border:1px solid rgba(255,255,255,.1)
         }
-        .frame-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#000;}
-        .frame{position:absolute;inset:0;width:100%;height:100%;border:0}
-        .placeholder{
-          width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;gap:12px;
-          background:radial-gradient(60% 60% at 50% 50%, #1d232f 0%, #0e121a 100%);
-          border:0;color:var(--muted);font-weight:600;cursor:pointer;transition:transform .2s;
+        .video-placeholder{
+          width:100%;aspect-ratio:16/9;
+          background:radial-gradient(circle at 50% 50%, #1c2330 0%, #0b0f16 100%);
+          display:flex;align-items:center;justify-content:center;position:relative;
+          cursor:pointer;transition:.3s
         }
-        .placeholder .play{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;
-          background:linear-gradient(135deg,var(--brand),var(--brand2));color:#000;font-weight:900}
-        .placeholder:hover{transform:scale(1.01)}
-        .badge{
-          position:absolute;top:12px;padding:8px 12px;border-radius:12px;font-weight:700;font-size:12px;
-          backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.08)
+        .video-placeholder:hover{transform:scale(1.01)}
+        .video-placeholder > div{
+          font-size:64px;text-shadow:0 0 20px rgba(255,255,255,.3);animation:playPulse 2s infinite
         }
-        .badge.live{left:12px;background:rgba(220,30,30,.85);display:flex;gap:8px;align-items:center}
-        .badge.live .dot{width:8px;height:8px;border-radius:50%;background:#fff}
-        .badge.lock{right:12px;background:rgba(255,255,255,.06);color:var(--brand)}
-        .viewers{
-          position:absolute;right:12px;top:56px;padding:6px 10px;border-radius:999px;
-          background:rgba(0,0,0,.45);backdrop-filter:blur(6px);font-weight:600;font-size:12px;
-          border:1px solid rgba(255,255,255,.06)
-        }
-        .viewers .num{color:var(--brand)}
+        @keyframes playPulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.1);opacity:1}}
 
-        /* CHAT */
-        .chat{
-          background:linear-gradient(180deg,#10141b,#0d1117);border:1px solid var(--stroke);
-          border-radius:16px;display:flex;flex-direction:column;min-height:520px;max-height:720px;overflow:hidden;
+        .live-badge{
+          position:absolute;top:16px;left:16px;background:linear-gradient(135deg,#ff0000,#ff3333);
+          padding:8px 16px;border-radius:25px;display:flex;align-items:center;gap:8px;z-index:10;
+          animation:blink 1.5s infinite;box-shadow:0 4px 15px rgba(255,0,0,.4);
+          border:1px solid rgba(255,255,255,.2)
         }
-        .chat-head{
-          display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
-          padding:14px 14px 10px;border-bottom:1px solid var(--stroke);
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.9}}
+        .live-dot{
+          width:10px;height:10px;background:#fff;border-radius:50%;
+          animation:pulse-dot 1.5s infinite;box-shadow:0 0 10px rgba(255,255,255,.5)
         }
-        .chat-head h3{margin:0 0 6px 0;font-size:16px}
-        .pin{font-size:12px;background:rgba(255,213,74,.12);border:1px solid rgba(255,213,74,.35);padding:6px 8px;border-radius:8px;color:#f8e08a}
+        @keyframes pulse-dot{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
 
-        .poll-box{margin-top:10px;background:rgba(255,255,255,.03);border:1px solid var(--stroke);border-radius:10px;padding:10px}
-        .poll-title{font-size:13px;margin-bottom:8px;color:#dfe6ee}
-        .poll-options{display:grid;gap:8px}
-        .poll-option{
-          display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;
-          background:#0f131a;border:1px solid #202635;border-radius:10px;padding:8px 10px;color:#e6ebf2;
-          cursor:pointer;transition:transform .08s,border-color .15s;
+        .exclusive-badge{
+          position:absolute;top:16px;right:16px;
+          background:rgba(255,255,255,.08);border:1px solid rgba(255,215,0,.3);
+          backdrop-filter:blur(10px);padding:8px 14px;border-radius:12px;
+          font-size:12px;color:#FFD700;z-index:10;text-shadow:0 0 10px rgba(255,215,0,.3)
         }
-        .poll-option:hover{transform:translateY(-1px);border-color:#334155}
-        .poll-option.disabled{cursor:default;opacity:.85}
-        .poll-option .label{font-size:13px;text-align:left}
-        .poll-option .bar{height:6px;background:#1a2230;border-radius:999px;overflow:hidden}
-        .poll-option .bar i{display:block;height:100%;background:linear-gradient(135deg,var(--brand),var(--brand2))}
-        .poll-option .pct{font-weight:800;font-size:12px;color:#cbd5e1}
-        .poll-thanks{display:block;margin-top:6px;color:#9fb4ff}
 
-        .online{display:flex;align-items:center;gap:8px;font-size:13px;color:#8ddca1;font-weight:700}
-        .online .dot{width:8px;height:8px;border-radius:50%;background:#31d07f}
+        /* (REMOVIDO) .question-overlay e .video-timer */
 
-        .messages{flex:1;padding:14px;overflow:auto;display:flex;flex-direction:column;gap:10px}
-        .messages::-webkit-scrollbar{width:8px}
-        .messages::-webkit-scrollbar-thumb{background:#2a313d;border-radius:8px}
-        .chat-message{background:rgba(255,255,255,.03);border:1px solid var(--stroke);padding:10px;border-radius:10px}
-        .chat-message .message-author{font-weight:800;font-size:12px;color:#8ab4ff}
-        .chat-message .message-text{font-size:13px;color:#dfe6ee;margin-top:3px;line-height:1.4}
-        .chat-message.message-admin{background:rgba(255,213,74,.08);border-color:rgba(255,213,74,.35)}
-        .chat-message.message-admin .message-author{color:#ffd54a}
+        .viewer-count{
+          position:absolute;top:70px;right:16px;
+          background:rgba(0,0,0,.8);padding:8px 14px;border-radius:25px;
+          display:flex;gap:8px;align-items:center;backdrop-filter:blur(5px);
+          border:1px solid rgba(255,255,255,.1);animation:viewerPulse 4s infinite
+        }
+        @keyframes viewerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+        .viewer-eye{color:#ff4d4d;filter:drop-shadow(0 0 5px rgba(255,77,77,.5))}
+        .viewer-number{font-weight:bold;color:#FFD700}
 
-        .chat-input{padding:12px;border-top:1px solid var(--stroke);background:#0d1218}
-        .chat-input input{
-          width:100%;padding:12px 14px;border-radius:12px;border:1px solid #202635;background:#121722;color:var(--text);
-          outline:none;transition:border .2s
+        .chat-section{
+          background:linear-gradient(135deg,#1a1a1a,#222);border-radius:16px;
+          display:flex;flex-direction:column;height:600px;
+          box-shadow:0 10px 30px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1)
         }
-        .chat-input input:focus{border-color:#334155}
+        .chat-header{
+          padding:16px;background:linear-gradient(135deg,#252525,#2a2a2a);
+          border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:center;
+          border-bottom:1px solid rgba(255,255,255,.1)
+        }
+        .online-indicator{display:flex;align-items:center;gap:8px;font-size:14px;color:#4CAF50;font-weight:bold}
+        .online-dot{
+          width:8px;height:8px;background:#4CAF50;border-radius:50%;
+          animation:pulse-dot 2s infinite;box-shadow:0 0 10px rgba(76,175,80,.5)
+        }
+        .pin-message{
+          margin-top:8px;font-size:12px;color:#FFD700;
+          background:linear-gradient(135deg,#1a1a1a,#2a1a00);
+          border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:8px;
+          position:relative;overflow:hidden
+        }
+        .pin-message::before{
+          content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+          background:linear-gradient(90deg,transparent,rgba(255,215,0,.1),transparent);
+          animation:shine 3s infinite
+        }
+        .poll-badge{
+          margin-top:8px;font-size:12px;color:#9fe39f;
+          background:linear-gradient(135deg,#152a15,#1a3d1a);
+          border:1px solid rgba(159,227,159,.3);border-radius:8px;padding:8px
+        }
+        .chat-messages{
+          flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;
+          scroll-behavior:smooth
+        }
+        .chat-messages::-webkit-scrollbar{width:6px}
+        .chat-messages::-webkit-scrollbar-track{background:#252525;border-radius:3px}
+        .chat-messages::-webkit-scrollbar-thumb{background:#444;border-radius:3px}
+        .chat-messages::-webkit-scrollbar-thumb:hover{background:#555}
+        .chat-message{
+          animation:slideIn .4s ease-out;padding:8px;border-radius:8px;
+          background:rgba(255,255,255,.03);border-left:3px solid transparent;transition:.2s
+        }
+        .chat-message:hover{background:rgba(255,255,255,.06);transform:translateX(5px)}
+        @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+        .message-author{font-weight:bold;color:#4A90E2;font-size:13px;margin-bottom:4px}
+        .message-text{font-size:14px;color:#e0e0e0;line-height:1.4}
+        .message-admin{border-left-color:#FFD700;background:rgba(255,215,0,.08)}
+        .message-admin .message-author{color:#FFD700}
+        .message-admin .message-author::before{content:"⭐ "}
 
-        /* PRE-CTA */
-        .precta{
-          grid-column:1/-1;margin:6px auto 0;max-width:1200px;width:100%;
-          background:linear-gradient(180deg,#0f131a,#0b0f14);border:1px solid var(--stroke);
-          border-radius:14px;padding:14px;text-align:center;color:#e8edf4
+        .chat-input-container{padding:16px;background:linear-gradient(135deg,#252525,#2a2a2a);border-radius:0 0 16px 16px}
+        .chat-input{
+          width:100%;padding:12px 16px;background:rgba(255,255,255,.08);
+          border:1px solid rgba(255,255,255,.2);border-radius:25px;color:#fff;
+          font-size:14px;transition:.3s;backdrop-filter:blur(5px)
         }
-        .precta h4{margin:0 0 6px 0}
+        .chat-input:focus{
+          outline:none;border-color:#FFD700;box-shadow:0 0 15px rgba(255,215,0,.3);
+          background:rgba(255,255,255,.12)
+        }
+        .chat-input::placeholder{color:#999}
 
-        /* CTA */
-        .cta{
-          grid-column:1/-1;text-align:center;margin:8px auto 20px;max-width:1200px;display:none
-        }
-        .cta.active{display:block}
-        .cta h2{margin:0 0 8px 0;color:var(--brand)}
-        .cta p{margin:0 0 16px 0;color:#e8edf4}
-        .cta-btn{
-          display:inline-block;background:linear-gradient(135deg,var(--brand),var(--brand2));
-          color:#151515;font-weight:900;text-transform:uppercase;letter-spacing:.6px;
-          padding:18px 32px;border-radius:999px;box-shadow:0 12px 30px rgba(255,159,28,.25);
-          transition:transform .15s;
-        }
-        .cta-btn:hover{transform:translateY(-2px) scale(1.02)}
-        .loading{display:none;margin-top:10px;color:#9aa3ad;font-size:13px}
-        .loading.active{display:block}
-        .limit{
-          margin:18px auto 0;background:rgba(255,77,77,.08);border:1px solid rgba(255,77,77,.35);
-          color:#ffd5d5;border-radius:12px;padding:14px;max-width:520px
-        }
-        .limit .spots{font-weight:900;color:var(--brand)}
-        .limit .spots.low{color:var(--danger)}
-        .limit small{display:block;margin-top:8px;color:#cdd3db}
+        /* (REMOVIDOS) activity-indicators, indicator, indicator-icon */
 
-        /* FLOATING */
-        .countdown{
-          position:fixed;right:16px;bottom:16px;background:linear-gradient(135deg,#a21212,#e33a3a);
-          border:1px solid rgba(255,255,255,.15);color:#fff;padding:10px 14px;border-radius:999px;
-          box-shadow:0 10px 30px rgba(226,58,58,.35);display:none;z-index:60;font-weight:800
+        .pre-cta-message{
+          grid-column:1/-1;text-align:center;padding:24px;
+          background:linear-gradient(135deg,#1a1a1a,#2a2a2a);
+          border-radius:16px;margin-top:20px;display:none;
+          animation:fadeIn .5s ease-out;border:1px solid rgba(255,215,0,.2);
+          position:relative;overflow:hidden
         }
-        .countdown.show{display:block}
-        .countdown .critical{color:#fff700}
-        .replay{
-          position:fixed;left:0;right:0;bottom:56px;text-align:center;
-          background:linear-gradient(180deg,#101419,#0c1016);border-top:1px solid var(--stroke);
-          color:#cbd5e1;font-size:13px;padding:10px;display:none;z-index:55
+        .pre-cta-message.active{display:block}
+        .pre-cta-message::before{
+          content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+          background:linear-gradient(90deg,transparent,rgba(255,215,0,.1),transparent);
+          animation:shine 3s infinite
         }
-        .replay.show{display:block}
-        .popup{
-          position:fixed;left:16px;bottom:16px;background:linear-gradient(135deg,#1e3c72,#2a5298);
-          border:1px solid rgba(255,255,255,.15);padding:12px 14px;border-radius:12px;color:#fff;
-          box-shadow:0 10px 30px rgba(0,0,0,.35);display:none;z-index:60
+        .pre-cta-message h3{color:#FFD700;margin-bottom:12px;font-size:20px;text-shadow:0 0 15px rgba(255,215,0,.3)}
+
+        .cta-section{
+          grid-column:1/-1;text-align:center;margin-top:30px;display:none;
+          animation:fadeInScale .6s ease-out
         }
-        .popup.show{display:block;animation:fadeInOut 9s ease-in-out infinite}
-        @keyframes fadeInOut{
-          0%{opacity:0;transform:translateX(-20px)}
-          10%{opacity:1;transform:translateX(0)}
-          85%{opacity:1;transform:translateX(0)}
-          100%{opacity:0;transform:translateX(-20px)}
+        .cta-section.active{display:block}
+        @keyframes fadeInScale{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+        .cta-button{
+          background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;
+          padding:20px 40px;font-size:18px;font-weight:bold;border:none;
+          border-radius:50px;cursor:pointer;transition:.3s;text-decoration:none;
+          display:inline-block;position:relative;overflow:hidden;
+          box-shadow:0 15px 40px rgba(255,215,0,.4);text-transform:uppercase;
+          letter-spacing:1px
         }
+        .cta-button::before{
+          content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+          background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+          animation:shine 2.5s infinite
+        }
+        .cta-button:hover{
+          transform:scale(1.05) translateY(-3px);
+          box-shadow:0 20px 50px rgba(255,215,0,.6)
+        }
+        .cta-button:active{transform:scale(.98)}
+        .limited-spots{
+          background:linear-gradient(135deg,rgba(255,0,0,.1),rgba(255,0,0,.2));
+          border:1px solid rgba(255,0,0,.4);padding:20px;border-radius:12px;
+          margin-top:20px;display:none;position:relative;overflow:hidden
+        }
+        .cta-section.active .limited-spots{display:block;animation:fadeIn .5s ease-out .5s both}
+        .limited-spots::before{
+          content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+          background:linear-gradient(90deg,transparent,rgba(255,0,0,.1),transparent);
+          animation:shine 4s infinite
+        }
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        .spots-number{
+          font-size:32px;font-weight:bold;color:#FFD700;
+          text-shadow:0 0 20px rgba(255,215,0,.5);animation:numberPulse 2s infinite
+        }
+        @keyframes numberPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+        .button-loading{display:none;margin-top:15px;font-size:14px;color:#999;animation:loadingPulse 1s infinite}
+        .button-loading.active{display:block}
+        @keyframes loadingPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+        .countdown-timer{
+          position:fixed;bottom:20px;right:20px;
+          background:linear-gradient(135deg,rgba(255,0,0,.95),rgba(255,51,51,.95));
+          padding:12px 20px;border-radius:25px;font-weight:bold;z-index:1000;
+          display:none;animation:slideInRight .5s ease-out;
+          box-shadow:0 10px 30px rgba(255,0,0,.4);backdrop-filter:blur(10px);
+          border:1px solid rgba(255,255,255,.2)
+        }
+        .countdown-timer.active{display:block}
+        @keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+
+        .notification-popup{
+          position:fixed;bottom:20px;left:20px;
+          background:linear-gradient(135deg,#1e3c72,#2a5298);
+          padding:16px 24px;border-radius:12px;
+          box-shadow:0 10px 30px rgba(0,0,0,.4);transform:translateX(-400px);
+          z-index:999;transition:transform .5s ease;backdrop-filter:blur(10px);
+          border:1px solid rgba(255,255,255,.1)
+        }
+        .notification-popup.active{animation:notificationSlide 10s infinite}
+        @keyframes notificationSlide{15%,85%{transform:translateX(0)}0%,100%{transform:translateX(-400px)}}
+
         .ticker{
-          position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,#0b0f14,#090c10);
-          border-top:1px solid var(--stroke);padding:8px 0;display:none;z-index:70
+          position:fixed;left:0;right:0;bottom:0;
+          background:linear-gradient(90deg,#0f0f0f,#1a1a1a);
+          border-top:1px solid rgba(255,215,0,.3);padding:10px 0;z-index:1200;display:none;
+          box-shadow:0 -5px 20px rgba(0,0,0,.3)
         }
-        .ticker.show{display:block}
-        .track{white-space:nowrap;overflow:hidden}
-        .line{display:inline-block;padding-left:100%;animation:marq 28s linear infinite}
-        @keyframes marq{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
-        .item{
-          display:inline-block;margin-right:32px;padding:6px 10px;border-radius:999px;
-          background:rgba(255,255,255,.05);border:1px solid var(--stroke);color:#dbe2ea;font-size:12px
+        .ticker.active{display:block}
+        .ticker-track{white-space:nowrap;overflow:hidden;position:relative}
+        .ticker-content{
+          display:inline-block;padding-left:100%;
+          animation:tickerMove 30s linear infinite
         }
-        .bonus{
-          position:fixed;top:72px;left:50%;transform:translateX(-50%);
-          background:linear-gradient(135deg,#1b2838,#243b55);border:1px solid #2b4a6a;color:#fff;
-          padding:10px 16px;border-radius:12px;z-index:65;box-shadow:0 10px 30px rgba(0,0,0,.35)
+        @keyframes tickerMove{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+        .ticker-item{
+          display:inline-block;margin-right:50px;color:#ddd;font-size:13px;
+          background:rgba(255,255,255,.05);padding:5px 10px;border-radius:15px;
+          border:1px solid rgba(255,255,255,.1)
+        }
+        .ticker-item strong{color:#9fe39f}
+
+        .bonus-banner{
+          position:fixed;top:80px;left:50%;transform:translateX(-50%);
+          background:linear-gradient(135deg,#1b2838,#243b55);
+          border:1px solid #2b4a6a;color:#fff;padding:12px 20px;
+          border-radius:15px;box-shadow:0 15px 35px rgba(0,0,0,.4);
+          z-index:1100;display:none;backdrop-filter:blur(10px);
+          animation:bonusBounce 2s infinite
+        }
+        .bonus-banner.active{display:block;animation:fadeIn .4s ease-out, bonusBounce 3s infinite 1s}
+        @keyframes bonusBounce{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.02)}}
+
+        .replay-strip{
+          position:fixed;left:0;right:0;bottom:50px;
+          background:linear-gradient(90deg,#161616,#1f1f1f);
+          border-top:1px solid rgba(255,0,0,.3);color:#ddd;
+          text-align:center;padding:10px;font-size:13px;display:none;z-index:1100;
+          box-shadow:0 -3px 15px rgba(0,0,0,.3)
+        }
+        .replay-strip.active{display:block}
+
+        @media (max-width: 1200px){
+          .main-container{max-width:100%;padding:15px}
+        }
+        @media (max-width: 900px){
+          .main-container{grid-template-columns:1fr;gap:15px}
+          .chat-section{height:450px;margin-top:10px}
+          .video-placeholder > div{font-size:48px}
+        }
+        @media (max-width: 768px){
+          .top-bar{font-size:12px;padding:10px 8px}
+          .social-proof-strip{margin-top:45px;padding:10px 8px;font-size:12px}
+          .main-container{padding:10px;margin-top:5px}
+          .video-section{border-radius:12px}
+          .video-placeholder > div{font-size:40px}
+          .live-badge{padding:6px 12px;font-size:12px;top:12px;left:12px}
+          .exclusive-badge{font-size:11px;padding:6px 10px;top:12px;right:12px}
+          .viewer-count{top:55px;right:12px;padding:6px 10px;font-size:12px}
+          .chat-section{height:400px;border-radius:12px}
+          .chat-header{padding:12px}
+          .chat-messages{padding:12px}
+          .chat-input-container{padding:12px}
+          .chat-input{padding:10px 14px;font-size:13px}
+          .pre-cta-message{padding:16px;margin-top:15px}
+          .pre-cta-message h3{font-size:18px}
+          .cta-button{
+            padding:16px 32px;font-size:16px;border-radius:30px;
+            width:100%;max-width:350px
+          }
+          .limited-spots{padding:16px;margin-top:15px}
+          .spots-number{font-size:28px}
+          .countdown-timer{
+            bottom:15px;right:15px;padding:8px 15px;font-size:13px;
+            border-radius:20px
+          }
+          .notification-popup{
+            bottom:15px;left:15px;padding:12px 16px;font-size:13px;
+            max-width:calc(100vw - 30px)
+          }
+          .bonus-banner{
+            top:60px;padding:10px 15px;font-size:13px;
+            max-width:calc(100vw - 30px)
+          }
+          .replay-strip{bottom:45px;padding:8px;font-size:12px}
+          .ticker{padding:8px 0}
+          .ticker-item{margin-right:30px;font-size:12px;padding:4px 8px}
+        }
+        @media (max-width: 480px){
+          .top-bar{font-size:11px}
+          .social-proof-strip{font-size:11px}
+          .video-placeholder > div{font-size:32px}
+          .live-badge{padding:5px 10px;font-size:11px}
+          .exclusive-badge{font-size:10px;padding:5px 8px}
+          .chat-section{height:350px}
+          .message-author{font-size:12px}
+          .message-text{font-size:13px}
+          .cta-button{padding:14px 24px;font-size:15px}
+          .pre-cta-message h3{font-size:16px}
+          .spots-number{font-size:24px}
+          .countdown-timer{font-size:12px;padding:6px 12px}
+          .notification-popup{font-size:12px}
+          .bonus-banner{font-size:12px;top:55px}
         }
 
-        /* Responsivo */
-        @media (max-width: 520px){
-          .chat{min-height:480px}
-          .viewers{top:50px}
-          .badge{top:10px}
-          .social-proof-strip{font-size:12px}
-          .countdown{right:12px;bottom:12px}
-          .popup{left:12px;bottom:12px}
+        .pulse-effect{animation:ctaPulse 2s infinite;}
+        @keyframes ctaPulse{
+          0%{box-shadow:0 15px 40px rgba(255,215,0,.4)}
+          50%{box-shadow:0 20px 50px rgba(255,215,0,.7)}
+          100%{box-shadow:0 15px 40px rgba(255,215,0,.4)}
         }
+        .urgency-shake{animation:urgencyShake .5s ease-in-out}
+        @keyframes urgencyShake{
+          0%,100%{transform:translateX(0)}
+          25%{transform:translateX(-5px)}
+          75%{transform:translateX(5px)}
+        }
+        .loading-dots::after{
+          content:'...';animation:loadingDots 1.5s infinite
+        }
+        @keyframes loadingDots{
+          0%{content:'...'}
+          33%{content:'.'}
+          66%{content:'..'}
+          100%{content:'...'}
+        }
+        html{scroll-behavior:smooth}
       `}</style>
     </>
   );
