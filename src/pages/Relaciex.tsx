@@ -369,7 +369,7 @@ const LiveClass: React.FC = () => {
         <div className="video-column">
           {/* HEADLINE CENTERED ABOVE THE VIDEO */}
           <h1 className="video-headline">
-            DISCOVER HOW TO SUPPORT YOUR PET'S HEALTH AND HAPPINESS AT ANY AGE
+            Descubra como apoiar a saúde e a alegria do seu pet em qualquer idade
           </h1>
 
           {/* VIDEO (VTurb SmartPlayer INSIDE this wrapper) */}
