@@ -19,9 +19,9 @@ const LiveClass: React.FC = () => {
         "Arthritis & joint pain",
         "Low energy / depressed mood",
         "Digestive issues / picky eating",
-        "Overweight / slow metabolism"
+        "Overweight / slow metabolism",
       ],
-      baseVotes: [142, 238, 187, 93]
+      baseVotes: [142, 238, 187, 93],
     }),
     []
   );
@@ -39,79 +39,106 @@ const LiveClass: React.FC = () => {
     () => ({
       preCta: 540000, // 9 min (pre-CTA heads-up)
       showCta: 600000, // 10 min -> CTA appears
-      pollAtMs: 360000 // 6 min
+      pollAtMs: 360000, // 6 min
     }),
     []
   );
 
-  // ====== HEAD PRELOADS + VTurb SmartPlayer (United States target) ======
+  // ====== VTURB SMARTPLAYER (use the snippet and keep it INSIDE the player box) ======
   useEffect(() => {
-    // Performance mark
+    // place required performance mark script into <head>
     const perf = document.createElement("script");
-    perf.innerHTML = `!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);`;
+    perf.innerHTML =
+      "!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);";
     document.head.appendChild(perf);
 
-    // Helper to add <link> safely
-    const addLink = (rel: string, href: string, asAttr?: string) => {
-      const l = document.createElement("link");
-      l.rel = rel;
-      l.href = href;
-      if (asAttr) (l as any).as = asAttr;
-      document.head.appendChild(l);
-      return l;
-    };
-
-    const links: HTMLLinkElement[] = [];
-    links.push(addLink("preload", "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b1fa656fe4730e992a26b4/v4/player.js", "script"));
-    links.push(addLink("preload", "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js", "script"));
-    links.push(addLink("preload", "https://cdn.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/68b1fa572a3de119c45bca76/main.m3u8", "fetch"));
-    links.push(addLink("dns-prefetch", "https://cdn.converteai.net"));
-    links.push(addLink("dns-prefetch", "https://scripts.converteai.net"));
-    links.push(addLink("dns-prefetch", "https://images.converteai.net"));
-    links.push(addLink("dns-prefetch", "https://api.vturb.com.br"));
-
-    // Load SmartPlayer + Player
-    const smart = document.createElement("script");
-    smart.src = "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js";
-    smart.async = true;
-
-    const player = document.createElement("script");
-    player.src = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b1fa656fe4730e992a26b4/v4/player.js";
-    player.async = true;
-
-    document.head.appendChild(smart);
-    document.head.appendChild(player);
+    // load the VTurb player script into <head>
+    const s = document.createElement("script");
+    s.src =
+      "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b1fa656fe4730e992a26b4/v4/player.js";
+    s.async = true;
+    document.head.appendChild(s);
 
     return () => {
-      // (optional) cleanup — keep scripts/links if navigating SPA
+      // keep scripts if SPA navigation — no cleanup necessary
     };
   }, []);
 
-  // ====== CHAT MESSAGES (more realistic, focused on senior pet health & arthritis) ======
+  // ====== CHAT MESSAGES (realistic, focused on senior pet health & arthritis) ======
   const chatMessagesPhase1 = useMemo(
     () => [
       { delay: 2000, author: "John", text: "Hey folks, first time here 👋 (US/NY)", admin: false },
       { delay: 4500, author: "Mia", text: "My 13yo cat has arthritis—hoping for real tips 🙏", admin: false },
-      { delay: 7000, author: "🌟 Moderator", text: "Welcome! We’ll start with gentle, vet-safe routines for seniors.", admin: true },
-      { delay: 15000, author: "Alex", text: "Switching off ultra-processed kibble helped my 12yo dog’s joints a lot.", admin: false },
+      {
+        delay: 7000,
+        author: "🌟 Moderator",
+        text: "Welcome! We’ll start with gentle, vet-safe routines for seniors.",
+        admin: true,
+      },
+      {
+        delay: 15000,
+        author: "Alex",
+        text: "Switching off ultra-processed kibble helped my 12yo dog’s joints a lot.",
+        admin: false,
+      },
       { delay: 28000, author: "Chris", text: "Anyone tried omega-3 for stiffness? Worth it?", admin: false },
-      { delay: 42000, author: "🌟 Moderator", text: "High-quality omega-3s can support joints. We'll cover dosages & food ideas.", admin: true },
-      { delay: 58000, author: "Taylor", text: "Ramps by the couch stopped my dog from jumping & hurting himself.", admin: false },
-      { delay: 90000, author: "Priya", text: "Short, low-impact walks helped my senior lab more than long ones.", admin: false },
-      { delay: 93000, author: "🌟 Moderator", text: "Exactly—micro-walks + warm-ups reduce flare-ups.", admin: true },
+      {
+        delay: 42000,
+        author: "🌟 Moderator",
+        text: "High-quality omega-3s can support joints. We'll cover dosages & food ideas.",
+        admin: true,
+      },
+      {
+        delay: 58000,
+        author: "Taylor",
+        text: "Ramps by the couch stopped my dog from jumping & hurting himself.",
+        admin: false,
+      },
+      {
+        delay: 90000,
+        author: "Priya",
+        text: "Short, low-impact walks helped my senior lab more than long ones.",
+        admin: false,
+      },
+      {
+        delay: 93000,
+        author: "🌟 Moderator",
+        text: "Exactly—micro-walks + warm-ups reduce flare-ups.",
+        admin: true,
+      },
       { delay: 120000, author: "Ben", text: "I’m curious about additives in kibble…", admin: false },
-      { delay: 123000, author: "🌟 Moderator", text: "We’ll show how the pet food industry profits off ultra-processed formulas.", admin: true },
+      {
+        delay: 123000,
+        author: "🌟 Moderator",
+        text: "We’ll show how the pet food industry profits off ultra-processed formulas.",
+        admin: true,
+      },
       { delay: 180000, author: "Lena", text: "Hydration & bone broth boosted my cat’s appetite and mood.", admin: false },
-      { delay: 183000, author: "🌟 Moderator", text: "Great! Gentle hydration strategies coming up shortly.", admin: true },
+      {
+        delay: 183000,
+        author: "🌟 Moderator",
+        text: "Great! Gentle hydration strategies coming up shortly.",
+        admin: true,
+      },
       { delay: 240000, author: "Mark", text: "My vet ok’d turmeric paste—less limping now.", admin: false },
       { delay: 300000, author: "Sam", text: "Can seniors do light mobility exercises?", admin: false },
-      { delay: 303000, author: "🌟 Moderator", text: "Yes—range-of-motion moves + soft flooring. We’ll demo today.", admin: true },
+      {
+        delay: 303000,
+        author: "🌟 Moderator",
+        text: "Yes—range-of-motion moves + soft flooring. We’ll demo today.",
+        admin: true,
+      },
       { delay: 360000, author: "Ava", text: "Subscribing—need a plan for my 11yo beagle asap.", admin: false },
       { delay: 420000, author: "Noah", text: "I stopped free-feeding kibble; energy is back already.", admin: false },
       { delay: 480000, author: "Bella", text: "Looking forward to natural anti-inflammatory tips!", admin: false },
       { delay: 540000, author: "Ethan", text: "Does fresh food really make seniors more playful?", admin: false },
-      { delay: 543000, author: "🌟 Moderator", text: "Wait for the case studies—we’ll show results in under 7 days.", admin: true },
-      { delay: 590000, author: "Zoe", text: "So excited to try this for my arthritic shepherd.", admin: false }
+      {
+        delay: 543000,
+        author: "🌟 Moderator",
+        text: "Wait for the case studies—we’ll show results in under 7 days.",
+        admin: true,
+      },
+      { delay: 590000, author: "Zoe", text: "So excited to try this for my arthritic shepherd.", admin: false },
     ],
     []
   );
@@ -119,8 +146,18 @@ const LiveClass: React.FC = () => {
   const chatMessagesPhase2 = useMemo(
     () => [
       { delay: 1000, author: "Ryan", text: "The guide just unlocked! 🎯", admin: false },
-      { delay: 3000, author: "🌟 Moderator", text: "Limited spots for the Senior Pet Longevity plan—US only.", admin: true },
-      { delay: 6000, author: "Vanessa", text: "Price is fair if it helps my 15yo cat move again.", admin: false },
+      {
+        delay: 3000,
+        author: "🌟 Moderator",
+        text: "Limited spots for the Senior Pet Longevity plan—US only.",
+        admin: true,
+      },
+      {
+        delay: 6000,
+        author: "Vanessa",
+        text: "Price is fair if it helps my 15yo cat move again.",
+        admin: false,
+      },
       { delay: 8000, author: "Carla", text: "Purchased! The arthritis checklist is gold.", admin: false },
       { delay: 11000, author: "Bruno", text: "Cheaper than my last vet co-pay 😅", admin: false },
       { delay: 14000, author: "Carlos", text: "Got my spot—see you inside!", admin: false },
@@ -132,7 +169,7 @@ const LiveClass: React.FC = () => {
       { delay: 51000, author: "🌟 Moderator", text: "Yes—live-only pricing, US time zone.", admin: true },
       { delay: 65000, author: "Thiago", text: "Processing payment…", admin: false },
       { delay: 80000, author: "Pri", text: "Exactly what my senior terrier needed.", admin: false },
-      { delay: 95000, author: "Edu", text: "Not missing this.", admin: false }
+      { delay: 95000, author: "Edu", text: "Not missing this.", admin: false },
     ],
     []
   );
@@ -330,7 +367,12 @@ const LiveClass: React.FC = () => {
 
       <div className="container">
         <div className="video-column">
-          {/* VIDEO (VTurb SmartPlayer inside the player wrapper) */}
+          {/* HEADLINE CENTERED ABOVE THE VIDEO */}
+          <h1 className="video-headline">
+            Descubra como apoiar a saúde e a alegria do seu pet em qualquer idade
+          </h1>
+
+          {/* VIDEO (VTurb SmartPlayer INSIDE this wrapper) */}
           <div className="video-wrapper">
             <div className="live-indicator" aria-live="polite">
               <span className="live-dot" aria-hidden />
@@ -345,12 +387,11 @@ const LiveClass: React.FC = () => {
             </div>
 
             <div className="video-player">
-              {/* VTurb container */}
-              <div
-                id="vid_68b1fa656fe4730e992a26b4"
-                className="vturb-embed"
-                aria-label="Live presentation: senior pet longevity tips"
-              />
+              {/* <-- The player renders RIGHT HERE inside the box --> */}
+              <vturb-smartplayer
+                id="vid-68b1fa656fe4730e992a26b4"
+                style={{ display: "block", margin: "0 auto", width: "100%", height: "100%" }}
+              ></vturb-smartplayer>
             </div>
 
             <div className="exclusive-tag">🔒 Exclusive content — Unlisted</div>
@@ -376,11 +417,7 @@ const LiveClass: React.FC = () => {
                 <span className="installments">or 12 payments of $9.70</span>
               </div>
 
-              <button
-                className="cta-button"
-                onClick={handleCtaClick}
-                aria-label="Secure my spot now"
-              >
+              <button className="cta-button" onClick={handleCtaClick} aria-label="Secure my spot now">
                 SECURE MY SPOT NOW
               </button>
 
@@ -469,30 +506,29 @@ const LiveClass: React.FC = () => {
         </nav>
       </footer>
 
-      {/* TERMS MODAL (Facebook-acceptable, plain) */}
+      {/* TERMS MODAL */}
       {showTerms && (
         <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Terms of Use">
           <div className="modal">
             <h2>Terms of Use</h2>
             <div className="modal-body">
               <p>
-                This content is for educational purposes and is not a substitute for professional
-                veterinary advice. Always consult a licensed veterinarian before making diet or
-                health changes for your pet, especially seniors or pets with existing conditions.
+                This content is for educational purposes and is not a substitute for professional veterinary
+                advice. Always consult a licensed veterinarian before making diet or health changes for your
+                pet, especially seniors or pets with existing conditions.
               </p>
               <p>
-                By using this site, you agree not to rely solely on the information provided here
-                and you assume all risks associated with applying any suggestions. We do not
-                guarantee specific results. Pricing and availability may change without notice.
+                By using this site, you agree not to rely solely on the information provided here and you assume
+                all risks associated with applying any suggestions. We do not guarantee specific results. Pricing
+                and availability may change without notice.
               </p>
               <p>
-                Any references to pet food industry practices are opinions based on analysis of
-                ultra-processed formulas and common additives. We encourage responsible, vet-guided
-                care.
+                Any references to pet food industry practices are opinions based on analysis of ultra-processed
+                formulas and common additives. We encourage responsible, vet-guided care.
               </p>
               <p>
-                This site may promote products or programs. If you purchase through provided links,
-                we may receive compensation. All trademarks belong to their respective owners.
+                This site may promote products or programs. If you purchase through provided links, we may receive
+                compensation. All trademarks belong to their respective owners.
               </p>
               <button className="modal-close" onClick={() => setShowTerms(false)} aria-label="Close">
                 Close
@@ -502,32 +538,28 @@ const LiveClass: React.FC = () => {
         </div>
       )}
 
-      {/* PRIVACY MODAL (Facebook-acceptable, plain) */}
+      {/* PRIVACY MODAL */}
       {showPrivacy && (
         <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Privacy Policy">
           <div className="modal">
             <h2>Privacy Policy</h2>
             <div className="modal-body">
               <p>
-                We respect your privacy. We collect basic information you voluntarily provide (like
-                name and email) to deliver content, offers, and support. We may use cookies or
-                similar technologies to improve the user experience and measure performance.
+                We respect your privacy. We collect basic information you voluntarily provide (like name and email)
+                to deliver content, offers, and support. We may use cookies or similar technologies to improve the
+                user experience and measure performance.
               </p>
               <p>
-                We may share data with service providers strictly to operate the site (e.g., video
-                hosting via VTurb/Converteai, checkout via Hotmart). We do not sell your personal
-                information. You can request access or deletion of your data by contacting Support.
+                We may share data with service providers strictly to operate the site (e.g., video hosting via
+                VTurb/Converteai, checkout via Hotmart). We do not sell your personal information. You can request
+                access or deletion of your data by contacting Support.
               </p>
               <p>
-                Third-party tools may place cookies and collect usage data in accordance with their
-                own policies. By using this site, you consent to such processing consistent with US
-                privacy standards and Facebook policies.
+                Third-party tools may place cookies and collect usage data in accordance with their own policies. By
+                using this site, you consent to such processing consistent with US privacy standards and Facebook
+                policies.
               </p>
-              <button
-                className="modal-close"
-                onClick={() => setShowPrivacy(false)}
-                aria-label="Close"
-              >
+              <button className="modal-close" onClick={() => setShowPrivacy(false)} aria-label="Close">
                 Close
               </button>
             </div>
@@ -540,44 +572,37 @@ const LiveClass: React.FC = () => {
         body {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
-          color: #fff;
-          min-height: 100vh;
+          color: #fff; min-height: 100vh;
         }
         .top-bar {
           position: fixed; top: 0; left: 0; right: 0;
-          background: rgba(20, 20, 35, 0.95);
-          backdrop-filter: blur(10px);
-          padding: 14px; text-align: center;
-          font-size: 14px; font-weight: 600; z-index: 1000;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          transition: all 0.3s ease;
+          background: rgba(20, 20, 35, 0.95); backdrop-filter: blur(10px);
+          padding: 14px; text-align: center; font-size: 14px; font-weight: 600; z-index: 1000;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1); transition: all .3s ease;
         }
-        .top-bar.urgent {
-          background: linear-gradient(90deg, #ff6b6b, #ff8787);
-          animation: urgentPulse 2s infinite;
-        }
+        .top-bar.urgent { background: linear-gradient(90deg, #ff6b6b, #ff8787); animation: urgentPulse 2s infinite; }
         @keyframes urgentPulse { 0%,100%{opacity:1;} 50%{opacity:.9;} }
 
         .container {
-          max-width: 1400px;
-          margin: 80px auto 40px;
-          padding: 0 20px;
-          display: grid;
-          grid-template-columns: 1fr 400px;
-          gap: 30px;
+          max-width: 1400px; margin: 80px auto 40px; padding: 0 20px;
+          display: grid; grid-template-columns: 1fr 400px; gap: 30px;
+        }
+
+        /* Headline */
+        .video-headline {
+          text-align: center; margin-bottom: 14px; font-size: 22px; font-weight: 800;
+          letter-spacing: .2px;
         }
 
         /* Video */
         .video-wrapper {
-          position: relative; background: #000;
-          border-radius: 20px; overflow: hidden;
+          position: relative; background: #000; border-radius: 20px; overflow: hidden;
           box-shadow: 0 20px 60px rgba(0,0,0,.5);
         }
         .live-indicator {
-          position: absolute; top: 20px; left: 20px;
-          background: #ff4757; padding: 8px 16px; border-radius: 20px;
-          font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;
-          z-index: 10; animation: livePulse 2s infinite;
+          position: absolute; top: 20px; left: 20px; background: #ff4757;
+          padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
+          display: flex; align-items: center; gap: 8px; z-index: 10; animation: livePulse 2s infinite;
         }
         @keyframes livePulse {
           0%,100% { box-shadow: 0 0 0 0 rgba(255,71,87,.7); }
@@ -587,36 +612,38 @@ const LiveClass: React.FC = () => {
         @keyframes dotPulse { 0%,100% {opacity:1;} 50% {opacity:.5;} }
 
         .viewer-counter {
-          position: absolute; top: 20px; right: 20px;
-          background: rgba(0,0,0,.7); backdrop-filter: blur(10px);
-          padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600;
+          position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,.7);
+          backdrop-filter: blur(10px); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600;
           display: flex; align-items: center; gap: 8px; z-index: 10;
         }
-        .video-player { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
-        .vturb-embed { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .video-player {
+          position: relative; padding-bottom: 56.25%; height: 0; background: #000;
+        }
+        .video-player vturb-smartplayer,
+        .video-player .vturb-embed,
+        .video-player iframe,
+        .video-player video {
+          position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
 
         .exclusive-tag {
           position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
           background: rgba(255,215,0,.15); backdrop-filter: blur(10px);
-          border: 1px solid rgba(255,215,0,.3);
-          padding: 8px 20px; border-radius: 20px; font-size: 12px; color: #ffd700;
+          border: 1px solid rgba(255,215,0,.3); padding: 8px 20px; border-radius: 20px;
+          font-size: 12px; color: #ffd700;
         }
 
         /* Pre-CTA */
         .pre-cta {
-          margin-top: 20px; padding: 20px;
-          background: linear-gradient(135deg, rgba(255,215,0,.1), rgba(255,215,0,.05));
-          border: 1px solid rgba(255,215,0,.3);
-          border-radius: 16px; text-align: center; animation: fadeIn .5s ease;
+          margin-top: 20px; padding: 20px; background: linear-gradient(135deg, rgba(255,215,0,.1), rgba(255,215,0,.05));
+          border: 1px solid rgba(255,215,0,.3); border-radius: 16px; text-align: center; animation: fadeIn .5s ease;
         }
         .pre-cta h3 { color: #ffd700; margin-bottom: 8px; }
 
         /* CTA Box */
         .cta-box {
-          margin-top: 20px; padding: 30px;
-          background: linear-gradient(135deg, #1e1e35, #2a2a45);
-          border-radius: 20px; text-align: center; animation: slideUp .5s ease;
-          box-shadow: 0 10px 40px rgba(0,0,0,.3);
+          margin-top: 20px; padding: 30px; background: linear-gradient(135deg, #1e1e35, #2a2a45);
+          border-radius: 20px; text-align: center; animation: slideUp .5s ease; box-shadow: 0 10px 40px rgba(0,0,0,.3);
         }
         @keyframes slideUp { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
         .cta-box h2 { color: #ffd700; margin-bottom: 10px; font-size: 24px; }
@@ -632,8 +659,7 @@ const LiveClass: React.FC = () => {
         }
         .cta-button:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(255,215,0,.4); }
         .spots-counter {
-          margin-top: 20px; padding: 15px;
-          background: rgba(255,0,0,.1); border: 1px solid rgba(255,0,0,.3);
+          margin-top: 20px; padding: 15px; background: rgba(255,0,0,.1); border: 1px solid rgba(255,0,0,.3);
           border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         .spots-number { font-size: 28px; font-weight: bold; color: #ffd700; animation: spotsPulse 2s infinite; }
@@ -643,9 +669,8 @@ const LiveClass: React.FC = () => {
 
         /* Chat */
         .chat-column {
-          background: linear-gradient(135deg, #1a1a2e, #252540);
-          border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; height: 700px;
-          box-shadow: 0 10px 40px rgba(0,0,0,.3);
+          background: linear-gradient(135deg, #1a1a2e, #252540); border-radius: 20px; overflow: hidden;
+          display: flex; flex-direction: column; height: 700px; box-shadow: 0 10px 40px rgba(0,0,0,.3);
         }
         .chat-header {
           padding: 20px; background: rgba(0,0,0,.2); border-bottom: 1px solid rgba(255,255,255,.1);
@@ -654,7 +679,6 @@ const LiveClass: React.FC = () => {
         .chat-header h3 { font-size: 16px; font-weight: 600; }
         .online-counter { display: flex; align-items: center; gap: 8px; color: #4cd137; font-size: 14px; font-weight: 600; }
         .online-dot { width: 8px; height: 8px; background: #4cd137; border-radius: 50%; animation: dotPulse 2s infinite; }
-
         .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
         .chat-messages::-webkit-scrollbar { width: 6px; }
         .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 3px; }
@@ -667,8 +691,7 @@ const LiveClass: React.FC = () => {
         /* Poll */
         .poll-container {
           background: linear-gradient(135deg, rgba(74,185,255,.1), rgba(74,185,255,.05));
-          border: 1px solid rgba(74,185,255,.3);
-          border-radius: 12px; padding: 16px; margin: 10px 0;
+          border: 1px solid rgba(74,185,255,.3); border-radius: 12px; padding: 16px; margin: 10px 0;
         }
         .poll-header { color: #74b9ff; font-weight: 600; font-size: 12px; margin-bottom: 10px; }
         .poll-question { font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #fff; }
@@ -686,9 +709,7 @@ const LiveClass: React.FC = () => {
         .poll-hint { margin-top: 10px; font-size: 12px; color: #74b9ff; text-align: center; }
 
         /* Chat input */
-        .chat-input-wrapper {
-          padding: 12px; border-top: 1px solid rgba(255,255,255,.1); background: rgba(0,0,0,.25);
-        }
+        .chat-input-wrapper { padding: 12px; border-top: 1px solid rgba(255,255,255,.1); background: rgba(0,0,0,.25); }
         .chat-input {
           width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.15);
           background: rgba(255,255,255,.06); color: #fff; outline: none; transition: border .2s ease, background .2s ease;
@@ -720,15 +741,11 @@ const LiveClass: React.FC = () => {
         }
         .modal {
           width: min(680px, 92vw); background: #131329; border: 1px solid rgba(255,255,255,.12);
-          border-radius: 16px; padding: 24px;
-          box-shadow: 0 30px 80px rgba(0,0,0,.5);
+          border-radius: 16px; padding: 24px; box-shadow: 0 30px 80px rgba(0,0,0,.5);
         }
         .modal h2 { margin-bottom: 10px; color: #ffd700; }
         .modal-body { color: #e9e9f3; line-height: 1.6; display: grid; gap: 12px; }
-        .modal-close {
-          margin-top: 14px; padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer;
-          background: #ffd700; color: #000; font-weight: 700;
-        }
+        .modal-close { margin-top: 14px; padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; background: #ffd700; color: #000; font-weight: 700; }
 
         /* Responsive */
         @media (max-width: 1100px) {
