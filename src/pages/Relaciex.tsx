@@ -8,6 +8,7 @@ const LiveClass: React.FC = () => {
   const [onlineCount, setOnlineCount] = useState(187);
   const [preCtaActive, setPreCtaActive] = useState(false);
   const [spots, setSpots] = useState(20);
+  const [videoError, setVideoError] = useState(false);
   // Poll
   const pollBase = useMemo(
     () => ({
@@ -29,6 +30,33 @@ const LiveClass: React.FC = () => {
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const timersRef = useRef<number[]>([]);
   const intervalsRef = useRef<number[]>([]);
+
+  // Dynamically load VTurb scripts
+  useEffect(() => {
+    const scripts = [
+      {
+        src: "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js",
+        async: true,
+      },
+      {
+        src: "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b1fa656fe4730e992a26b4/v4/player.js",
+        async: true,
+      },
+    ];
+    scripts.forEach(({ src, async }) => {
+      if (!document.querySelector(`script[src="${src}"]`)) {
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = async;
+        script.onerror = () => setVideoError(true);
+        document.head.appendChild(script);
+      }
+    });
+    return () => {
+      // Cleanup not needed for scripts as they are globally loaded
+    };
+  }, []);
+
   // Timing
   const TIMING = useMemo(
     () => ({
@@ -265,13 +293,18 @@ const LiveClass: React.FC = () => {
               {viewerCount.toLocaleString('en-US')}
             </div>
             <div className="video-player">
-              <iframe
-                title="Live Class on Senior Pet Health"
-                src="https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b1fa656fe4730e992a26b4/v4/player.html?autoplay=1"
-                frameBorder="0"
-                allow="autoplay; encrypted-media"
-                allowFullScreen
-              />
+              {videoError ? (
+                <div className="video-error">
+                  Video failed to load. Please contact <a href="https://app.vturb.com" target="_blank" rel="noopener noreferrer">VTurb Support</a>.
+                </div>
+              ) : (
+                <smart-player
+                  video-id="68b1fa656fe4730e992a26b4"
+                  account-id="ec09afc3-b6c2-4de5-b556-85edb9ced296"
+                  player-version="v4"
+                  autoplay
+                ></smart-player>
+              )}
             </div>
             <div className="exclusive-tag">
               🔒 Exclusive Content - Unlisted
@@ -395,11 +428,22 @@ const LiveClass: React.FC = () => {
         }
         .video-headline {
           text-align: center;
-          font-size: 28px;
-          font-weight: bold;
-          color: #ffd700;
+          font-size: 32px;
+          font-weight: 700;
+          background: linear-gradient(135deg, #ffd700, #ffed4e);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
           margin-bottom: 20px;
+          padding: 10px 20px;
+          max-width: 800px;
+          margin-left: auto;
+          margin-right: auto;
           text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          animation: fadeInHeadline 1s ease-in-out;
+        }
+        @keyframes fadeInHeadline {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         /* Video */
         .video-wrapper {
@@ -460,12 +504,36 @@ const LiveClass: React.FC = () => {
           height: 0;
           background: #000;
         }
+        .video-player smart-player,
         .video-player iframe {
           position: absolute;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
+        }
+        .video-error {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          font-size: 16px;
+          text-align: center;
+          background: #202020;
+          padding: 20px;
+        }
+        .video-error a {
+          color: #ea4634;
+          text-decoration: none;
+          font-weight: bold;
+        }
+        .video-error a:hover {
+          text-decoration: underline;
         }
         .exclusive-tag {
           position: absolute;
@@ -810,7 +878,7 @@ const LiveClass: React.FC = () => {
             height: 500px;
           }
           .video-headline {
-            font-size: 24px;
+            font-size: 28px;
           }
         }
         @media (max-width: 720px) {
@@ -834,7 +902,7 @@ const LiveClass: React.FC = () => {
             align-items: flex-start;
           }
           .video-headline {
-            font-size: 20px;
+            font-size: 24px;
             padding: 0 10px;
           }
         }
