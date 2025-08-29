@@ -8,37 +8,18 @@ const LiveClass: React.FC = () => {
   const [onlineCount, setOnlineCount] = useState(187);
   const [preCtaActive, setPreCtaActive] = useState(false);
   const [spots, setSpots] = useState(20);
-  const [region, setRegion] = useState<string>("United States • Unknown Time");
-  const [termsOpen, setTermsOpen] = useState(false);
-  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
 
-  // ====== HELPERS ======
-  const usTzMap: Record<string, string> = {
-    "America/New_York": "United States • Eastern Time",
-    "America/Detroit": "United States • Eastern Time",
-    "America/Kentucky/Louisville": "United States • Eastern Time",
-    "America/Kentucky/Monticello": "United States • Eastern Time",
-    "America/Indiana/Indianapolis": "United States • Eastern Time",
-    "America/Chicago": "United States • Central Time",
-    "America/Indiana/Knox": "United States • Central Time",
-    "America/Menominee": "United States • Central Time",
-    "America/North_Dakota/Center": "United States • Central Time",
-    "America/Denver": "United States • Mountain Time",
-    "America/Phoenix": "United States • Mountain Time (AZ)",
-    "America/Los_Angeles": "United States • Pacific Time",
-    "America/Anchorage": "United States • Alaska Time",
-    "Pacific/Honolulu": "United States • Hawaii Time"
-  };
-
-  // ====== POLL ======
+  // ====== POLL (adapted to senior dogs/cats health) ======
   const pollBase = useMemo(
     () => ({
-      question: "What’s your biggest challenge with your senior pet?",
+      question: "What's your senior pet’s biggest challenge?",
       options: [
-        "Arthritis pain & stiffness",
-        "Low energy / sleeps all day",
-        "Picky appetite / digestion",
-        "Mobility (stairs, couch, car)"
+        "Arthritis & joint pain",
+        "Low energy / depressed mood",
+        "Digestive issues / picky eating",
+        "Overweight / slow metabolism"
       ],
       baseVotes: [142, 238, 187, 93]
     }),
@@ -56,53 +37,102 @@ const LiveClass: React.FC = () => {
   // ====== TIMING (CTA after 10 minutes) ======
   const TIMING = useMemo(
     () => ({
-      preCta: 540000, // 9 min teaser
-      showCta: 600000, // 10 min CTA visible
-      pollAtMs: 300000 // 5 min
+      preCta: 540000, // 9 min (pre-CTA heads-up)
+      showCta: 600000, // 10 min -> CTA appears
+      pollAtMs: 360000 // 6 min
     }),
     []
   );
 
-  // ====== CHAT MESSAGES (Phase 1 – before CTA) ======
+  // ====== HEAD PRELOADS + VTurb SmartPlayer (United States target) ======
+  useEffect(() => {
+    // Performance mark
+    const perf = document.createElement("script");
+    perf.innerHTML = `!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);`;
+    document.head.appendChild(perf);
+
+    // Helper to add <link> safely
+    const addLink = (rel: string, href: string, asAttr?: string) => {
+      const l = document.createElement("link");
+      l.rel = rel;
+      l.href = href;
+      if (asAttr) (l as any).as = asAttr;
+      document.head.appendChild(l);
+      return l;
+    };
+
+    const links: HTMLLinkElement[] = [];
+    links.push(addLink("preload", "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b1fa656fe4730e992a26b4/v4/player.js", "script"));
+    links.push(addLink("preload", "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js", "script"));
+    links.push(addLink("preload", "https://cdn.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/68b1fa572a3de119c45bca76/main.m3u8", "fetch"));
+    links.push(addLink("dns-prefetch", "https://cdn.converteai.net"));
+    links.push(addLink("dns-prefetch", "https://scripts.converteai.net"));
+    links.push(addLink("dns-prefetch", "https://images.converteai.net"));
+    links.push(addLink("dns-prefetch", "https://api.vturb.com.br"));
+
+    // Load SmartPlayer + Player
+    const smart = document.createElement("script");
+    smart.src = "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js";
+    smart.async = true;
+
+    const player = document.createElement("script");
+    player.src = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b1fa656fe4730e992a26b4/v4/player.js";
+    player.async = true;
+
+    document.head.appendChild(smart);
+    document.head.appendChild(player);
+
+    return () => {
+      // (optional) cleanup — keep scripts/links if navigating SPA
+    };
+  }, []);
+
+  // ====== CHAT MESSAGES (more realistic, focused on senior pet health & arthritis) ======
   const chatMessagesPhase1 = useMemo(
     () => [
-      { delay: 2000, author: "John", text: "Hey everyone, first time here 👋", admin: false },
-      { delay: 4500, author: "Sarah", text: "I’m here for my 13-year-old lab with arthritis", admin: false },
-      { delay: 7000, author: "🌟 Moderator", text: "Welcome! We’re starting with big tips for senior dogs & cats 🐾", admin: true },
-      { delay: 15000, author: "Mike", text: "My vet bills are insane lately… need help", admin: false },
-      { delay: 28000, author: "Olivia", text: "Cutting out ultra-processed kibble was huge for my cat’s energy", admin: false },
-      { delay: 42000, author: "Emma", text: "Does fish oil help joints for older dogs?", admin: false },
-      { delay: 61000, author: "🌟 Moderator", text: "Omega-3s can help. We’ll cover dosing & safety tips shortly", admin: true },
-      { delay: 90000, author: "Chris", text: "Any tips for stairs? My beagle struggles", admin: false },
-      { delay: 93000, author: "🌟 Moderator", text: "Ramps + short, frequent walks on soft ground = great start", admin: true },
-      { delay: 120000, author: "Laura", text: "Switching bowls higher reduced my cat’s neck strain", admin: false },
-      { delay: 180000, author: "Ben", text: "Warm bed + joint supplement helped mobility here", admin: false },
-      { delay: 210000, author: "🌟 Moderator", text: "Love it. Hydration + gentle movement daily makes a difference", admin: true },
-      { delay: 240000, author: "Sophia", text: "How do I spot bad ingredients in kibble?", admin: false },
-      { delay: 300000, author: "🌟 Moderator", text: "Watch for artificial colors/preservatives & vague “meat by-products”", admin: true },
-      { delay: 360000, author: "Ava", text: "My 16-yo cat is more alert after ditching treats w/ dyes", admin: false },
-      { delay: 420000, author: "Noah", text: "Short walks + massage helped stiffness a lot", admin: false },
-      { delay: 480000, author: "Mia", text: "Adding bone broth boosted appetite for my senior pup", admin: false },
-      { delay: 540000, author: "🌟 Moderator", text: "Keep notes on energy, stools, and mood—helps track progress!", admin: true },
-      { delay: 570000, author: "Ethan", text: "Ready for the checklist you mentioned!", admin: false }
+      { delay: 2000, author: "John", text: "Hey folks, first time here 👋 (US/NY)", admin: false },
+      { delay: 4500, author: "Mia", text: "My 13yo cat has arthritis—hoping for real tips 🙏", admin: false },
+      { delay: 7000, author: "🌟 Moderator", text: "Welcome! We’ll start with gentle, vet-safe routines for seniors.", admin: true },
+      { delay: 15000, author: "Alex", text: "Switching off ultra-processed kibble helped my 12yo dog’s joints a lot.", admin: false },
+      { delay: 28000, author: "Chris", text: "Anyone tried omega-3 for stiffness? Worth it?", admin: false },
+      { delay: 42000, author: "🌟 Moderator", text: "High-quality omega-3s can support joints. We'll cover dosages & food ideas.", admin: true },
+      { delay: 58000, author: "Taylor", text: "Ramps by the couch stopped my dog from jumping & hurting himself.", admin: false },
+      { delay: 90000, author: "Priya", text: "Short, low-impact walks helped my senior lab more than long ones.", admin: false },
+      { delay: 93000, author: "🌟 Moderator", text: "Exactly—micro-walks + warm-ups reduce flare-ups.", admin: true },
+      { delay: 120000, author: "Ben", text: "I’m curious about additives in kibble…", admin: false },
+      { delay: 123000, author: "🌟 Moderator", text: "We’ll show how the pet food industry profits off ultra-processed formulas.", admin: true },
+      { delay: 180000, author: "Lena", text: "Hydration & bone broth boosted my cat’s appetite and mood.", admin: false },
+      { delay: 183000, author: "🌟 Moderator", text: "Great! Gentle hydration strategies coming up shortly.", admin: true },
+      { delay: 240000, author: "Mark", text: "My vet ok’d turmeric paste—less limping now.", admin: false },
+      { delay: 300000, author: "Sam", text: "Can seniors do light mobility exercises?", admin: false },
+      { delay: 303000, author: "🌟 Moderator", text: "Yes—range-of-motion moves + soft flooring. We’ll demo today.", admin: true },
+      { delay: 360000, author: "Ava", text: "Subscribing—need a plan for my 11yo beagle asap.", admin: false },
+      { delay: 420000, author: "Noah", text: "I stopped free-feeding kibble; energy is back already.", admin: false },
+      { delay: 480000, author: "Bella", text: "Looking forward to natural anti-inflammatory tips!", admin: false },
+      { delay: 540000, author: "Ethan", text: "Does fresh food really make seniors more playful?", admin: false },
+      { delay: 543000, author: "🌟 Moderator", text: "Wait for the case studies—we’ll show results in under 7 days.", admin: true },
+      { delay: 590000, author: "Zoe", text: "So excited to try this for my arthritic shepherd.", admin: false }
     ],
     []
   );
 
-  // ====== CHAT MESSAGES (Phase 2 – after CTA) ======
   const chatMessagesPhase2 = useMemo(
     () => [
-      { delay: 1000, author: "Grace", text: "Offer unlocked! 🙌", admin: false },
-      { delay: 3000, author: "🌟 Moderator", text: "Limited spots—this is for serious pet parents only", admin: true },
-      { delay: 6000, author: "Zoe", text: "Is there a senior cat plan too?", admin: false },
-      { delay: 8000, author: "🌟 Moderator", text: "Yes—specific for older cats with arthritis & kidney-friendly tips", admin: true },
-      { delay: 12000, author: "Liam", text: "Just grabbed my spot for my 12-yo husky!", admin: false },
-      { delay: 16000, author: "Aiden", text: "Does it include ingredient checklists?", admin: false },
-      { delay: 19000, author: "🌟 Moderator", text: "Yes—labels decoded + safe swaps & simple meal upgrades", admin: true },
-      { delay: 26000, author: "Chloe", text: "Paid. My old girl deserves this 🐶💛", admin: false },
-      { delay: 34000, author: "Mason", text: "This costs less than one vet visit… worth it", admin: false },
-      { delay: 46000, author: "Ella", text: "Adding omega-3 + turmeric worked for us (ask your vet!)", admin: false },
-      { delay: 60000, author: "Jackson", text: "Got it! Let’s help our seniors live better", admin: false }
+      { delay: 1000, author: "Ryan", text: "The guide just unlocked! 🎯", admin: false },
+      { delay: 3000, author: "🌟 Moderator", text: "Limited spots for the Senior Pet Longevity plan—US only.", admin: true },
+      { delay: 6000, author: "Vanessa", text: "Price is fair if it helps my 15yo cat move again.", admin: false },
+      { delay: 8000, author: "Carla", text: "Purchased! The arthritis checklist is gold.", admin: false },
+      { delay: 11000, author: "Bruno", text: "Cheaper than my last vet co-pay 😅", admin: false },
+      { delay: 14000, author: "Carlos", text: "Got my spot—see you inside!", admin: false },
+      { delay: 18000, author: "🌟 Moderator", text: "7-day guarantee for everyone here live.", admin: true },
+      { delay: 25000, author: "Paula", text: "Joined! Starting the mobility routine tonight.", admin: false },
+      { delay: 32000, author: "Rob", text: "Spots are actually going down 👀", admin: false },
+      { delay: 40000, author: "Ana", text: "Payment approved instantly", admin: false },
+      { delay: 48000, author: "Lucas", text: "Is this price only for live viewers?", admin: false },
+      { delay: 51000, author: "🌟 Moderator", text: "Yes—live-only pricing, US time zone.", admin: true },
+      { delay: 65000, author: "Thiago", text: "Processing payment…", admin: false },
+      { delay: 80000, author: "Pri", text: "Exactly what my senior terrier needed.", admin: false },
+      { delay: 95000, author: "Edu", text: "Not missing this.", admin: false }
     ],
     []
   );
@@ -122,10 +152,10 @@ const LiveClass: React.FC = () => {
     container.scrollTop = container.scrollHeight;
 
     const msgs = container.querySelectorAll(".chat-message");
-    if (msgs.length > 60) msgs[0].remove();
+    if (msgs.length > 50) msgs[0].remove();
   };
 
-  // ====== INSERT POLL ======
+  // ====== POLL IN CHAT ======
   const insertPollIntoChat = () => {
     if (!chatContainerRef.current) return;
     const container = chatContainerRef.current;
@@ -142,18 +172,22 @@ const LiveClass: React.FC = () => {
           .map((opt, idx) => {
             const pct = userVoted ? Math.round((tallies[idx] / total) * 100) : 0;
             return `
-              <button class="poll-option" data-idx="${idx}">
-                <span class="poll-text">${opt}</span>
-                ${userVoted ? `
-                  <div class="poll-result">
-                    <div class="poll-bar">
-                      <div class="poll-fill" style="width: ${pct}%"></div>
-                    </div>
-                    <span class="poll-pct">${pct}%</span>
+            <button class="poll-option" data-idx="${idx}">
+              <span class="poll-text">${opt}</span>
+              ${
+                userVoted
+                  ? `
+                <div class="poll-result">
+                  <div class="poll-bar">
+                    <div class="poll-fill" style="width: ${pct}%"></div>
                   </div>
-                ` : ''}
-              </button>
-            `;
+                  <span class="poll-pct">${pct}%</span>
+                </div>
+              `
+                  : ""
+              }
+            </button>
+          `;
           })
           .join("")}
       </div>
@@ -177,7 +211,6 @@ const LiveClass: React.FC = () => {
             next[idx] += 1;
             return next;
           });
-
           pollWrap.remove();
           insertPollIntoChat();
         });
@@ -185,68 +218,7 @@ const LiveClass: React.FC = () => {
     }
   };
 
-  // ====== INIT ======
-  useEffect(() => {
-    // Region (US + Time Zone label)
-    try {
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-      if (usTzMap[tz]) setRegion(usTzMap[tz]);
-      else setRegion("United States");
-    } catch {
-      setRegion("United States");
-    }
-
-    // Inject VTurb assets into <head>
-    const head = document.head;
-
-    // Inline perf script
-    const perfScript = document.createElement("script");
-    perfScript.text = "!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);";
-    head.appendChild(perfScript);
-
-    // Preloads
-    const preload1 = document.createElement("link");
-    preload1.rel = "preload";
-    preload1.as = "script";
-    preload1.href = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b1fa656fe4730e992a26b4/v4/player.js";
-    head.appendChild(preload1);
-
-    const preload2 = document.createElement("link");
-    preload2.rel = "preload";
-    preload2.as = "script";
-    preload2.href = "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js";
-    head.appendChild(preload2);
-
-    const preload3 = document.createElement("link");
-    preload3.rel = "preload";
-    preload3.as = "fetch";
-    preload3.href = "https://cdn.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/68b1fa572a3de119c45bca76/main.m3u8";
-    head.appendChild(preload3);
-
-    // DNS Prefetch
-    ["https://cdn.converteai.net", "https://scripts.converteai.net", "https://images.converteai.net", "https://api.vturb.com.br"].forEach((url) => {
-      const link = document.createElement("link");
-      link.rel = "dns-prefetch";
-      link.href = url;
-      head.appendChild(link);
-    });
-
-    // Load player script after the container exists
-    const s = document.createElement("script");
-    s.src = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b1fa656fe4730e992a26b4/v4/player.js";
-    s.async = true;
-    // Slight delay to ensure container render
-    const loadId = window.setTimeout(() => {
-      head.appendChild(s);
-    }, 400);
-    timersRef.current.push(loadId);
-
-    return () => {
-      // Optional: not strictly removing nodes to avoid conflicts if component remounts.
-    };
-  }, []);
-
-  // ====== CHAT INIT ======
+  // ====== INIT CHAT ======
   useEffect(() => {
     chatMessagesPhase1.forEach((m) => {
       const t = window.setTimeout(() => appendChat(m.author, m.text, m.admin), m.delay);
@@ -262,17 +234,16 @@ const LiveClass: React.FC = () => {
 
   useEffect(() => {
     if (pollVisible) insertPollIntoChat();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pollVisible]);
+  }, [pollVisible]); // eslint-disable-line
 
-  // ====== USER INTERACTION ======
+  // ====== USER INTERACTION FLAG ======
   useEffect(() => {
     const handler = () => !userInteracted && setUserInteracted(true);
     document.addEventListener("click", handler);
     return () => document.removeEventListener("click", handler);
   }, [userInteracted]);
 
-  // ====== COUNTERS ======
+  // ====== VIEWERS & ONLINE COUNTS ======
   useEffect(() => {
     const viewerInterval = window.setInterval(() => {
       setViewerCount((v) => {
@@ -281,13 +252,15 @@ const LiveClass: React.FC = () => {
         return Math.max(1200, Math.min(1450, v + change));
       });
     }, 3000);
+
     const onlineInterval = window.setInterval(() => {
       setOnlineCount((o) => {
         if (!ctaActivated && o < 320) return o + Math.floor(Math.random() * 5) + 1;
         return Math.max(280, Math.min(350, o + (Math.floor(Math.random() * 8) - 3)));
       });
     }, 4000);
-    intervalsRef.current.push(viewerInterval as unknown as number, onlineInterval as unknown as number);
+
+    intervalsRef.current.push(viewerInterval, onlineInterval);
     return () => {
       window.clearInterval(viewerInterval);
       window.clearInterval(onlineInterval);
@@ -301,7 +274,7 @@ const LiveClass: React.FC = () => {
     return () => window.clearTimeout(t);
   }, [TIMING.preCta]);
 
-  // ====== CTA ACTIVATE (10 MIN) ======
+  // ====== CTA ACTIVATE ======
   const activateCTA = () => {
     if (ctaActivated) return;
     setCtaActivated(true);
@@ -317,19 +290,21 @@ const LiveClass: React.FC = () => {
         return Math.max(2, s - reduction);
       });
     };
+
     [3000, 8000, 15000, 25000, 40000, 60000].forEach((ms) => {
       const t = window.setTimeout(reduceSpots, ms);
       timersRef.current.push(t);
     });
+
     const slowReduction = window.setInterval(reduceSpots, 45000);
-    intervalsRef.current.push(slowReduction as unknown as number);
+    intervalsRef.current.push(slowReduction);
   };
 
   useEffect(() => {
     const t = window.setTimeout(activateCTA, TIMING.showCta);
     timersRef.current.push(t);
     return () => window.clearTimeout(t);
-  }, [TIMING.showCta]);
+  }, [TIMING.showCta]); // eslint-disable-line
 
   // ====== CLEANUP ======
   useEffect(() => {
@@ -342,26 +317,20 @@ const LiveClass: React.FC = () => {
   // ====== CTA CLICK ======
   const handleCtaClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open("https://www.your-checkout.com/offer", "_blank");
+    window.open("https://pay.hotmart.com/seu-link", "_blank");
   };
 
   return (
     <>
       <div className={`top-bar ${ctaActivated ? "urgent" : ""}`}>
-        <div className="top-left">
-          <span className="flag">🇺🇸</span> {region}
-        </div>
-        <div className="top-center">
-          {ctaActivated ? "🔥 OFFER UNLOCKED! Last discounted spots" : "🐾 Senior Pet Longevity Class — Stay focused"}
-        </div>
-        <div className="top-right">
-          <span className="disclaimer">Educational content — not veterinary advice</span>
-        </div>
+        {ctaActivated
+          ? "🔥 OFFER UNLOCKED! Last discounted spots"
+          : "📚 Senior Pet Longevity — Watch the tips"}
       </div>
 
       <div className="container">
         <div className="video-column">
-          {/* Video */}
+          {/* VIDEO (VTurb SmartPlayer inside the player wrapper) */}
           <div className="video-wrapper">
             <div className="live-indicator" aria-live="polite">
               <span className="live-dot" aria-hidden />
@@ -369,7 +338,9 @@ const LiveClass: React.FC = () => {
             </div>
 
             <div className="viewer-counter" aria-live="polite">
-              <span role="img" aria-label="views">👁</span>
+              <span role="img" aria-label="views">
+                👁
+              </span>
               {viewerCount.toLocaleString("en-US")}
             </div>
 
@@ -377,77 +348,63 @@ const LiveClass: React.FC = () => {
               {/* VTurb container */}
               <div
                 id="vid_68b1fa656fe4730e992a26b4"
-                className="vturb-player"
-                style={{ position: "relative", paddingTop: "56.25%", width: "100%" }}
+                className="vturb-embed"
+                aria-label="Live presentation: senior pet longevity tips"
               />
             </div>
 
             <div className="exclusive-tag">🔒 Exclusive content — Unlisted</div>
           </div>
 
-          {/* Pre-CTA */}
+          {/* PRE-CTA */}
           {preCtaActive && !ctaActivated && (
             <div className="pre-cta">
               <h3>🎯 Heads up!</h3>
-              <p>In a few minutes, we’ll unlock a special plan for senior dogs & cats with arthritis.</p>
+              <p>In the next minutes we’ll unlock something special…</p>
             </div>
           )}
 
-          {/* CTA */}
+          {/* MAIN CTA */}
           {ctaActivated && (
             <div className="cta-box" role="region" aria-label="Offer">
-              <h2>🎁 SPECIAL OFFER UNLOCKED</h2>
-              <p className="cta-subtitle">For live viewers only — tailored senior pet plan</p>
+              <h2>🎁 OFFER UNLOCKED!</h2>
+              <p className="cta-subtitle">Exclusive for those here live (United States)</p>
 
               <div className="price-box" aria-live="polite">
-                <span className="old-price">Was $197</span>
+                <span className="old-price">Was $497</span>
                 <span className="new-price">Now $97</span>
-                <span className="installments">or 4× $24.25</span>
+                <span className="installments">or 12 payments of $9.70</span>
               </div>
-              <button className="cta-button" onClick={handleCtaClick} aria-label="Get my spot now">
-                GET MY SPOT NOW
+
+              <button
+                className="cta-button"
+                onClick={handleCtaClick}
+                aria-label="Secure my spot now"
+              >
+                SECURE MY SPOT NOW
               </button>
+
               <div className="spots-counter" aria-live="polite">
                 <span>⚠️ Only</span>
                 <span className={`spots-number ${spots <= 5 ? "urgent" : ""}`}>{spots}</span>
                 <span>discounted spots left</span>
               </div>
-
-              <ul className="cta-bullets">
-                <li>✔ Arthritis-friendly diet upgrades for dogs & cats</li>
-                <li>✔ Label red-flags (additives, artificial colors, vague meats)</li>
-                <li>✔ Mobility checklist: ramps, short walks, warm bed</li>
-                <li>✔ Vet-friendly supplement guide (omega-3, joint support)</li>
-              </ul>
             </div>
           )}
-
-          {/* Content under video */}
-          <section className="copy-section">
-            <h2>Did you know nutrition is the #1 factor that determines how your senior pet will age?</h2>
-            <p>
-              Most pet parents don’t notice the small daily diet mistakes that drain energy, worsen joint discomfort, and
-              can lead to very high vet bills. The pet food industry loves ultra-processed formulas—packed with additives
-              that keep shelves full, not pets healthy.
-            </p>
-            <p>
-              The good news? There’s a simple, safer way to upgrade meals today. In this presentation, you’ll learn how to
-              spot toxic red-flags in kibble, what to add for joint comfort and energy, and how to help your best friend age
-              better—with more comfort, mobility, and joy.
-            </p>
-          </section>
         </div>
 
-        {/* Chat */}
+        {/* CHAT */}
         <div className="chat-column">
           <div className="chat-header">
             <h3>💬 Live Chat</h3>
             <div className="online-counter" aria-live="polite">
               <span className="online-dot" aria-hidden />
-              {onlineCount} online
+              {onlineCount} online (US)
             </div>
           </div>
+
           <div className="chat-messages" ref={chatContainerRef} />
+
           <div className="chat-input-wrapper">
             <input
               type="text"
@@ -461,7 +418,11 @@ const LiveClass: React.FC = () => {
                     input.value = "";
 
                     setTimeout(() => {
-                      appendChat("🌟 Moderator", "Great question! We’ll cover that shortly—stay with us.", true);
+                      appendChat(
+                        "🌟 Moderator",
+                        "Great question! Keep watching—we’ll cover that in today’s tips.",
+                        true
+                      );
                     }, 1500);
                   }
                 }
@@ -471,73 +432,104 @@ const LiveClass: React.FC = () => {
         </div>
       </div>
 
-      {/* Sticky mini-CTA (mobile) */}
+      {/* Sticky mini-CTA for mobile */}
       {ctaActivated && (
-        <button className="sticky-cta" onClick={handleCtaClick} aria-label="Get my spot">
-          Get my spot for $97
+        <button className="sticky-cta" onClick={handleCtaClick} aria-label="Secure spot">
+          Secure spot for $97
         </button>
       )}
 
-      {/* Legal & Footer */}
+      {/* FOOTER */}
       <footer className="site-footer">
-        <p>© {new Date().getFullYear()} Your Brand. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Your Brand. All rights reserved — United States.</p>
         <nav className="footer-links">
-          <button onClick={() => setTermsOpen(true)} aria-label="Terms of Use">Terms</button>
-          <button onClick={() => setPrivacyOpen(true)} aria-label="Privacy Policy">Privacy</button>
-          <a href="#" aria-label="Support">Support</a>
+          <a
+            href="#"
+            aria-label="Terms of Use"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowTerms(true);
+            }}
+          >
+            Terms
+          </a>
+          <a
+            href="#"
+            aria-label="Privacy Policy"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowPrivacy(true);
+            }}
+          >
+            Privacy
+          </a>
+          <a href="#" aria-label="Support">
+            Support
+          </a>
         </nav>
       </footer>
 
-      {/* Terms Modal */}
-      {termsOpen && (
+      {/* TERMS MODAL (Facebook-acceptable, plain) */}
+      {showTerms && (
         <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Terms of Use">
           <div className="modal">
             <h2>Terms of Use</h2>
             <div className="modal-body">
               <p>
-                This website provides educational information about nutrition and lifestyle ideas for senior dogs and cats.
-                It is not a substitute for professional veterinary care. Always consult your veterinarian before changing
-                your pet’s diet, medications, or activity level. Individual results vary and are not guaranteed.
+                This content is for educational purposes and is not a substitute for professional
+                veterinary advice. Always consult a licensed veterinarian before making diet or
+                health changes for your pet, especially seniors or pets with existing conditions.
               </p>
               <p>
-                By using this site and purchasing any product or program, you agree not to rely solely on the information
-                provided here for diagnosing or treating your pet. You also agree to our refund, billing, and access terms
-                presented at checkout.
+                By using this site, you agree not to rely solely on the information provided here
+                and you assume all risks associated with applying any suggestions. We do not
+                guarantee specific results. Pricing and availability may change without notice.
               </p>
               <p>
-                This site is not a part of Facebook™ or Meta Platforms, Inc. Additionally, this site is NOT endorsed by
-                Facebook™ in any way. FACEBOOK™ is a trademark of Meta Platforms, Inc.
+                Any references to pet food industry practices are opinions based on analysis of
+                ultra-processed formulas and common additives. We encourage responsible, vet-guided
+                care.
               </p>
-            </div>
-            <div className="modal-actions">
-              <button onClick={() => setTermsOpen(false)} className="close-btn">Close</button>
+              <p>
+                This site may promote products or programs. If you purchase through provided links,
+                we may receive compensation. All trademarks belong to their respective owners.
+              </p>
+              <button className="modal-close" onClick={() => setShowTerms(false)} aria-label="Close">
+                Close
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Privacy Modal */}
-      {privacyOpen && (
+      {/* PRIVACY MODAL (Facebook-acceptable, plain) */}
+      {showPrivacy && (
         <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Privacy Policy">
           <div className="modal">
             <h2>Privacy Policy</h2>
             <div className="modal-body">
               <p>
-                We respect your privacy. If you provide your name, email, or payment information, we use it to deliver the
-                content you requested, process your order, and send service updates. We do not sell your personal data.
+                We respect your privacy. We collect basic information you voluntarily provide (like
+                name and email) to deliver content, offers, and support. We may use cookies or
+                similar technologies to improve the user experience and measure performance.
               </p>
               <p>
-                We may use cookies or similar technologies to remember preferences, analyze site performance, and improve
-                your experience. You can manage cookies in your browser settings. If you click third-party links (including
-                checkout providers), their policies apply.
+                We may share data with service providers strictly to operate the site (e.g., video
+                hosting via VTurb/Converteai, checkout via Hotmart). We do not sell your personal
+                information. You can request access or deletion of your data by contacting Support.
               </p>
               <p>
-                For data requests or deletion, contact Support. If you are located in the United States, your data may be
-                processed in the U.S. and other countries as needed to provide our services.
+                Third-party tools may place cookies and collect usage data in accordance with their
+                own policies. By using this site, you consent to such processing consistent with US
+                privacy standards and Facebook policies.
               </p>
-            </div>
-            <div className="modal-actions">
-              <button onClick={() => setPrivacyOpen(false)} className="close-btn">Close</button>
+              <button
+                className="modal-close"
+                onClick={() => setShowPrivacy(false)}
+                aria-label="Close"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
@@ -555,12 +547,8 @@ const LiveClass: React.FC = () => {
           position: fixed; top: 0; left: 0; right: 0;
           background: rgba(20, 20, 35, 0.95);
           backdrop-filter: blur(10px);
-          padding: 10px 16px;
-          display: grid;
-          grid-template-columns: 1fr auto 1fr;
-          align-items: center;
-          font-size: 13px; font-weight: 600;
-          z-index: 1000;
+          padding: 14px; text-align: center;
+          font-size: 14px; font-weight: 600; z-index: 1000;
           border-bottom: 1px solid rgba(255, 255, 255, 0.1);
           transition: all 0.3s ease;
         }
@@ -568,13 +556,7 @@ const LiveClass: React.FC = () => {
           background: linear-gradient(90deg, #ff6b6b, #ff8787);
           animation: urgentPulse 2s infinite;
         }
-        .top-left { justify-self: start; opacity: 0.95; display: flex; gap: 6px; align-items: center; }
-        .top-center { justify-self: center; text-align: center; }
-        .top-right { justify-self: end; font-weight: 500; opacity: 0.85; }
-        .flag { font-size: 16px; }
-        .disclaimer { font-size: 12px; }
-
-        @keyframes urgentPulse { 0%,100%{opacity:1} 50%{opacity:0.9} }
+        @keyframes urgentPulse { 0%,100%{opacity:1;} 50%{opacity:.9;} }
 
         .container {
           max-width: 1400px;
@@ -587,57 +569,45 @@ const LiveClass: React.FC = () => {
 
         /* Video */
         .video-wrapper {
-          position: relative;
-          background: #000;
-          border-radius: 20px;
-          overflow: hidden;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+          position: relative; background: #000;
+          border-radius: 20px; overflow: hidden;
+          box-shadow: 0 20px 60px rgba(0,0,0,.5);
         }
         .live-indicator {
           position: absolute; top: 20px; left: 20px;
-          background: #ff4757;
-          padding: 8px 16px; border-radius: 20px;
-          font-size: 13px; font-weight: 600;
-          display: flex; align-items: center; gap: 8px;
-          z-index: 10;
-          animation: livePulse 2s infinite;
+          background: #ff4757; padding: 8px 16px; border-radius: 20px;
+          font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+          z-index: 10; animation: livePulse 2s infinite;
         }
         @keyframes livePulse {
-          0%,100% { box-shadow: 0 0 0 0 rgba(255,71,87,0.7); }
+          0%,100% { box-shadow: 0 0 0 0 rgba(255,71,87,.7); }
           50% { box-shadow: 0 0 0 10px rgba(255,71,87,0); }
         }
         .live-dot { width: 8px; height: 8px; background: white; border-radius: 50%; animation: dotPulse 1.5s infinite; }
-        @keyframes dotPulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+        @keyframes dotPulse { 0%,100% {opacity:1;} 50% {opacity:.5;} }
 
         .viewer-counter {
           position: absolute; top: 20px; right: 20px;
-          background: rgba(0,0,0,0.7);
-          backdrop-filter: blur(10px);
-          padding: 8px 16px; border-radius: 20px;
-          font-size: 14px; font-weight: 600;
-          display: flex; align-items: center; gap: 8px;
-          z-index: 10;
+          background: rgba(0,0,0,.7); backdrop-filter: blur(10px);
+          padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600;
+          display: flex; align-items: center; gap: 8px; z-index: 10;
         }
         .video-player { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
-        .vturb-player > iframe, .vturb-player > video {
-          position: absolute !important; top: 0; left: 0; width: 100% !important; height: 100% !important;
-        }
+        .vturb-embed { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+
         .exclusive-tag {
           position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-          background: rgba(255,215,0,0.15);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255,215,0,0.3);
-          padding: 8px 20px; border-radius: 20px;
-          font-size: 12px; color: #ffd700;
+          background: rgba(255,215,0,.15); backdrop-filter: blur(10px);
+          border: 1px solid rgba(255,215,0,.3);
+          padding: 8px 20px; border-radius: 20px; font-size: 12px; color: #ffd700;
         }
 
         /* Pre-CTA */
         .pre-cta {
           margin-top: 20px; padding: 20px;
-          background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,215,0,0.05));
-          border: 1px solid rgba(255,215,0,0.3);
-          border-radius: 16px; text-align: center;
-          animation: fadeIn 0.5s ease;
+          background: linear-gradient(135deg, rgba(255,215,0,.1), rgba(255,215,0,.05));
+          border: 1px solid rgba(255,215,0,.3);
+          border-radius: 16px; text-align: center; animation: fadeIn .5s ease;
         }
         .pre-cta h3 { color: #ffd700; margin-bottom: 8px; }
 
@@ -645,11 +615,10 @@ const LiveClass: React.FC = () => {
         .cta-box {
           margin-top: 20px; padding: 30px;
           background: linear-gradient(135deg, #1e1e35, #2a2a45);
-          border-radius: 20px; text-align: center;
-          animation: slideUp 0.5s ease;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+          border-radius: 20px; text-align: center; animation: slideUp .5s ease;
+          box-shadow: 0 10px 40px rgba(0,0,0,.3);
         }
-        @keyframes slideUp { from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)} }
+        @keyframes slideUp { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
         .cta-box h2 { color: #ffd700; margin-bottom: 10px; font-size: 24px; }
         .cta-subtitle { color: #aaa; margin-bottom: 20px; }
         .price-box { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 25px; }
@@ -657,35 +626,29 @@ const LiveClass: React.FC = () => {
         .new-price { color: #ffd700; font-size: 32px; font-weight: bold; }
         .installments { color: #aaa; font-size: 14px; }
         .cta-button {
-          background: linear-gradient(135deg, #ffd700, #ffed4e);
-          color: #000; border: none; padding: 18px 40px; border-radius: 50px;
-          font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s ease;
-          box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+          background: linear-gradient(135deg, #ffd700, #ffed4e); color: #000; border: none;
+          padding: 18px 40px; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer;
+          transition: all .3s ease; box-shadow: 0 10px 30px rgba(255,215,0,.3);
         }
-        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(255,215,0,0.4); }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(255,215,0,.4); }
         .spots-counter {
           margin-top: 20px; padding: 15px;
-          background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.3); border-radius: 12px;
-          display: flex; align-items: center; justify-content: center; gap: 10px;
+          background: rgba(255,0,0,.1); border: 1px solid rgba(255,0,0,.3);
+          border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         .spots-number { font-size: 28px; font-weight: bold; color: #ffd700; animation: spotsPulse 2s infinite; }
-        .spots-number.urgent { color: #ff4757; animation: urgentSpotsPulse 0.5s infinite; }
-        @keyframes spotsPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
-        @keyframes urgentSpotsPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
-
-        .copy-section { margin-top: 28px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 20px; }
-        .copy-section h2 { margin-bottom: 10px; font-size: 22px; }
-        .copy-section p { color: #e4e4e4; margin-bottom: 10px; line-height: 1.6; }
+        .spots-number.urgent { color: #ff4757; animation: urgentSpotsPulse .5s infinite; }
+        @keyframes spotsPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
+        @keyframes urgentSpotsPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
 
         /* Chat */
         .chat-column {
           background: linear-gradient(135deg, #1a1a2e, #252540);
           border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; height: 700px;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+          box-shadow: 0 10px 40px rgba(0,0,0,.3);
         }
         .chat-header {
-          padding: 20px; background: rgba(0,0,0,0.2);
-          border-bottom: 1px solid rgba(255,255,255,0.1);
+          padding: 20px; background: rgba(0,0,0,.2); border-bottom: 1px solid rgba(255,255,255,.1);
           display: flex; justify-content: space-between; align-items: center;
         }
         .chat-header h3 { font-size: 16px; font-weight: 600; }
@@ -694,85 +657,77 @@ const LiveClass: React.FC = () => {
 
         .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
         .chat-messages::-webkit-scrollbar { width: 6px; }
-        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
-        .chat-message { animation: messageSlide 0.3s ease; }
-        @keyframes messageSlide { from{opacity:0; transform:translateX(-10px)} to{opacity:1; transform:translateX(0)} }
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 3px; }
+        .chat-message { animation: messageSlide .3s ease; }
+        @keyframes messageSlide { from{opacity:0; transform:translateX(-10px);} to{opacity:1; transform:translateX(0);} }
         .message-author { font-size: 13px; font-weight: 600; color: #74b9ff; margin-bottom: 4px; }
         .message-admin .message-author { color: #ffd700; }
         .message-text { font-size: 14px; color: #e0e0e0; line-height: 1.4; }
 
         /* Poll */
         .poll-container {
-          background: linear-gradient(135deg, rgba(74,185,255,0.1), rgba(74,185,255,0.05));
-          border: 1px solid rgba(74,185,255,0.3);
+          background: linear-gradient(135deg, rgba(74,185,255,.1), rgba(74,185,255,.05));
+          border: 1px solid rgba(74,185,255,.3);
           border-radius: 12px; padding: 16px; margin: 10px 0;
         }
         .poll-header { color: #74b9ff; font-weight: 600; font-size: 12px; margin-bottom: 10px; }
         .poll-question { font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #fff; }
         .poll-options { display: flex; flex-direction: column; gap: 8px; }
         .poll-option {
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 8px; padding: 10px; cursor: pointer; transition: all 0.2s ease;
+          background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+          border-radius: 8px; padding: 10px; cursor: pointer; transition: all .2s ease;
           color: #e0e0e0; font-size: 14px; text-align: left;
         }
-        .poll-option:hover { background: rgba(255,255,255,0.1); transform: translateX(5px); }
+        .poll-option:hover { background: rgba(255,255,255,.1); transform: translateX(5px); }
         .poll-result { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
-        .poll-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
-        .poll-fill { height: 100%; background: linear-gradient(90deg, #74b9ff, #54a0ff); transition: width 0.5s ease; }
+        .poll-bar { flex: 1; height: 6px; background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden; }
+        .poll-fill { height: 100%; background: linear-gradient(90deg, #74b9ff, #54a0ff); transition: width .5s ease; }
         .poll-pct { color: #74b9ff; font-weight: 600; font-size: 12px; min-width: 35px; }
         .poll-hint { margin-top: 10px; font-size: 12px; color: #74b9ff; text-align: center; }
 
-        /* Chat Input */
-        .chat-input-wrapper { padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.25); }
+        /* Chat input */
+        .chat-input-wrapper {
+          padding: 12px; border-top: 1px solid rgba(255,255,255,.1); background: rgba(0,0,0,.25);
+        }
         .chat-input {
-          width: 100%; padding: 12px 14px; border-radius: 10px;
-          border: 1px solid rgba(255,255,255,0.15);
-          background: rgba(255,255,255,0.06); color: #fff; outline: none;
-          transition: border 0.2s ease, background 0.2s ease;
+          width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.15);
+          background: rgba(255,255,255,.06); color: #fff; outline: none; transition: border .2s ease, background .2s ease;
         }
         .chat-input::placeholder { color: #bdbdbd; }
-        .chat-input:focus { border-color: #74b9ff; background: rgba(255,255,255,0.12); }
+        .chat-input:focus { border-color: #74b9ff; background: rgba(255,255,255,.12); }
 
         /* Sticky CTA (mobile) */
         .sticky-cta {
           position: fixed; bottom: 16px; left: 16px; right: 16px;
-          padding: 14px 18px; border-radius: 999px; border: none;
-          font-weight: 800; font-size: 15px;
-          background: linear-gradient(135deg, #ffd700, #ffed4e);
-          color: #000; box-shadow: 0 12px 30px rgba(255,215,0,0.35);
-          z-index: 1001; display: none;
+          padding: 14px 18px; border-radius: 999px; border: none; font-weight: 800; font-size: 15px;
+          background: linear-gradient(135deg, #ffd700, #ffed4e); color: #000;
+          box-shadow: 0 12px 30px rgba(255,215,0,.35); z-index: 1001; display: none;
         }
 
         /* Footer */
         .site-footer {
-          max-width: 1400px;
-          margin: 20px auto 40px; padding: 0 20px;
-          display: flex; align-items: center; justify-content: space-between; gap: 16px; opacity: 0.85; font-size: 13px;
+          max-width: 1400px; margin: 20px auto 40px; padding: 0 20px;
+          display: flex; align-items: center; justify-content: space-between; gap: 16px; opacity: .8; font-size: 13px;
         }
         .footer-links { display: flex; gap: 14px; }
-        .footer-links a, .footer-links button {
-          color: #cfd8ff; text-decoration: none; background: none; border: none; cursor: pointer; font: inherit;
-        }
-        .footer-links a:hover, .footer-links button:hover { text-decoration: underline; }
+        .footer-links a { color: #cfd8ff; text-decoration: none; }
+        .footer-links a:hover { text-decoration: underline; }
 
-        /* Modals */
+        /* Modal */
         .modal-overlay {
-          position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-          display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1002;
+          position: fixed; inset: 0; background: rgba(0,0,0,.6);
+          display: flex; align-items: center; justify-content: center; z-index: 2000;
         }
         .modal {
-          background: #17172b; border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 14px; max-width: 720px; width: 100%;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-          padding: 20px;
+          width: min(680px, 92vw); background: #131329; border: 1px solid rgba(255,255,255,.12);
+          border-radius: 16px; padding: 24px;
+          box-shadow: 0 30px 80px rgba(0,0,0,.5);
         }
-        .modal h2 { margin-bottom: 12px; }
-        .modal-body { color: #e4e4e4; line-height: 1.6; display: grid; gap: 10px; }
-        .modal-actions { margin-top: 16px; display: flex; justify-content: flex-end; }
-        .close-btn {
-          padding: 10px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15);
-          background: rgba(255,255,255,0.06); color: #fff; cursor: pointer;
+        .modal h2 { margin-bottom: 10px; color: #ffd700; }
+        .modal-body { color: #e9e9f3; line-height: 1.6; display: grid; gap: 12px; }
+        .modal-close {
+          margin-top: 14px; padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer;
+          background: #ffd700; color: #000; font-weight: 700;
         }
 
         /* Responsive */
@@ -786,9 +741,7 @@ const LiveClass: React.FC = () => {
           .price-box { gap: 8px; }
           .new-price { font-size: 26px; }
           .cta-button { width: 100%; }
-          .site-footer { flex-direction: column; align-items: flex-start; gap: 8px; }
-          .top-bar { grid-template-columns: 1fr; gap: 6px; text-align: center; }
-          .top-left, .top-right { justify-self: center; }
+          .site-footer { flex-direction: column; align-items: flex-start; }
         }
       `}</style>
     </>
