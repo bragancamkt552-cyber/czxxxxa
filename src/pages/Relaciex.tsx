@@ -8,6 +8,7 @@ const LiveClass: React.FC = () => {
   const [onlineCount, setOnlineCount] = useState(187);
   const [preCtaActive, setPreCtaActive] = useState(false);
   const [spots, setSpots] = useState(20);
+  const [videoLoading, setVideoLoading] = useState(true);
   const [videoError, setVideoError] = useState(false);
   // Poll
   const pollBase = useMemo(
@@ -28,10 +29,11 @@ const LiveClass: React.FC = () => {
   const [tallies, setTallies] = useState<number[]>(pollBase.baseVotes);
   // Refs
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const videoPlayerRef = useRef<HTMLDivElement | null>(null);
   const timersRef = useRef<number[]>([]);
   const intervalsRef = useRef<number[]>([]);
 
-  // Dynamically load VTurb scripts
+  // Dynamically load VTurb scripts and initialize player
   useEffect(() => {
     const scripts = [
       {
@@ -43,17 +45,38 @@ const LiveClass: React.FC = () => {
         async: true,
       },
     ];
+    let isMounted = true;
+
     scripts.forEach(({ src, async }) => {
       if (!document.querySelector(`script[src="${src}"]`)) {
         const script = document.createElement("script");
         script.src = src;
         script.async = async;
+        script.onload = () => {
+          if (isMounted && videoPlayerRef.current) {
+            const smartPlayer = document.createElement("smart-player");
+            smartPlayer.setAttribute("video-id", "68b1fa656fe4730e992a26b4");
+            smartPlayer.setAttribute("account-id", "ec09afc3-b6c2-4de5-b556-85edb9ced296");
+            smartPlayer.setAttribute("player-version", "v4");
+            smartPlayer.setAttribute("autoplay", "true");
+            videoPlayerRef.current.innerHTML = ""; // Clear any existing content
+            videoPlayerRef.current.appendChild(smartPlayer);
+            setVideoLoading(false);
+            // Check if player loaded correctly
+            setTimeout(() => {
+              if (!smartPlayer.shadowRoot || !smartPlayer.shadowRoot.querySelector("video")) {
+                setVideoError(true);
+              }
+            }, 5000); // 5-second timeout
+          }
+        };
         script.onerror = () => setVideoError(true);
         document.head.appendChild(script);
       }
     });
+
     return () => {
-      // Cleanup not needed for scripts as they are globally loaded
+      isMounted = false;
     };
   }, []);
 
@@ -292,18 +315,12 @@ const LiveClass: React.FC = () => {
               <span role="img" aria-label="views">👁</span>
               {viewerCount.toLocaleString('en-US')}
             </div>
-            <div className="video-player">
-              {videoError ? (
+            <div className="video-player" ref={videoPlayerRef}>
+              {videoLoading && <div className="video-loading">Loading video...</div>}
+              {videoError && (
                 <div className="video-error">
                   Video failed to load. Please contact <a href="https://app.vturb.com" target="_blank" rel="noopener noreferrer">VTurb Support</a>.
                 </div>
-              ) : (
-                <smart-player
-                  video-id="68b1fa656fe4730e992a26b4"
-                  account-id="ec09afc3-b6c2-4de5-b556-85edb9ced296"
-                  player-version="v4"
-                  autoplay
-                ></smart-player>
               )}
             </div>
             <div className="exclusive-tag">
@@ -428,22 +445,23 @@ const LiveClass: React.FC = () => {
         }
         .video-headline {
           text-align: center;
-          font-size: 32px;
+          font-size: 36px;
           font-weight: 700;
           background: linear-gradient(135deg, #ffd700, #ffed4e);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           margin-bottom: 20px;
-          padding: 10px 20px;
-          max-width: 800px;
+          padding: 15px 30px;
+          max-width: 900px;
           margin-left: auto;
           margin-right: auto;
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-          animation: fadeInHeadline 1s ease-in-out;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          animation: fadeInScale 1.2s ease-in-out;
         }
-        @keyframes fadeInHeadline {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInScale {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
         }
         /* Video */
         .video-wrapper {
@@ -503,6 +521,7 @@ const LiveClass: React.FC = () => {
           padding-bottom: 56.25%;
           height: 0;
           background: #000;
+          overflow: hidden; /* Ensure content stays within bounds */
         }
         .video-player smart-player,
         .video-player iframe {
@@ -511,6 +530,17 @@ const LiveClass: React.FC = () => {
           left: 0;
           width: 100%;
           height: 100%;
+          z-index: 1;
+        }
+        .video-loading {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: #fff;
+          font-size: 18px;
+          text-align: center;
+          z-index: 2;
         }
         .video-error {
           position: absolute;
@@ -526,6 +556,7 @@ const LiveClass: React.FC = () => {
           text-align: center;
           background: #202020;
           padding: 20px;
+          z-index: 2;
         }
         .video-error a {
           color: #ea4634;
@@ -878,7 +909,7 @@ const LiveClass: React.FC = () => {
             height: 500px;
           }
           .video-headline {
-            font-size: 28px;
+            font-size: 30px;
           }
         }
         @media (max-width: 720px) {
