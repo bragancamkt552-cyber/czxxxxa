@@ -265,12 +265,13 @@ const LiveClass: React.FC = () => {
               {viewerCount.toLocaleString('en-US')}
             </div>
             <div className="video-player">
-              <smart-player
-                video-id="68b1fa656fe4730e992a26b4"
-                account-id="ec09afc3-b6c2-4de5-b556-85edb9ced296"
-                player-version="v4"
-                autoplay
-              ></smart-player>
+              <iframe
+                title="Live Class on Senior Pet Health"
+                src="https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b1fa656fe4730e992a26b4/v4/player.html?autoplay=1"
+                frameBorder="0"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+              />
             </div>
             <div className="exclusive-tag">
               🔒 Exclusive Content - Unlisted
@@ -459,7 +460,7 @@ const LiveClass: React.FC = () => {
           height: 0;
           background: #000;
         }
-        .video-player smart-player {
+        .video-player iframe {
           position: absolute;
           top: 0;
           left: 0;
