@@ -373,7 +373,7 @@ const ProtocoleSite = () => {
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-sm mb-6" style={{ color: '#8a8d91' }}>
             <p className="mb-4">
-              Sur <strong>protocole.paiscelestiais.com.br</strong>, l'ensemble du contenu et des 
+              Sur <strong>www.dreamvisionlp.online</strong>, l'ensemble du contenu et des 
               informations relève de notre seule et entière responsabilité. Nous tenons à préciser 
               que ce site n'a aucune affiliation, aucun parrainage ni aucune approbation de la part 
               de Meta Platforms, Inc. <strong>Facebook et Instagram</strong>, qui n'est en aucun cas 
