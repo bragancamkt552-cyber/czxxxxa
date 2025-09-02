@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowLeft, FileText } from 'lucide-react';
 
 const TermsFrench: React.FC = () => {
   const goBack = () => {
@@ -13,14 +12,16 @@ const TermsFrench: React.FC = () => {
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <FileText className="w-8 h-8 text-purple-400" />
+              <div className="w-8 h-8 bg-purple-400 rounded flex items-center justify-center text-white font-bold">
+                D
+              </div>
               <span className="text-xl font-bold text-white">DreamVision</span>
             </div>
             <button 
               onClick={goBack} 
               className="flex items-center space-x-2 px-4 py-2 border border-gray-600 rounded-lg text-white hover:bg-gray-800 transition-colors"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <span className="text-lg">←</span>
               <span>Retour</span>
             </button>
           </div>
