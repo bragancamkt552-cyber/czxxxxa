@@ -28,7 +28,7 @@ const ProtocoleSite = () => {
 
   // Carrega o Meta Pixel
   useEffect(() => {
-    // Meta Pixel Code
+    // Meta Pixel Code - Pixel 1
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -37,23 +37,33 @@ const ProtocoleSite = () => {
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
+    
+    // Inicializa os dois pixels
     window.fbq('init', '1093258939518583');
+    window.fbq('init', '1351918292572124');
+    
+    // Dispara PageView para ambos
     window.fbq('track', 'PageView');
 
-    // Adiciona a imagem noscript ao body
-    const noscriptImg = document.createElement('img');
-    noscriptImg.height = 1;
-    noscriptImg.width = 1;
-    noscriptImg.style.display = 'none';
-    noscriptImg.src = 'https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1';
-    document.body.appendChild(noscriptImg);
+    // Adiciona as imagens noscript ao body para ambos os pixels
+    const noscriptImg1 = document.createElement('img');
+    noscriptImg1.height = 1;
+    noscriptImg1.width = 1;
+    noscriptImg1.style.display = 'none';
+    noscriptImg1.src = 'https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1';
+    document.body.appendChild(noscriptImg1);
+
+    const noscriptImg2 = document.createElement('img');
+    noscriptImg2.height = 1;
+    noscriptImg2.width = 1;
+    noscriptImg2.style.display = 'none';
+    noscriptImg2.src = 'https://www.facebook.com/tr?id=1351918292572124&ev=PageView&noscript=1';
+    document.body.appendChild(noscriptImg2);
 
     return () => {
       // Cleanup se necessário
-      const existingImg = document.querySelector('img[src*="facebook.com/tr"]');
-      if (existingImg) {
-        existingImg.remove();
-      }
+      const existingImgs = document.querySelectorAll('img[src*="facebook.com/tr"]');
+      existingImgs.forEach(img => img.remove());
     };
   }, []);
 
