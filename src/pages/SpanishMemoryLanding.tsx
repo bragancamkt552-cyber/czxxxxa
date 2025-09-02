@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// Componente principal do site
+
 const ProtocoleSite = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [showButton, setShowButton] = useState(false);
