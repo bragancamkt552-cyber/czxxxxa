@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-
+// Componente principal do site
 const ProtocoleSite = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [showButton, setShowButton] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
-
+  // Configura a data atual em formato francês
   useEffect(() => {
     const data = new Date();
     const options = {
@@ -156,7 +156,7 @@ const ProtocoleSite = () => {
           {/* Headlines acima do vídeo */}
           <div className="text-center mb-8">
             <h1 style={{ 
-              fontSize: '32px', 
+              fontSize: '28px', 
               fontWeight: 'bold', 
               color: '#171717',
               lineHeight: '1.2',
@@ -167,7 +167,7 @@ const ProtocoleSite = () => {
             </h1>
             
             <h2 style={{ 
-              fontSize: '20px', 
+              fontSize: '18px', 
               fontWeight: '500', 
               color: '#666666',
               lineHeight: '1.4',
