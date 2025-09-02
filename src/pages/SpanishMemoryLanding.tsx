@@ -8,7 +8,7 @@ const ProtocoleSite = () => {
   // Configura a data atual em formato francês
   useEffect(() => {
     const data = new Date();
-    const options: Intl.DateTimeFormatOptions = {
+    const options = {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
@@ -22,6 +22,37 @@ const ProtocoleSite = () => {
     }, 3600000); // 1 hora
 
     return () => clearTimeout(timer);
+  }, []);
+
+  // Carrega o Meta Pixel
+  useEffect(() => {
+    // Meta Pixel Code
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    window.fbq('init', '1093258939518583');
+    window.fbq('track', 'PageView');
+
+    // Adiciona a imagem noscript ao body
+    const noscriptImg = document.createElement('img');
+    noscriptImg.height = 1;
+    noscriptImg.width = 1;
+    noscriptImg.style.display = 'none';
+    noscriptImg.src = 'https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1';
+    document.body.appendChild(noscriptImg);
+
+    return () => {
+      // Cleanup se necessário
+      const existingImg = document.querySelector('img[src*="facebook.com/tr"]');
+      if (existingImg) {
+        existingImg.remove();
+      }
+    };
   }, []);
 
   // Carrega o script do vídeo VTurb
