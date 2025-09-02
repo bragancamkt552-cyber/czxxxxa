@@ -7,11 +7,54 @@ const AbundanceSite = () => {
   const [currentYear] = useState(new Date().getFullYear());
   const [userCity, setUserCity] = useState('');
 
-  // Detecta a cidade do usuário (simulado)
+  // Detecta a localização real do usuário via IP
   useEffect(() => {
-    // Simula detecção de localização
-    const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia'];
-    setUserCity(cities[Math.floor(Math.random() * cities.length)]);
+    // Tenta detectar localização via geolocalização
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Se conseguir geolocalização, usa uma API para converter para cidade
+          fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=en`)
+            .then(response => response.json())
+            .then(data => {
+              const city = data.city || data.locality || data.principalSubdivision || 'your area';
+              setUserCity(city);
+            })
+            .catch(() => {
+              // Fallback para detecção por IP
+              fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                  setUserCity(data.city || data.region || 'your area');
+                })
+                .catch(() => {
+                  setUserCity('your area');
+                });
+            });
+        },
+        () => {
+          // Se geolocalização falhar, usa detecção por IP
+          fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+              setUserCity(data.city || data.region || 'your area');
+            })
+            .catch(() => {
+              setUserCity('your area');
+            });
+        }
+      );
+    } else {
+      // Fallback final para detecção por IP se geolocalização não estiver disponível
+      fetch('https://ipapi.co/json/')
+        .then(response => response.json())
+        .then(data => {
+          setUserCity(data.city || data.region || 'your area');
+        })
+        .catch(() => {
+          setUserCity('your area');
+        });
+    }
   }, []);
 
   // Delay de 1 hora (3600000ms) para mostrar o botão
@@ -23,15 +66,15 @@ const AbundanceSite = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Carrega o script do vídeo VTurb
+  // Carrega o script do vídeo VTurb - novo ID
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b60b9d19546f43f5884ff5/v4/player.js";
+    script.src = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b633a9422babc4e3902a3c/v4/player.js";
     script.async = true;
     document.head.appendChild(script);
 
     return () => {
-      const existingScript = document.querySelector('script[src*="68b60b9d19546f43f5884ff5"]');
+      const existingScript = document.querySelector('script[src*="68b633a9422babc4e3902a3c"]');
       if (existingScript) {
         existingScript.remove();
       }
@@ -137,11 +180,11 @@ const AbundanceSite = () => {
             {/* Comentário 1 - Sarah Johnson */}
             <div className="mb-6">
               <div className="flex gap-3 items-start">
-                <img 
-                  src="https://images.unsplash.com/photo-1494790108755-2616b612b5bc?w=150&h=150&fit=crop&crop=face" 
-                  alt="Sarah Johnson"
-                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                />
+                <div 
+                  className="w-10 h-10 rounded-full flex-shrink-0 bg-pink-200 flex items-center justify-center text-pink-700 font-semibold text-sm"
+                >
+                  SJ
+                </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="font-semibold text-sm" style={{ color: '#1877f2' }}>Sarah Johnson</h3>
