@@ -201,9 +201,9 @@ const ProtocoleSite = () => {
         <p style={{ color: '#171717' }}>Regardez la vidéo pour débloquer la recette.</p>
       </div>
 
-      {/* Seção de comentários do Facebook - fundo vermelho */}
+      {/* Seção de comentários do Facebook - fundo vermelho escuro */}
       <section style={{ 
-        background: 'linear-gradient(135deg, rgb(248,128,128) 0%, rgb(206,113,113) 100%)'
+        background: 'linear-gradient(135deg, rgb(139,69,19) 0%, rgb(160,82,45) 100%)'
       }} className="py-12">
         <div className="container mx-auto px-4 max-w-4xl">
           <div style={{ backgroundColor: '#ffffff' }} className="rounded-lg p-8">
