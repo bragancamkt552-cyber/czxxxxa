@@ -2,7 +2,7 @@ import React from 'react';
 
 const TermsFrench = () => {
   const goBack = () => {
-    window.location.href = 'https://www.dreamvisionlp.online/gjgkkks-esp';
+    window.location.href = 'https://www.dreamvisionlp.online/gjgkkks-esp/terms';
   };
 
   return (
