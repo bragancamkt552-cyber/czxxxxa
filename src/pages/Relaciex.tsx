@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 // Componente principal do site
 const AbundanceSite = () => {
   const [showButton, setShowButton] = useState(false);
-  const [watchersCount] = useState(474);
+  const [watchersCount, setWatchersCount] = useState(474);
   const [currentYear] = useState(new Date().getFullYear());
-  const [userCity, setUserCity] = useState('');
+  const [userCity, setUserCity] = useState('your area');
 
   // Detecta a localização real do usuário via IP
   useEffect(() => {
@@ -57,6 +57,20 @@ const AbundanceSite = () => {
     }
   }, []);
 
+  // Simulação de pessoas entrando - contador crescente
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWatchersCount(prev => {
+        const increment = Math.floor(Math.random() * 3) + 1; // Adiciona 1-3 pessoas
+        const newCount = prev + increment;
+        // Mantém entre 470-580 pessoas
+        return newCount > 580 ? 474 + Math.floor(Math.random() * 20) : newCount;
+      });
+    }, 8000 + Math.random() * 12000); // Entre 8-20 segundos
+
+    return () => clearInterval(interval);
+  }, []);
+
   // Delay de 1 hora (3600000ms) para mostrar o botão
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -65,8 +79,6 @@ const AbundanceSite = () => {
 
     return () => clearTimeout(timer);
   }, []);
-
-  // Carrega o script do vídeo VTurb - novo ID
   useEffect(() => {
     const script = document.createElement('script');
     script.src = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b633a9422babc4e3902a3c/v4/player.js";
