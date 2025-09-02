@@ -6,54 +6,36 @@ const AbundanceSite = () => {
   const [currentYear] = useState(new Date().getFullYear());
   const [userCity, setUserCity] = useState('your area');
 
-  // Detecta a localização real do usuário via IP
+  // Detecta a localização via IP apenas - sem avisos do browser
   useEffect(() => {
-    // Tenta detectar localização via geolocalização
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // Se conseguir geolocalização, usa uma API para converter para cidade
-          fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=en`)
-            .then(response => response.json())
-            .then(data => {
-              const city = data.city || data.locality || data.principalSubdivision || 'your area';
-              setUserCity(city);
-            })
-            .catch(() => {
-              // Fallback para detecção por IP
-              fetch('https://ipapi.co/json/')
-                .then(response => response.json())
-                .then(data => {
-                  setUserCity(data.city || data.region || 'your area');
-                })
-                .catch(() => {
-                  setUserCity('your area');
-                });
-            });
-        },
-        () => {
-          // Se geolocalização falhar, usa detecção por IP
-          fetch('https://ipapi.co/json/')
-            .then(response => response.json())
-            .then(data => {
-              setUserCity(data.city || data.region || 'your area');
-            })
-            .catch(() => {
-              setUserCity('your area');
-            });
-        }
-      );
-    } else {
-      // Fallback final para detecção por IP se geolocalização não estiver disponível
-      fetch('https://ipapi.co/json/')
-        .then(response => response.json())
-        .then(data => {
-          setUserCity(data.city || data.region || 'your area');
-        })
-        .catch(() => {
-          setUserCity('your area');
-        });
-    }
+    // Primeira tentativa com ipapi.co
+    fetch('https://ipapi.co/json/')
+      .then(response => response.json())
+      .then(data => {
+        const city = data.city || data.region || data.country_name || 'your area';
+        setUserCity(city);
+      })
+      .catch(() => {
+        // Fallback com ipinfo.io se ipapi.co falhar
+        fetch('https://ipinfo.io/json')
+          .then(response => response.json())
+          .then(data => {
+            const city = data.city || data.region || data.country || 'your area';
+            setUserCity(city);
+          })
+          .catch(() => {
+            // Fallback final com API alternativa
+            fetch('https://api.db-ip.com/v2/free/self')
+              .then(response => response.json())
+              .then(data => {
+                const city = data.city || data.stateProv || data.countryName || 'your area';
+                setUserCity(city);
+              })
+              .catch(() => {
+                setUserCity('your area');
+              });
+          });
+      });
   }, []);
 
   // Simulação de pessoas entrando - contador crescente mais rápido
@@ -107,17 +89,30 @@ const AbundanceSite = () => {
       >
         {/* PRIMEIRO: Header vermelho com mensagem personalizada */}
         <header 
-          style={{ backgroundColor: '#de2800' }}
+          style={{ backgroundColor: '#8b0000' }}
           className="py-4 text-center"
         >
           <div className="container mx-auto px-4">
             <p className="text-white text-base md:text-xl font-medium">
-              You and some people from <span className="text-black font-bold">{userCity}</span> have been selected to attend this presentation.
+              You and some people from <span className="text-yellow-300 font-bold">{userCity}</span> have been selected to attend this presentation.
             </p>
           </div>
         </header>
 
-        {/* SEGUNDO: Seção do vídeo - ABAIXO do header */}
+        {/* HEADLINE PRINCIPAL - Acima do vídeo */}
+        <section className="py-8 md:py-12 bg-transparent text-center">
+          <div className="container mx-auto px-4">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-black leading-tight mb-4 drop-shadow-lg">
+              This 7-Second Brain Wave Ritual
+            </h1>
+            <h2 className="text-3xl md:text-5xl font-bold text-red-600 leading-tight drop-shadow-lg animate-pulse">
+              Attracts Money to You...
+            </h2>
+            <div className="mt-6 w-24 h-1 bg-red-600 mx-auto rounded-full"></div>
+          </div>
+        </section>
+
+        {/* SEGUNDO: Seção do vídeo - ABAIXO do headline */}
         <section className="py-8 md:py-12 bg-transparent">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
@@ -252,7 +247,7 @@ const AbundanceSite = () => {
               <div className="mb-6">
                 <div className="flex gap-3 items-start">
                   <div 
-                    className="w-10 h-10 rounded-full flex-shrink-0 bg-green-200 flex items-center justify-center text-green-700 font-semibold text-sm"
+                    className="w-10 h-10 rounded-full flex-shrink-0 bg-red-800 flex items-center justify-center text-white font-semibold text-sm"
                   >
                     ER
                   </div>
@@ -283,7 +278,7 @@ const AbundanceSite = () => {
               <div className="mb-6">
                 <div className="flex gap-3 items-start">
                   <div 
-                    className="w-10 h-10 rounded-full flex-shrink-0 bg-purple-200 flex items-center justify-center text-purple-700 font-semibold text-sm"
+                    className="w-10 h-10 rounded-full flex-shrink-0 bg-red-800 flex items-center justify-center text-white font-semibold text-sm"
                   >
                     DW
                   </div>
@@ -313,7 +308,7 @@ const AbundanceSite = () => {
               <div className="mb-6">
                 <div className="flex gap-3 items-start">
                   <div 
-                    className="w-10 h-10 rounded-full flex-shrink-0 bg-yellow-200 flex items-center justify-center text-yellow-700 font-semibold text-sm"
+                    className="w-10 h-10 rounded-full flex-shrink-0 bg-red-800 flex items-center justify-center text-white font-semibold text-sm"
                   >
                     LT
                   </div>
@@ -344,7 +339,7 @@ const AbundanceSite = () => {
               <div className="mb-6">
                 <div className="flex gap-3 items-start">
                   <div 
-                    className="w-10 h-10 rounded-full flex-shrink-0 bg-indigo-200 flex items-center justify-center text-indigo-700 font-semibold text-sm"
+                    className="w-10 h-10 rounded-full flex-shrink-0 bg-red-800 flex items-center justify-center text-white font-semibold text-sm"
                   >
                     JP
                   </div>
