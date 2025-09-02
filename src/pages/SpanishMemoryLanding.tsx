@@ -7,7 +7,7 @@ const ProtocoleSite = () => {
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
-  // Configura a data atual em formato francês
+
   useEffect(() => {
     const data = new Date();
     const options = {
