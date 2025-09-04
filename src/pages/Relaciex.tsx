@@ -1,59 +1,24 @@
 import React, { useState, useEffect } from 'react';
 
-const AbundanceSite = () => {
+// Componente principal do site
+const ProtocoleSite = () => {
+  const [currentDate, setCurrentDate] = useState('');
   const [showButton, setShowButton] = useState(false);
-  const [watchersCount, setWatchersCount] = useState(474);
-  const [currentYear] = useState(new Date().getFullYear());
-  const [userCity, setUserCity] = useState('your area');
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
-  // Detecta a localização via IP apenas - sem avisos do browser
+  // Configura a data atual em formato brasileiro
   useEffect(() => {
-    // Primeira tentativa com ipapi.co
-    fetch('https://ipapi.co/json/')
-      .then(response => response.json())
-      .then(data => {
-        const city = data.city || data.region || data.country_name || 'your area';
-        setUserCity(city);
-      })
-      .catch(() => {
-        // Fallback com ipinfo.io se ipapi.co falhar
-        fetch('https://ipinfo.io/json')
-          .then(response => response.json())
-          .then(data => {
-            const city = data.city || data.region || data.country || 'your area';
-            setUserCity(city);
-          })
-          .catch(() => {
-            // Fallback final com API alternativa
-            fetch('https://api.db-ip.com/v2/free/self')
-              .then(response => response.json())
-              .then(data => {
-                const city = data.city || data.stateProv || data.countryName || 'your area';
-                setUserCity(city);
-              })
-              .catch(() => {
-                setUserCity('your area');
-              });
-          });
-      });
-  }, []);
+    const data = new Date();
+    const options = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    };
+    const dataFormatada = data.toLocaleDateString('pt-BR', options);
+    setCurrentDate(dataFormatada);
 
-  // Simulação de pessoas entrando - contador crescente mais rápido
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setWatchersCount(prev => {
-        const increment = Math.floor(Math.random() * 4) + 1; // Adiciona 1-4 pessoas
-        const newCount = prev + increment;
-        // Mantém entre 470-600 pessoas
-        return newCount > 600 ? 470 + Math.floor(Math.random() * 30) : newCount;
-      });
-    }, 2000 + Math.random() * 4000); // Entre 2-6 segundos (muito mais rápido)
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Delay de 1 hora (3600000ms) para mostrar o botão
-  useEffect(() => {
+    // Delay de 1 hora (3600000ms) para mostrar o botão
     const timer = setTimeout(() => {
       setShowButton(true);
     }, 3600000); // 1 hora
@@ -61,387 +26,468 @@ const AbundanceSite = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Carrega o script do vídeo VTurb - novo ID
+  // Carrega o Meta Pixel
+  useEffect(() => {
+    // Meta Pixel Code - Pixel 1
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    // Inicializa os dois pixels
+    window.fbq('init', '1093258939518583');
+    window.fbq('init', '1351918292572124');
+    
+    // Dispara PageView para ambos
+    window.fbq('track', 'PageView');
+
+    // Adiciona as imagens noscript ao body para ambos os pixels
+    const noscriptImg1 = document.createElement('img');
+    noscriptImg1.height = 1;
+    noscriptImg1.width = 1;
+    noscriptImg1.style.display = 'none';
+    noscriptImg1.src = 'https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1';
+    document.body.appendChild(noscriptImg1);
+
+    const noscriptImg2 = document.createElement('img');
+    noscriptImg2.height = 1;
+    noscriptImg2.width = 1;
+    noscriptImg2.style.display = 'none';
+    noscriptImg2.src = 'https://www.facebook.com/tr?id=1351918292572124&ev=PageView&noscript=1';
+    document.body.appendChild(noscriptImg2);
+
+    return () => {
+      // Cleanup se necessário
+      const existingImgs = document.querySelectorAll('img[src*="facebook.com/tr"]');
+      existingImgs.forEach(img => img.remove());
+    };
+  }, []);
+
+  // Carrega o script do vídeo VTurb
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b633a9422babc4e3902a3c/v4/player.js";
+    script.src = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b874c894ac47063d501aed/v4/player.js";
     script.async = true;
     document.head.appendChild(script);
 
     return () => {
-      const existingScript = document.querySelector('script[src*="68b633a9422babc4e3902a3c"]');
+      const existingScript = document.querySelector('script[src*="68b874c894ac47063d501aed"]');
       if (existingScript) {
         existingScript.remove();
       }
     };
   }, []);
 
-  return (
-    <>
-      <div 
-        className="min-h-screen"
-        style={{
-          backgroundImage: 'url(https://media.atomicatpages.net/u/q4DGiTkDOlYWpXXoLEQFHmAp5132/Pictures/myiAtz6261736.png)',
-          backgroundPosition: 'right bottom',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover'
-        }}
-      >
-        {/* PRIMEIRO: Header vermelho com mensagem personalizada */}
-        <header 
-          style={{ backgroundColor: '#8b0000' }}
-          className="py-4 text-center"
-        >
-          <div className="container mx-auto px-4">
-            <p className="text-white text-base md:text-xl font-medium">
-              You and some people from <span className="text-yellow-300 font-bold">{userCity}</span> have been selected to attend this presentation.
-            </p>
+  // Componente Modal
+  const Modal = ({ show, onClose, title, children }) => {
+    if (!show) return null;
+
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+        padding: '20px'
+      }}>
+        <div style={{
+          backgroundColor: '#ffffff',
+          borderRadius: '8px',
+          maxWidth: '800px',
+          width: '100%',
+          maxHeight: '90vh',
+          overflow: 'hidden',
+          position: 'relative'
+        }}>
+          <div style={{
+            padding: '20px',
+            borderBottom: '1px solid #e5e5e5',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 'bold' }}>{title}</h2>
+            <button 
+              onClick={onClose}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '24px',
+                cursor: 'pointer',
+                padding: '0',
+                width: '30px',
+                height: '30px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              ×
+            </button>
           </div>
-        </header>
-
-        {/* HEADLINE PRINCIPAL - Acima do vídeo */}
-        <section className="py-8 md:py-12 bg-transparent text-center">
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl md:text-6xl font-extrabold text-black leading-tight mb-4 drop-shadow-lg">
-              This 7-Second Brain Wave Ritual
-            </h1>
-            <h2 className="text-3xl md:text-5xl font-bold text-red-600 leading-tight drop-shadow-lg animate-pulse">
-              Attracts Money to You...
-            </h2>
-            <div className="mt-6 w-24 h-1 bg-red-600 mx-auto rounded-full"></div>
+          <div style={{
+            padding: '20px',
+            maxHeight: 'calc(90vh - 80px)',
+            overflowY: 'auto',
+            fontSize: '14px',
+            lineHeight: '1.6'
+          }}>
+            {children}
           </div>
-        </section>
-
-        {/* SEGUNDO: Seção do vídeo - ABAIXO do headline */}
-        <section className="py-8 md:py-12 bg-transparent">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              {/* Player de vídeo VTurb */}
-              <div className="mb-6">
-                <div 
-                  style={{ aspectRatio: '16/9' }}
-                  className="w-full"
-                >
-                  <vturb-smartplayer 
-                    id="vid-68b633a9422babc4e3902a3c" 
-                    style={{ display: 'block', margin: '0 auto', width: '100%' }}
-                  />
-                </div>
-              </div>
-              
-              {/* TERCEIRO: Contador de visualizações - ABAIXO do vídeo */}
-              <div className="text-center">
-                <h4 className="text-black text-base md:text-lg font-medium">
-                  <span className="font-bold text-red-600 animate-pulse">{watchersCount}</span> people are watching right now...
-                </h4>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Seção de referências científicas */}
-        <section 
-          style={{ backgroundColor: '#1b2b61' }}
-          className="py-8"
-        >
-          <div className="container mx-auto px-4 text-center">
-            <h3 className="text-white text-xl font-bold mb-6" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-              Scientific References and Clinical Studies:
-            </h3>
-            <div className="max-w-4xl mx-auto">
-              <img 
-                src="https://media.atomicatpages.net/u/q4DGiTkDOlYWpXXoLEQFHmAp5132/Pictures/YfxNKB6928575.png" 
-                alt="Scientific References"
-                className="w-full h-auto"
-                loading="eager"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Seção de imagem complementar */}
-        <section className="py-8 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <img 
-                src="https://media.atomicatpages.net/u/q4DGiTkDOlYWpXXoLEQFHmAp5132/Pictures/KHzQbW6336022.png" 
-                alt="Brain Wave Research"
-                className="w-full h-auto"
-                loading="eager"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Seção de comentários do Facebook */}
-        <section className="bg-white py-12">
-          <div className="container mx-auto px-4 max-w-4xl">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              
-              {/* Título da seção de comentários */}
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-black mb-4">Comments (47)</h2>
-                <hr className="border-gray-300" />
-              </div>
-
-              {/* Comentário 1 - Sarah Johnson */}
-              <div className="mb-6">
-                <div className="flex gap-3 items-start">
-                  <div 
-                    className="w-10 h-10 rounded-full flex-shrink-0 bg-pink-200 flex items-center justify-center text-pink-700 font-semibold text-sm"
-                  >
-                    SJ
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-sm" style={{ color: '#1877f2' }}>Sarah Johnson</h3>
-                      <span className="text-xs text-gray-500">2h</span>
-                    </div>
-                    <p className="text-sm mb-2" style={{ color: '#1c1e21' }}>
-                      This actually worked! I was skeptical at first, but after just 3 days of doing the 7-second ritual, 
-                      I received an unexpected bonus at work. My husband thought I was crazy until he saw the deposit! 💰
-                    </p>
-                    <div className="flex items-center gap-4 text-xs" style={{ color: '#65676b' }}>
-                      <span className="cursor-pointer hover:underline font-semibold">Like</span>
-                      <span className="cursor-pointer hover:underline font-semibold">Reply</span>
-                      <span className="flex items-center gap-1">
-                        <span>👍</span>
-                        <span>❤️</span>
-                        <span className="ml-1">23</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Comentário 2 - Michael Chen */}
-              <div className="mb-6 ml-6">
-                <div className="flex gap-3 items-start">
-                  <div 
-                    className="w-10 h-10 rounded-full flex-shrink-0 bg-blue-200 flex items-center justify-center text-blue-700 font-semibold text-sm"
-                  >
-                    MC
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-sm" style={{ color: '#1877f2' }}>Michael Chen</h3>
-                      <span className="text-xs text-gray-500">1h</span>
-                    </div>
-                    <p className="text-sm mb-2" style={{ color: '#1c1e21' }}>
-                      @Sarah Johnson I just started yesterday! Already feeling more positive about money. 
-                      Can you share more details about what happened?
-                    </p>
-                    <div className="flex items-center gap-4 text-xs" style={{ color: '#65676b' }}>
-                      <span className="cursor-pointer hover:underline font-semibold">Like</span>
-                      <span className="cursor-pointer hover:underline font-semibold">Reply</span>
-                      <span className="flex items-center gap-1">
-                        <span>👍</span>
-                        <span className="ml-1">12</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Comentário 3 - Emma Rodriguez */}
-              <div className="mb-6">
-                <div className="flex gap-3 items-start">
-                  <div 
-                    className="w-10 h-10 rounded-full flex-shrink-0 bg-red-800 flex items-center justify-center text-white font-semibold text-sm"
-                  >
-                    ER
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-sm" style={{ color: '#1877f2' }}>Emma Rodriguez</h3>
-                      <span className="text-xs text-gray-500">3h</span>
-                    </div>
-                    <p className="text-sm mb-2" style={{ color: '#1c1e21' }}>
-                      My daughter used this technique and her grades went from C's to A's! 
-                      The science behind it makes so much sense. Thank you for sharing this! 🙏
-                    </p>
-                    <div className="flex items-center gap-4 text-xs" style={{ color: '#65676b' }}>
-                      <span className="cursor-pointer hover:underline font-semibold">Like</span>
-                      <span className="cursor-pointer hover:underline font-semibold">Reply</span>
-                      <span className="flex items-center gap-1">
-                        <span>👍</span>
-                        <span>❤️</span>
-                        <span>😮</span>
-                        <span className="ml-1">45</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Comentário 4 - David Wilson */}
-              <div className="mb-6">
-                <div className="flex gap-3 items-start">
-                  <div 
-                    className="w-10 h-10 rounded-full flex-shrink-0 bg-red-800 flex items-center justify-center text-white font-semibold text-sm"
-                  >
-                    DW
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-sm" style={{ color: '#1877f2' }}>David Wilson</h3>
-                      <span className="text-xs text-gray-500">4h</span>
-                    </div>
-                    <p className="text-sm mb-2" style={{ color: '#1c1e21' }}>
-                      I've been doing manifestation for years but never understood the brain wave connection. 
-                      This video changed everything! Already seeing results after just one week.
-                    </p>
-                    <div className="flex items-center gap-4 text-xs" style={{ color: '#65676b' }}>
-                      <span className="cursor-pointer hover:underline font-semibold">Like</span>
-                      <span className="cursor-pointer hover:underline font-semibold">Reply</span>
-                      <span className="flex items-center gap-1">
-                        <span>👍</span>
-                        <span>💯</span>
-                        <span className="ml-1">18</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Comentário 5 - Lisa Thompson */}
-              <div className="mb-6">
-                <div className="flex gap-3 items-start">
-                  <div 
-                    className="w-10 h-10 rounded-full flex-shrink-0 bg-red-800 flex items-center justify-center text-white font-semibold text-sm"
-                  >
-                    LT
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-sm" style={{ color: '#1877f2' }}>Lisa Thompson</h3>
-                      <span className="text-xs text-gray-500">5h</span>
-                    </div>
-                    <p className="text-sm mb-2" style={{ color: '#1c1e21' }}>
-                      Finally something that actually works! I was drowning in debt and now I have multiple income streams. 
-                      The theta wave activation is real! 🌟
-                    </p>
-                    <div className="flex items-center gap-4 text-xs" style={{ color: '#65676b' }}>
-                      <span className="cursor-pointer hover:underline font-semibold">Like</span>
-                      <span className="cursor-pointer hover:underline font-semibold">Reply</span>
-                      <span className="flex items-center gap-1">
-                        <span>👍</span>
-                        <span>❤️</span>
-                        <span>🎉</span>
-                        <span className="ml-1">67</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Comentário 6 - James Parker */}
-              <div className="mb-6">
-                <div className="flex gap-3 items-start">
-                  <div 
-                    className="w-10 h-10 rounded-full flex-shrink-0 bg-red-800 flex items-center justify-center text-white font-semibold text-sm"
-                  >
-                    JP
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-sm" style={{ color: '#1877f2' }}>James Parker</h3>
-                      <span className="text-xs text-gray-500">6h</span>
-                    </div>
-                    <p className="text-sm mb-2" style={{ color: '#1c1e21' }}>
-                      My wife was skeptical but now she's a believer too! We bought our dream house last month. 
-                      The 7-second ritual changed our entire financial situation. 🏡
-                    </p>
-                    <div className="flex items-center gap-4 text-xs" style={{ color: '#65676b' }}>
-                      <span className="cursor-pointer hover:underline font-semibold">Like</span>
-                      <span className="cursor-pointer hover:underline font-semibold">Reply</span>
-                      <span className="flex items-center gap-1">
-                        <span>👍</span>
-                        <span>❤️</span>
-                        <span>😍</span>
-                        <span className="ml-1">89</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Plugin social do Facebook */}
-              <div className="flex items-center gap-2 mt-8 pt-4 border-t border-gray-300">
-                <div style={{ color: '#1877f2' }}>
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                </div>
-                <span className="text-xs" style={{ color: '#65676b' }}>Facebook Comments Plugin</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Botão de acesso (aparece após delay de 1 hora) */}
-        {showButton && (
-          <section className="text-center py-12 bg-yellow-100">
-            <div className="container mx-auto px-4">
-              <div className="max-w-2xl mx-auto p-8 bg-white border-4 border-red-500 rounded-lg">
-                <div className="text-red-600 text-2xl font-bold mb-4">
-                  WAIT! In just 1:51…<br/>
-                  I'll reveal my 7‑second ritual<br/>
-                  that attracts money
-                </div>
-                <p className="text-lg mb-6 text-gray-800">
-                  My wife Taylor was speechless when I used it<br/>
-                  to buy our dream house.<br/><br/>
-                  You don't need any equipment. You do it at home.<br/>
-                  And it's so simple that my daughter used it to<br/>
-                  instantly improve her grades.
-                </p>
-                <a 
-                  href="https://hotmart.com.br" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-block bg-yellow-400 text-black font-bold py-4 px-8 rounded-lg text-lg border-4 border-blue-600 uppercase transition-transform duration-300 hover:scale-105"
-                  style={{ animation: 'pulse 1.5s infinite' }}
-                >
-                  KEEP WATCHING TO DISCOVER<br/>
-                  MY 7‑SECOND RITUAL &gt;&gt;
-                </a>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Footer */}
-        <footer className="bg-gray-100 py-8 text-center text-xs" style={{ color: '#a6a6a6' }}>
-          <div className="container mx-auto px-4">
-            <p className="mb-2">Copyright {currentYear} - Abundance For All ®</p>
-            <p className="mb-2">All rights reserved</p>
-            <div className="mb-4">
-              <a href="/terms" className="hover:underline">Terms of use</a>
-              <span className="mx-2">·</span>
-              <a href="/privacy" className="hover:underline">Privacy</a>
-            </div>
-            <p className="max-w-4xl mx-auto text-xs leading-relaxed">
-              This site is not part of the Facebook or Meta Platforms, Inc. website and is NOT endorsed by Facebook in any way. 
-              Facebook is a trademark of Meta Platforms, Inc. Reproduction, distribution, or modification of this website and related materials 
-              in whole or in part is strictly prohibited. This website and all its contents are protected by copyright and intellectual property 
-              laws of all countries. The author reserves the right to claim damages if these conditions are not followed. Every effort has been 
-              made to accurately represent this program. There is no guarantee that you will achieve the desired abundance.
-            </p>
-          </div>
-        </footer>
-
-        {/* CSS personalizado para animações */}
-        <style jsx>{`
-          @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.07); }
-            100% { transform: scale(1); }
-          }
-        `}</style>
+        </div>
       </div>
-    </>
+    );
+  };
+
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
+      
+      {/* Header com mensagem de data */}
+      <div style={{ backgroundColor: '#171717', color: '#ffffff' }} className="py-4 text-center">
+        <span className="text-sm">
+          Devido à alta demanda de acesso, garantimos a apresentação até hoje {currentDate}
+        </span>
+      </div>
+
+      {/* Seção do vídeo principal - fundo branco */}
+      <div style={{ backgroundColor: '#ffffff' }} className="py-8">
+        <div className="container mx-auto px-4 max-w-4xl">
+          
+          {/* Player de vídeo VTurb */}
+          <div 
+            className="w-full flex justify-center mb-8"
+            dangerouslySetInnerHTML={{
+              __html: `
+                <vturb-smartplayer 
+                  id="vid-68b874c894ac47063d501aed" 
+                  style="display: block; margin: 0 auto; width: 100%; max-width: 400px;">
+                </vturb-smartplayer>
+              `
+            }}
+          />
+
+          {/* Primeira imagem - medical-3.png */}
+          <div className="w-full flex justify-center mb-8">
+            <img 
+              src="https://tea.global-academia.com/wp-content/uploads/2024/11/medical-3.png" 
+              alt="Medical Image"
+              className="max-w-full h-auto"
+              style={{ maxWidth: '600px' }}
+            />
+          </div>
+
+          {/* Segunda imagem - KHzQbW6336022.png */}
+          <div className="w-full flex justify-center mb-8">
+            <img 
+              src="https://media.atomicatpages.net/u/q4DGiTkDOlYWpXXoLEQFHmAp5132/Pictures/KHzQbW6336022.png" 
+              alt="Additional Image"
+              className="max-w-full h-auto"
+              style={{ maxWidth: '600px' }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Texto informativo */}
+      <div className="text-center py-4" style={{ backgroundColor: '#ffffff' }}>
+        <p style={{ color: '#171717' }}>Assista ao vídeo para desbloquear a receita.</p>
+      </div>
+
+      {/* Botão de acesso (aparece após delay de 1 hora) */}
+      {showButton && (
+        <div className="text-center py-8" style={{ backgroundColor: '#f0f2f5' }}>
+          <div className="container mx-auto px-4">
+            <a 
+              href="https://hotmart.com.br" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-block text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors duration-300 shadow-lg"
+              style={{ 
+                backgroundColor: '#42b883',
+                borderColor: '#42b883'
+              }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#369970'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#42b883'}
+            >
+              ACESSAR PROTOCOLO
+            </a>
+            <p className="text-sm mt-4" style={{ color: '#8a8d91' }}>
+              Acesso liberado após 1 hora de visualização
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Footer com disclaimers e políticas */}
+      <footer style={{ backgroundColor: '#f0f2f5' }} className="py-8">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="text-sm mb-6" style={{ color: '#8a8d91' }}>
+            <p className="mb-4">
+              Em <strong>www.dreamvisionlp.online</strong>, todo o conteúdo e informações são de nossa 
+              inteira responsabilidade. Esclarecemos que este site não possui afiliação, patrocínio ou 
+              aprovação da Meta Platforms, Inc. <strong>Facebook e Instagram</strong>, que não é 
+              responsável pelo nosso conteúdo.
+            </p>
+            <p className="mb-4">
+              As informações aqui apresentadas são fornecidas apenas para fins educativos e informativos, 
+              e não substituem os conselhos, diagnósticos ou tratamentos de um profissional de saúde 
+              qualificado. Nossos produtos não se destinam a diagnosticar, tratar, curar ou prevenir 
+              qualquer doença ou condição médica.
+            </p>
+            <p>
+              É importante lembrar que os resultados podem variar significativamente de pessoa para pessoa. 
+              A decisão de aplicar as informações ou usar nossos produtos é de sua inteira responsabilidade. 
+              Para questões relacionadas à sua saúde, sempre consulte um especialista.
+            </p>
+          </div>
+          
+          {/* Links de políticas com popups */}
+          <div className="flex flex-wrap gap-4 justify-center pt-4" style={{ borderTop: '1px solid #dadde1' }}>
+            <button 
+              onClick={() => setShowPrivacyModal(true)}
+              className="hover:underline"
+              style={{ 
+                color: '#385898',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              Política de Privacidade
+            </button>
+            <button 
+              onClick={() => setShowTermsModal(true)}
+              className="hover:underline"
+              style={{ 
+                color: '#385898',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              Termos de Uso
+            </button>
+          </div>
+        </div>
+      </footer>
+
+      {/* Modal de Política de Privacidade */}
+      <Modal 
+        show={showPrivacyModal} 
+        onClose={() => setShowPrivacyModal(false)} 
+        title="Política de Privacidade"
+      >
+        <div>
+          <p style={{ marginBottom: '16px' }}>
+            Bem-vindo ao site <strong>https://www.dreamvisionlp.online/</strong> (doravante denominado "Site").
+          </p>
+          <p style={{ marginBottom: '16px' }}>
+            A proteção de seus dados pessoais é uma prioridade para nós. Esta Política de Privacidade 
+            descreve como seus dados pessoais são coletados, usados, compartilhados e protegidos quando 
+            você usa nossos produtos e serviços digitais, em conformidade com a Lei Geral de Proteção de 
+            Dados (LGPD - Lei nº 13.709/2018) e demais legislações aplicáveis.
+          </p>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            1. Identificação e Dados de Contato do Controlador
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            O controlador dos dados pessoais coletados através deste Site é: www.dreamvisionlp.online
+          </p>
+          <p style={{ marginBottom: '16px' }}>
+            Para qualquer questão relacionada a esta Política de Privacidade ou aos seus dados pessoais, 
+            você pode nos contatar através dos dados de contato acima.
+          </p>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            2. Dados Pessoais Coletados
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Coletamos diferentes categorias de dados pessoais, de acordo com suas interações com nosso Site e serviços:
+          </p>
+          
+          <h4 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>
+            2.1 Categorias de Dados Coletados
+          </h4>
+          <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+            <li style={{ marginBottom: '4px' }}>Dados de identificação: nome, sobrenome, endereço de e-mail, número de telefone.</li>
+            <li style={{ marginBottom: '4px' }}>Dados de conexão: endereço IP, tipo de navegador, sistema operacional, identificadores de sessão.</li>
+            <li style={{ marginBottom: '4px' }}>Dados de transação: informações de pagamento (processadas por terceiros seguros), histórico de compras.</li>
+            <li style={{ marginBottom: '4px' }}>Dados de navegação: páginas visitadas, cliques, tempo gasto no Site.</li>
+            <li style={{ marginBottom: '4px' }}>Dados de marketing: preferências de comunicação, respostas a campanhas publicitárias.</li>
+          </ul>
+
+          <h4 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>
+            2.2 Fontes e Métodos de Coleta
+          </h4>
+          <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+            <li style={{ marginBottom: '4px' }}>Formulários: dados fornecidos durante inscrição, compra ou contato através do nosso Site.</li>
+            <li style={{ marginBottom: '4px' }}>Cookies e tecnologias similares: dados coletados automaticamente durante sua navegação (ver Seção 8).</li>
+            <li style={{ marginBottom: '4px' }}>Terceiros: dados obtidos através de parceiros ou plataformas publicitárias (com seu consentimento prévio).</li>
+          </ul>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            3. Finalidades e Bases Legais do Tratamento
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Seus dados pessoais são tratados para as seguintes finalidades, conforme as bases legais definidas pela LGPD.
+          </p>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            4. Destinatários dos Dados Pessoais
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Seus dados pessoais podem ser compartilhados com as seguintes categorias de destinatários:
+          </p>
+          <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+            <li style={{ marginBottom: '4px' }}>Prestadores de serviços terceirizados: hospedagem, processamento de pagamentos, ferramentas de análise, plataformas de marketing.</li>
+            <li style={{ marginBottom: '4px' }}>Parceiros comerciais: apenas com seu consentimento explícito.</li>
+            <li style={{ marginBottom: '4px' }}>Autoridades competentes: em caso de obrigação legal ou para proteger nossos direitos.</li>
+          </ul>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            5. Prazo de Conservação dos Dados
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Conservamos seus dados pessoais apenas pelo tempo necessário para as finalidades descritas acima, 
+            ou conforme exigências legais. Por exemplo:
+          </p>
+          <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+            <li style={{ marginBottom: '4px' }}>Dados de transação: conservados por 10 anos para obrigações contábeis.</li>
+            <li style={{ marginBottom: '4px' }}>Dados de marketing: conservados até que você retire seu consentimento.</li>
+            <li style={{ marginBottom: '4px' }}>Dados de navegação: conservados por no máximo 13 meses (ver Seção 8 sobre cookies).</li>
+          </ul>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            6. Direitos dos Titulares dos Dados
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Conforme a LGPD, você possui os seguintes direitos relacionados aos seus dados pessoais:
+          </p>
+          <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+            <li style={{ marginBottom: '4px' }}>Direito de acesso: obter uma cópia de seus dados pessoais.</li>
+            <li style={{ marginBottom: '4px' }}>Direito de retificação: corrigir dados inexatos ou incompletos.</li>
+            <li style={{ marginBottom: '4px' }}>Direito de eliminação: solicitar a exclusão de seus dados (sob certas condições).</li>
+            <li style={{ marginBottom: '4px' }}>Direito de limitação: restringir o tratamento de seus dados.</li>
+            <li style={{ marginBottom: '4px' }}>Direito de portabilidade: receber seus dados em formato estruturado e legível por máquina.</li>
+            <li style={{ marginBottom: '4px' }}>Direito de oposição: opor-se ao tratamento de seus dados por motivos legítimos ou para fins de marketing.</li>
+            <li style={{ marginBottom: '4px' }}>Direito de retirar seu consentimento: a qualquer momento, para tratamentos baseados em seu consentimento.</li>
+          </ul>
+          <p style={{ marginBottom: '16px' }}>
+            Para exercer seus direitos, entre em contato conosco em: <strong>contato@dreamvisionlp.online</strong>. 
+            Você também tem o direito de apresentar reclamação à Autoridade Nacional de Proteção de Dados (ANPD).
+          </p>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            7. Medidas de Segurança
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Implementamos medidas técnicas e organizacionais para proteger seus dados pessoais contra 
+            acesso não autorizado, perda, alteração ou divulgação. Essas medidas incluem:
+          </p>
+          <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+            <li style={{ marginBottom: '4px' }}>Criptografia de dados sensíveis.</li>
+            <li style={{ marginBottom: '4px' }}>Controles de acesso rigorosos.</li>
+            <li style={{ marginBottom: '4px' }}>Monitoramento regular de nossos sistemas.</li>
+          </ul>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            8. Política de Cookies e Tecnologias Similares
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Utilizamos cookies para melhorar sua experiência de usuário. Estes cookies podem incluir:
+          </p>
+          <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+            <li style={{ marginBottom: '4px' }}>Cookies essenciais: necessários para o funcionamento do Site.</li>
+            <li style={{ marginBottom: '4px' }}>Cookies analíticos: para medir audiência e analisar o uso do Site.</li>
+            <li style={{ marginBottom: '4px' }}>Cookies de marketing: para personalizar publicidades.</li>
+          </ul>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            9. Contato
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Para qualquer questão ou solicitação relacionada a esta Política de Privacidade, entre em contato conosco:
+          </p>
+          <p style={{ marginBottom: '16px' }}>
+            E-mail: <strong>contato@dreamvisionlp.online</strong>
+          </p>
+        </div>
+      </Modal>
+
+      {/* Modal de Termos de Uso */}
+      <Modal 
+        show={showTermsModal} 
+        onClose={() => setShowTermsModal(false)} 
+        title="Termos de Uso"
+      >
+        <div>
+          <p style={{ marginBottom: '16px' }}>
+            <strong>www.dreamvisionlp.online</strong> elaborou os presentes Termos de Uso para demonstrar 
+            seu compromisso firme quanto ao uso que você pode fazer dos serviços e informações disponíveis 
+            em seu site web.
+          </p>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            Termos de Uso
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            O acesso a este site web implica a aceitação expressa e sem reservas dos termos de uso descritos 
+            a seguir. Se você não aceita estes termos, por favor, não acesse nem use este site web.
+          </p>
+          <p style={{ marginBottom: '16px' }}>
+            Os visitantes podem usar este site web apenas para fins legais. Este site web não pode ser usado 
+            para publicar, enviar, distribuir ou divulgar conteúdo ou informações de natureza difamatória, 
+            obscena ou ilegal, incluindo informações proprietárias pertencentes a outras pessoas ou empresas, 
+            bem como marcas registradas ou informações protegidas por direitos autorais, sem a autorização 
+            expressa do titular desses direitos.
+          </p>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            Limitação de Responsabilidade
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Os conteúdos são fornecidos neste site web sem qualquer garantia expressa ou implícita de 
+            qualidade comercial ou adequação a um uso particular. <strong>www.dreamvisionlp.online</strong> 
+            não pode ser responsabilizada por danos, incluindo perdas de lucros, interrupções de negócios 
+            ou perdas de informações resultantes do uso ou da impossibilidade de usar estes conteúdos.
+          </p>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            Direitos Autorais e Propriedade Intelectual
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Os documentos, conteúdos e criações deste site web pertencem a <strong>www.dreamvisionlp.online</strong> 
+            e seus colaboradores. A autoria do conteúdo, documentos e imagens exibidos em 
+            <strong>www.dreamvisionlp.online</strong> está protegida pelas leis nacionais e internacionais. 
+            Eles não podem ser copiados, reproduzidos, modificados, publicados, atualizados, postados, 
+            transmitidos ou distribuídos de qualquer maneira sem autorização prévia por escrito de 
+            <strong>www.dreamvisionlp.online</strong>.
+          </p>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            Contato
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Para qualquer questão relacionada a estes Termos de Uso, entre em contato conosco: 
+            <strong>contato@dreamvisionlp.online</strong>
+          </p>
+        </div>
+      </Modal>
+    </div>
   );
 };
 
-export default AbundanceSite;
+export default ProtocoleSite;
