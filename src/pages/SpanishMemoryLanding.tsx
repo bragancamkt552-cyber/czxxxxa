@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 
-// Componente principal do site
+// Componente principal del sitio
 const ProtocoleSite = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [showButton, setShowButton] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
-  // Configura a data atual em formato brasileiro
+  // Configura la fecha actual en formato español
   useEffect(() => {
-    const data = new Date();
-    const options = {
+    const fecha = new Date();
+    const opciones = {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
     };
-    const dataFormatada = data.toLocaleDateString('pt-BR', options);
-    setCurrentDate(dataFormatada);
+    const fechaFormateada = fecha.toLocaleDateString('es-MX', opciones);
+    setCurrentDate(fechaFormateada);
 
-    // Delay de 1 hora (3600000ms) para mostrar o botão
+    // Retraso de 1 hora (3600000ms) para mostrar el botón
     const timer = setTimeout(() => {
       setShowButton(true);
     }, 3600000); // 1 hora
@@ -26,7 +26,7 @@ const ProtocoleSite = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Carrega o Meta Pixel
+  // Carga el Meta Pixel
   useEffect(() => {
     // Meta Pixel Code - Pixel 1
     !function(f,b,e,v,n,t,s)
@@ -38,14 +38,14 @@ const ProtocoleSite = () => {
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
     
-    // Inicializa os dois pixels
+    // Inicializa los dos pixels
     window.fbq('init', '1093258939518583');
     window.fbq('init', '1351918292572124');
     
     // Dispara PageView para ambos
     window.fbq('track', 'PageView');
 
-    // Adiciona as imagens noscript ao body para ambos os pixels
+    // Añade las imágenes noscript al body para ambos pixels
     const noscriptImg1 = document.createElement('img');
     noscriptImg1.height = 1;
     noscriptImg1.width = 1;
@@ -61,21 +61,21 @@ const ProtocoleSite = () => {
     document.body.appendChild(noscriptImg2);
 
     return () => {
-      // Cleanup se necessário
+      // Cleanup si es necesario
       const existingImgs = document.querySelectorAll('img[src*="facebook.com/tr"]');
       existingImgs.forEach(img => img.remove());
     };
   }, []);
 
-  // Carrega o script do vídeo VTurb
+  // Carga el script del video VTurb
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b874c894ac47063d501aed/v4/player.js";
+    script.src = "https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68b935d8e2667294be3e9392/v4/player.js";
     script.async = true;
     document.head.appendChild(script);
 
     return () => {
-      const existingScript = document.querySelector('script[src*="68b874c894ac47063d501aed"]');
+      const existingScript = document.querySelector('script[src*="68b935d8e2667294be3e9392"]');
       if (existingScript) {
         existingScript.remove();
       }
@@ -152,45 +152,45 @@ const ProtocoleSite = () => {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       
-      {/* Header com mensagem de data */}
+      {/* Header con mensaje de fecha */}
       <div style={{ backgroundColor: '#171717', color: '#ffffff' }} className="py-4 text-center">
         <span className="text-sm">
-          Devido à alta demanda de acesso, garantimos a apresentação até hoje {currentDate}
+          Debido a la alta demanda de acceso, garantizamos la presentación hasta hoy {currentDate}
         </span>
       </div>
 
-      {/* Seção do vídeo principal - fundo branco */}
+      {/* Sección del video principal - fondo blanco */}
       <div style={{ backgroundColor: '#ffffff' }} className="py-8">
         <div className="container mx-auto px-4 max-w-4xl">
           
-          {/* Player de vídeo VTurb */}
+          {/* Player de video VTurb */}
           <div 
             className="w-full flex justify-center mb-8"
             dangerouslySetInnerHTML={{
               __html: `
                 <vturb-smartplayer 
-                  id="vid-68b874c894ac47063d501aed" 
+                  id="vid-68b935d8e2667294be3e9392" 
                   style="display: block; margin: 0 auto; width: 100%; max-width: 400px;">
                 </vturb-smartplayer>
               `
             }}
           />
 
-          {/* Primeira imagem - medical-3.png */}
+          {/* Primera imagen - medical-3.png */}
           <div className="w-full flex justify-center mb-8">
             <img 
               src="https://tea.global-academia.com/wp-content/uploads/2024/11/medical-3.png" 
-              alt="Medical Image"
+              alt="Imagen Médica"
               className="max-w-full h-auto"
               style={{ maxWidth: '600px' }}
             />
           </div>
 
-          {/* Segunda imagem - KHzQbW6336022.png */}
+          {/* Segunda imagen - KHzQbW6336022.png */}
           <div className="w-full flex justify-center mb-8">
             <img 
               src="https://media.atomicatpages.net/u/q4DGiTkDOlYWpXXoLEQFHmAp5132/Pictures/KHzQbW6336022.png" 
-              alt="Additional Image"
+              alt="Imagen Adicional"
               className="max-w-full h-auto"
               style={{ maxWidth: '600px' }}
             />
@@ -200,10 +200,10 @@ const ProtocoleSite = () => {
 
       {/* Texto informativo */}
       <div className="text-center py-4" style={{ backgroundColor: '#ffffff' }}>
-        <p style={{ color: '#171717' }}>Assista ao vídeo para desbloquear a receita.</p>
+        <p style={{ color: '#171717' }}>Mira el video para desbloquear la receta.</p>
       </div>
 
-      {/* Botão de acesso (aparece após delay de 1 hora) */}
+      {/* Botón de acceso (aparece después del retraso de 1 hora) */}
       {showButton && (
         <div className="text-center py-8" style={{ backgroundColor: '#f0f2f5' }}>
           <div className="container mx-auto px-4">
@@ -219,39 +219,39 @@ const ProtocoleSite = () => {
               onMouseOver={(e) => e.target.style.backgroundColor = '#369970'}
               onMouseOut={(e) => e.target.style.backgroundColor = '#42b883'}
             >
-              ACESSAR PROTOCOLO
+              ACCEDER AL PROTOCOLO
             </a>
             <p className="text-sm mt-4" style={{ color: '#8a8d91' }}>
-              Acesso liberado após 1 hora de visualização
+              Acceso liberado después de 1 hora de visualización
             </p>
           </div>
         </div>
       )}
 
-      {/* Footer com disclaimers e políticas */}
+      {/* Footer con disclaimers y políticas */}
       <footer style={{ backgroundColor: '#f0f2f5' }} className="py-8">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-sm mb-6" style={{ color: '#8a8d91' }}>
             <p className="mb-4">
-              Em <strong>www.dreamvisionlp.online</strong>, todo o conteúdo e informações são de nossa 
-              inteira responsabilidade. Esclarecemos que este site não possui afiliação, patrocínio ou 
-              aprovação da Meta Platforms, Inc. <strong>Facebook e Instagram</strong>, que não é 
-              responsável pelo nosso conteúdo.
+              En <strong>www.dreamvisionlp.online</strong>, todo el contenido e información es de nuestra 
+              entera responsabilidad. Aclaramos que este sitio no tiene afiliación, patrocinio o 
+              aprobación de Meta Platforms, Inc. <strong>Facebook e Instagram</strong>, que no es 
+              responsable de nuestro contenido.
             </p>
             <p className="mb-4">
-              As informações aqui apresentadas são fornecidas apenas para fins educativos e informativos, 
-              e não substituem os conselhos, diagnósticos ou tratamentos de um profissional de saúde 
-              qualificado. Nossos produtos não se destinam a diagnosticar, tratar, curar ou prevenir 
-              qualquer doença ou condição médica.
+              La información aquí presentada se proporciona únicamente con fines educativos e informativos, 
+              y no reemplaza los consejos, diagnósticos o tratamientos de un profesional de la salud 
+              calificado. Nuestros productos no están destinados a diagnosticar, tratar, curar o prevenir 
+              cualquier enfermedad o condición médica.
             </p>
             <p>
-              É importante lembrar que os resultados podem variar significativamente de pessoa para pessoa. 
-              A decisão de aplicar as informações ou usar nossos produtos é de sua inteira responsabilidade. 
-              Para questões relacionadas à sua saúde, sempre consulte um especialista.
+              Es importante recordar que los resultados pueden variar significativamente de persona a persona. 
+              La decisión de aplicar la información o usar nuestros productos es de su entera responsabilidad. 
+              Para cuestiones relacionadas con su salud, siempre consulte a un especialista.
             </p>
           </div>
           
-          {/* Links de políticas com popups */}
+          {/* Enlaces de políticas con popups */}
           <div className="flex flex-wrap gap-4 justify-center pt-4" style={{ borderTop: '1px solid #dadde1' }}>
             <button 
               onClick={() => setShowPrivacyModal(true)}
@@ -264,7 +264,7 @@ const ProtocoleSite = () => {
                 fontSize: '14px'
               }}
             >
-              Política de Privacidade
+              Política de Privacidad
             </button>
             <button 
               onClick={() => setShowTermsModal(true)}
@@ -277,212 +277,212 @@ const ProtocoleSite = () => {
                 fontSize: '14px'
               }}
             >
-              Termos de Uso
+              Términos de Uso
             </button>
           </div>
         </div>
       </footer>
 
-      {/* Modal de Política de Privacidade */}
+      {/* Modal de Política de Privacidad */}
       <Modal 
         show={showPrivacyModal} 
         onClose={() => setShowPrivacyModal(false)} 
-        title="Política de Privacidade"
+        title="Política de Privacidad"
       >
         <div>
           <p style={{ marginBottom: '16px' }}>
-            Bem-vindo ao site <strong>https://www.dreamvisionlp.online/</strong> (doravante denominado "Site").
+            Bienvenido al sitio <strong>https://www.dreamvisionlp.online/</strong> (en adelante denominado "Sitio").
           </p>
           <p style={{ marginBottom: '16px' }}>
-            A proteção de seus dados pessoais é uma prioridade para nós. Esta Política de Privacidade 
-            descreve como seus dados pessoais são coletados, usados, compartilhados e protegidos quando 
-            você usa nossos produtos e serviços digitais, em conformidade com a Lei Geral de Proteção de 
-            Dados (LGPD - Lei nº 13.709/2018) e demais legislações aplicáveis.
-          </p>
-
-          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            1. Identificação e Dados de Contato do Controlador
-          </h3>
-          <p style={{ marginBottom: '16px' }}>
-            O controlador dos dados pessoais coletados através deste Site é: www.dreamvisionlp.online
-          </p>
-          <p style={{ marginBottom: '16px' }}>
-            Para qualquer questão relacionada a esta Política de Privacidade ou aos seus dados pessoais, 
-            você pode nos contatar através dos dados de contato acima.
+            La protección de sus datos personales es una prioridad para nosotros. Esta Política de Privacidad 
+            describe cómo sus datos personales son recolectados, utilizados, compartidos y protegidos cuando 
+            usted usa nuestros productos y servicios digitales, en conformidad con las leyes de protección de 
+            datos aplicables.
           </p>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            2. Dados Pessoais Coletados
+            1. Identificación y Datos de Contacto del Responsable
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            Coletamos diferentes categorias de dados pessoais, de acordo com suas interações com nosso Site e serviços:
+            El responsable de los datos personales recolectados a través de este Sitio es: www.dreamvisionlp.online
+          </p>
+          <p style={{ marginBottom: '16px' }}>
+            Para cualquier cuestión relacionada con esta Política de Privacidad o sus datos personales, 
+            puede contactarnos a través de los datos de contacto arriba mencionados.
+          </p>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            2. Datos Personales Recolectados
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Recolectamos diferentes categorías de datos personales, de acuerdo con sus interacciones con nuestro Sitio y servicios:
           </p>
           
           <h4 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>
-            2.1 Categorias de Dados Coletados
+            2.1 Categorías de Datos Recolectados
           </h4>
           <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-            <li style={{ marginBottom: '4px' }}>Dados de identificação: nome, sobrenome, endereço de e-mail, número de telefone.</li>
-            <li style={{ marginBottom: '4px' }}>Dados de conexão: endereço IP, tipo de navegador, sistema operacional, identificadores de sessão.</li>
-            <li style={{ marginBottom: '4px' }}>Dados de transação: informações de pagamento (processadas por terceiros seguros), histórico de compras.</li>
-            <li style={{ marginBottom: '4px' }}>Dados de navegação: páginas visitadas, cliques, tempo gasto no Site.</li>
-            <li style={{ marginBottom: '4px' }}>Dados de marketing: preferências de comunicação, respostas a campanhas publicitárias.</li>
+            <li style={{ marginBottom: '4px' }}>Datos de identificación: nombre, apellido, dirección de correo electrónico, número de teléfono.</li>
+            <li style={{ marginBottom: '4px' }}>Datos de conexión: dirección IP, tipo de navegador, sistema operativo, identificadores de sesión.</li>
+            <li style={{ marginBottom: '4px' }}>Datos de transacción: información de pago (procesada por terceros seguros), historial de compras.</li>
+            <li style={{ marginBottom: '4px' }}>Datos de navegación: páginas visitadas, clics, tiempo pasado en el Sitio.</li>
+            <li style={{ marginBottom: '4px' }}>Datos de marketing: preferencias de comunicación, respuestas a campañas publicitarias.</li>
           </ul>
 
           <h4 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>
-            2.2 Fontes e Métodos de Coleta
+            2.2 Fuentes y Métodos de Recolección
           </h4>
           <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-            <li style={{ marginBottom: '4px' }}>Formulários: dados fornecidos durante inscrição, compra ou contato através do nosso Site.</li>
-            <li style={{ marginBottom: '4px' }}>Cookies e tecnologias similares: dados coletados automaticamente durante sua navegação (ver Seção 8).</li>
-            <li style={{ marginBottom: '4px' }}>Terceiros: dados obtidos através de parceiros ou plataformas publicitárias (com seu consentimento prévio).</li>
+            <li style={{ marginBottom: '4px' }}>Formularios: datos proporcionados durante inscripción, compra o contacto a través de nuestro Sitio.</li>
+            <li style={{ marginBottom: '4px' }}>Cookies y tecnologías similares: datos recolectados automáticamente durante su navegación (ver Sección 8).</li>
+            <li style={{ marginBottom: '4px' }}>Terceros: datos obtenidos a través de socios o plataformas publicitarias (con su consentimiento previo).</li>
           </ul>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            3. Finalidades e Bases Legais do Tratamento
+            3. Finalidades y Bases Legales del Tratamiento
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            Seus dados pessoais são tratados para as seguintes finalidades, conforme as bases legais definidas pela LGPD.
+            Sus datos personales son tratados para las siguientes finalidades, conforme a las bases legales definidas por la legislación aplicable.
           </p>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            4. Destinatários dos Dados Pessoais
+            4. Destinatarios de los Datos Personales
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            Seus dados pessoais podem ser compartilhados com as seguintes categorias de destinatários:
+            Sus datos personales pueden ser compartidos con las siguientes categorías de destinatarios:
           </p>
           <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-            <li style={{ marginBottom: '4px' }}>Prestadores de serviços terceirizados: hospedagem, processamento de pagamentos, ferramentas de análise, plataformas de marketing.</li>
-            <li style={{ marginBottom: '4px' }}>Parceiros comerciais: apenas com seu consentimento explícito.</li>
-            <li style={{ marginBottom: '4px' }}>Autoridades competentes: em caso de obrigação legal ou para proteger nossos direitos.</li>
+            <li style={{ marginBottom: '4px' }}>Proveedores de servicios terceros: alojamiento, procesamiento de pagos, herramientas de análisis, plataformas de marketing.</li>
+            <li style={{ marginBottom: '4px' }}>Socios comerciales: solo con su consentimiento explícito.</li>
+            <li style={{ marginBottom: '4px' }}>Autoridades competentes: en caso de obligación legal o para proteger nuestros derechos.</li>
           </ul>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            5. Prazo de Conservação dos Dados
+            5. Plazo de Conservación de los Datos
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            Conservamos seus dados pessoais apenas pelo tempo necessário para as finalidades descritas acima, 
-            ou conforme exigências legais. Por exemplo:
+            Conservamos sus datos personales solo por el tiempo necesario para las finalidades descritas arriba, 
+            o conforme a las exigencias legales. Por ejemplo:
           </p>
           <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-            <li style={{ marginBottom: '4px' }}>Dados de transação: conservados por 10 anos para obrigações contábeis.</li>
-            <li style={{ marginBottom: '4px' }}>Dados de marketing: conservados até que você retire seu consentimento.</li>
-            <li style={{ marginBottom: '4px' }}>Dados de navegação: conservados por no máximo 13 meses (ver Seção 8 sobre cookies).</li>
+            <li style={{ marginBottom: '4px' }}>Datos de transacción: conservados por 10 años para obligaciones contables.</li>
+            <li style={{ marginBottom: '4px' }}>Datos de marketing: conservados hasta que retire su consentimiento.</li>
+            <li style={{ marginBottom: '4px' }}>Datos de navegación: conservados por máximo 13 meses (ver Sección 8 sobre cookies).</li>
           </ul>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            6. Direitos dos Titulares dos Dados
+            6. Derechos de los Titulares de los Datos
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            Conforme a LGPD, você possui os seguintes direitos relacionados aos seus dados pessoais:
+            Conforme a la legislación aplicable, usted posee los siguientes derechos relacionados con sus datos personales:
           </p>
           <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-            <li style={{ marginBottom: '4px' }}>Direito de acesso: obter uma cópia de seus dados pessoais.</li>
-            <li style={{ marginBottom: '4px' }}>Direito de retificação: corrigir dados inexatos ou incompletos.</li>
-            <li style={{ marginBottom: '4px' }}>Direito de eliminação: solicitar a exclusão de seus dados (sob certas condições).</li>
-            <li style={{ marginBottom: '4px' }}>Direito de limitação: restringir o tratamento de seus dados.</li>
-            <li style={{ marginBottom: '4px' }}>Direito de portabilidade: receber seus dados em formato estruturado e legível por máquina.</li>
-            <li style={{ marginBottom: '4px' }}>Direito de oposição: opor-se ao tratamento de seus dados por motivos legítimos ou para fins de marketing.</li>
-            <li style={{ marginBottom: '4px' }}>Direito de retirar seu consentimento: a qualquer momento, para tratamentos baseados em seu consentimento.</li>
+            <li style={{ marginBottom: '4px' }}>Derecho de acceso: obtener una copia de sus datos personales.</li>
+            <li style={{ marginBottom: '4px' }}>Derecho de rectificación: corregir datos inexactos o incompletos.</li>
+            <li style={{ marginBottom: '4px' }}>Derecho de eliminación: solicitar la eliminación de sus datos (bajo ciertas condiciones).</li>
+            <li style={{ marginBottom: '4px' }}>Derecho de limitación: restringir el tratamiento de sus datos.</li>
+            <li style={{ marginBottom: '4px' }}>Derecho de portabilidad: recibir sus datos en formato estructurado y legible por máquina.</li>
+            <li style={{ marginBottom: '4px' }}>Derecho de oposición: oponerse al tratamiento de sus datos por motivos legítimos o para fines de marketing.</li>
+            <li style={{ marginBottom: '4px' }}>Derecho de retirar su consentimiento: en cualquier momento, para tratamientos basados en su consentimiento.</li>
           </ul>
           <p style={{ marginBottom: '16px' }}>
-            Para exercer seus direitos, entre em contato conosco em: <strong>contato@dreamvisionlp.online</strong>. 
-            Você também tem o direito de apresentar reclamação à Autoridade Nacional de Proteção de Dados (ANPD).
+            Para ejercer sus derechos, contáctenos en: <strong>contacto@dreamvisionlp.online</strong>. 
+            Usted también tiene derecho a presentar una reclamación ante la autoridad de protección de datos correspondiente.
           </p>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            7. Medidas de Segurança
+            7. Medidas de Seguridad
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            Implementamos medidas técnicas e organizacionais para proteger seus dados pessoais contra 
-            acesso não autorizado, perda, alteração ou divulgação. Essas medidas incluem:
+            Implementamos medidas técnicas y organizacionales para proteger sus datos personales contra 
+            acceso no autorizado, pérdida, alteración o divulgación. Estas medidas incluyen:
           </p>
           <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-            <li style={{ marginBottom: '4px' }}>Criptografia de dados sensíveis.</li>
-            <li style={{ marginBottom: '4px' }}>Controles de acesso rigorosos.</li>
-            <li style={{ marginBottom: '4px' }}>Monitoramento regular de nossos sistemas.</li>
+            <li style={{ marginBottom: '4px' }}>Encriptación de datos sensibles.</li>
+            <li style={{ marginBottom: '4px' }}>Controles de acceso rigurosos.</li>
+            <li style={{ marginBottom: '4px' }}>Monitoreo regular de nuestros sistemas.</li>
           </ul>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            8. Política de Cookies e Tecnologias Similares
+            8. Política de Cookies y Tecnologías Similares
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            Utilizamos cookies para melhorar sua experiência de usuário. Estes cookies podem incluir:
+            Utilizamos cookies para mejorar su experiencia de usuario. Estas cookies pueden incluir:
           </p>
           <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-            <li style={{ marginBottom: '4px' }}>Cookies essenciais: necessários para o funcionamento do Site.</li>
-            <li style={{ marginBottom: '4px' }}>Cookies analíticos: para medir audiência e analisar o uso do Site.</li>
+            <li style={{ marginBottom: '4px' }}>Cookies esenciales: necesarios para el funcionamiento del Sitio.</li>
+            <li style={{ marginBottom: '4px' }}>Cookies analíticos: para medir audiencia y analizar el uso del Sitio.</li>
             <li style={{ marginBottom: '4px' }}>Cookies de marketing: para personalizar publicidades.</li>
           </ul>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            9. Contato
+            9. Contacto
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            Para qualquer questão ou solicitação relacionada a esta Política de Privacidade, entre em contato conosco:
+            Para cualquier pregunta o solicitud relacionada con esta Política de Privacidad, contáctenos:
           </p>
           <p style={{ marginBottom: '16px' }}>
-            E-mail: <strong>contato@dreamvisionlp.online</strong>
+            Correo electrónico: <strong>contacto@dreamvisionlp.online</strong>
           </p>
         </div>
       </Modal>
 
-      {/* Modal de Termos de Uso */}
+      {/* Modal de Términos de Uso */}
       <Modal 
         show={showTermsModal} 
         onClose={() => setShowTermsModal(false)} 
-        title="Termos de Uso"
+        title="Términos de Uso"
       >
         <div>
           <p style={{ marginBottom: '16px' }}>
-            <strong>www.dreamvisionlp.online</strong> elaborou os presentes Termos de Uso para demonstrar 
-            seu compromisso firme quanto ao uso que você pode fazer dos serviços e informações disponíveis 
-            em seu site web.
+            <strong>www.dreamvisionlp.online</strong> elaboró los presentes Términos de Uso para demostrar 
+            su compromiso firme respecto al uso que usted puede hacer de los servicios e información disponibles 
+            en su sitio web.
           </p>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            Termos de Uso
+            Términos de Uso
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            O acesso a este site web implica a aceitação expressa e sem reservas dos termos de uso descritos 
-            a seguir. Se você não aceita estes termos, por favor, não acesse nem use este site web.
+            El acceso a este sitio web implica la aceptación expresa y sin reservas de los términos de uso descritos 
+            a continuación. Si usted no acepta estos términos, por favor, no acceda ni use este sitio web.
           </p>
           <p style={{ marginBottom: '16px' }}>
-            Os visitantes podem usar este site web apenas para fins legais. Este site web não pode ser usado 
-            para publicar, enviar, distribuir ou divulgar conteúdo ou informações de natureza difamatória, 
-            obscena ou ilegal, incluindo informações proprietárias pertencentes a outras pessoas ou empresas, 
-            bem como marcas registradas ou informações protegidas por direitos autorais, sem a autorização 
-            expressa do titular desses direitos.
-          </p>
-
-          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            Limitação de Responsabilidade
-          </h3>
-          <p style={{ marginBottom: '16px' }}>
-            Os conteúdos são fornecidos neste site web sem qualquer garantia expressa ou implícita de 
-            qualidade comercial ou adequação a um uso particular. <strong>www.dreamvisionlp.online</strong> 
-            não pode ser responsabilizada por danos, incluindo perdas de lucros, interrupções de negócios 
-            ou perdas de informações resultantes do uso ou da impossibilidade de usar estes conteúdos.
+            Los visitantes pueden usar este sitio web solo para fines legales. Este sitio web no puede ser usado 
+            para publicar, enviar, distribuir o divulgar contenido o información de naturaleza difamatoria, 
+            obscena o ilegal, incluyendo información propietaria perteneciente a otras personas o empresas, 
+            así como marcas registradas o información protegida por derechos de autor, sin la autorización 
+            expresa del titular de esos derechos.
           </p>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            Direitos Autorais e Propriedade Intelectual
+            Limitación de Responsabilidad
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            Os documentos, conteúdos e criações deste site web pertencem a <strong>www.dreamvisionlp.online</strong> 
-            e seus colaboradores. A autoria do conteúdo, documentos e imagens exibidos em 
-            <strong>www.dreamvisionlp.online</strong> está protegida pelas leis nacionais e internacionais. 
-            Eles não podem ser copiados, reproduzidos, modificados, publicados, atualizados, postados, 
-            transmitidos ou distribuídos de qualquer maneira sem autorização prévia por escrito de 
+            Los contenidos son proporcionados en este sitio web sin ninguna garantía expresa o implícita de 
+            calidad comercial o adecuación para un uso particular. <strong>www.dreamvisionlp.online</strong> 
+            no puede ser responsable por daños, incluyendo pérdidas de ganancias, interrupciones de negocios 
+            o pérdidas de información resultantes del uso o de la imposibilidad de usar estos contenidos.
+          </p>
+
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
+            Derechos de Autor y Propiedad Intelectual
+          </h3>
+          <p style={{ marginBottom: '16px' }}>
+            Los documentos, contenidos y creaciones de este sitio web pertenecen a <strong>www.dreamvisionlp.online</strong> 
+            y sus colaboradores. La autoría del contenido, documentos e imágenes mostrados en 
+            <strong>www.dreamvisionlp.online</strong> está protegida por las leyes nacionales e internacionales. 
+            No pueden ser copiados, reproducidos, modificados, publicados, actualizados, enviados, 
+            transmitidos o distribuidos de cualquier manera sin autorización previa por escrito de 
             <strong>www.dreamvisionlp.online</strong>.
           </p>
 
           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', marginTop: '20px' }}>
-            Contato
+            Contacto
           </h3>
           <p style={{ marginBottom: '16px' }}>
-            Para qualquer questão relacionada a estes Termos de Uso, entre em contato conosco: 
-            <strong>contato@dreamvisionlp.online</strong>
+            Para cualquier pregunta relacionada con estos Términos de Uso, contáctenos: 
+            <strong>contacto@dreamvisionlp.online</strong>
           </p>
         </div>
       </Modal>
