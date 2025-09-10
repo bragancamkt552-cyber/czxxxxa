@@ -58,6 +58,19 @@ const SpanishMemoryLanding: React.FC = () => {
     };
   }, [showNotifications]);
 
+  useEffect(() => {
+    // Carrega o script do vturb-smartplayer
+    if (!document.querySelector('[src*="68c1f27dfc60e3d12b16bf13"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68c1f27dfc60e3d12b16bf13/v4/player.js';
+      script.async = true;
+      document.head.appendChild(script);
+      return () => {
+        document.head.removeChild(script);
+      };
+    }
+  }, []);
+
   const startNotifications = () => {
     const showNotification = () => {
       const randomPurchase = purchaseData[Math.floor(Math.random() * purchaseData.length)];
@@ -122,32 +135,21 @@ const SpanishMemoryLanding: React.FC = () => {
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full font-semibold text-black mb-6 md:mb-8 text-sm md:text-base shadow-lg">
             <span className="animate-bounce">🔥</span>
-            INTELIGÊNCIA ARTIFICIAL 2025
+            NOVA TECNOLOGIA IA 2025
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-black leading-tight mb-6 md:mb-8">
-            <span className="bg-gradient-to-r from-white via-emerald-400 to-white bg-clip-text text-transparent">
-              Transforme Matches<br />em Encontros Reais
-            </span>
+          <h1 className="text-[clamp(32px,8vw,72px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent">
+            Pare de Perder Matches<br />Por Não Saber o Que Dizer
           </h1>
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed">
-            A <span className="text-emerald-400 font-bold">IA mais avançada do Brasil</span> analisa suas conversas e te entrega{' '}
-            <span className="text-emerald-400 font-bold">respostas irresistíveis</span> que geram interesse e marcam encontros
+          <p className="text-[clamp(18px,3vw,24px)] text-[#B0B0B0] mb-10 max-w-[600px] mx-auto">
+            A <span className="text-[#00FF88] font-bold">Inteligência Artificial</span> que analisa suas conversas e te diz{' '}
+            <span className="text-[#00FF88] font-bold">exatamente</span> o que responder para despertar interesse e marcar encontros reais
           </p>
           <div className="mb-8 md:mb-12 flex justify-center">
             <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: `<vturb-smartplayer id="vid-68c1f27dfc60e3d12b16bf13" style="display: block; margin: 0 auto; width: 100%; border-radius: 12px;"></vturb-smartplayer>
-                  <script type="text/javascript">
-                    if (!document.querySelector('[src*="68c1f27dfc60e3d12b16bf13"]')) {
-                      var s=document.createElement("script");
-                      s.src="https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68c1f27dfc60e3d12b16bf13/v4/player.js";
-                      s.async=true;
-                      document.head.appendChild(s);
-                    }
-                  </script>`
-                }}
-              />
+              <vturb-smartplayer
+                id="vid-68c1f27dfc60e3d12b16bf13"
+                style={{ display: 'block', margin: '0 auto', width: '100%', borderRadius: '12px' }}
+              ></vturb-smartplayer>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12 max-w-2xl mx-auto">
