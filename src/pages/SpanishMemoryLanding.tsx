@@ -135,28 +135,6 @@ const SpanishMemoryLanding: React.FC = () => {
         </div>
       )}
 
-      {/* News Section */}
-      <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-emerald-900/20 to-black/80">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-gray-800/60 backdrop-blur-sm p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 shadow-2xl">
-            <div className="text-4xl md:text-5xl mb-4 animate-pulse">📰</div>
-            <h2 className="text-2xl md:text-4xl font-black text-emerald-400 mb-4">
-              Inteligência Artificial Revoluciona o Jogo do Amor!
-            </h2>
-            <p className="text-base md:text-lg text-gray-300 leading-relaxed mb-6">
-              Nossa IA de ponta <span className="text-emerald-400 font-bold">entende exatamente</span> o que sua crush quer ouvir, analisando cada detalhe da conversa em tempo real. Diga adeus a respostas genéricas e olá a mensagens que <span className="text-emerald-400 font-bold">criam conexão instantânea</span>!
-            </p>
-            <a
-              href="#pricing"
-              className="inline-flex items-center gap-3 px-8 md:px-10 py-3 md:py-4 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-base md:text-lg rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
-            >
-              <span>🔥</span>
-              Descubra Agora
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center px-4 py-12 md:py-20 pt-16 md:pt-20">
         <div className="max-w-6xl mx-auto text-center">
@@ -164,7 +142,7 @@ const SpanishMemoryLanding: React.FC = () => {
             <span className="animate-bounce">🔥</span>
             NOVA TECNOLOGIA IA 2025
           </div>
-          <h1 className="text-[clamp(28px,7vw,56px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent sm:whitespace-nowrap">
+          <h1 className="text-[clamp(28px,6vw,64px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent overflow-visible whitespace-normal">
             Pare de Perder Matches Por Não Saber o Que Dizer
           </h1>
           <p className="text-[clamp(16px,2.5vw,20px)] text-[#B0B0B0] mb-10 max-w-[600px] mx-auto">
