@@ -13,6 +13,7 @@ const SpanishMemoryLanding: React.FC = () => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [modal, setModal] = useState<string | null>(null);
   const [spots, setSpots] = useState(37);
+  const [showOffer, setShowOffer] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<PurchaseNotification[]>([]);
 
@@ -32,7 +33,7 @@ const SpanishMemoryLanding: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setSpots((prev) => (prev > 15 ? prev - 1 : prev));
-    }, 45000);
+    }, 10000); // Diminui a cada 10 segundos
     return () => clearInterval(interval);
   }, []);
 
@@ -40,9 +41,12 @@ const SpanishMemoryLanding: React.FC = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         const pricingSection = entries[0];
-        if (pricingSection.isIntersecting && !showNotifications) {
+        if (pricingSection.isIntersecting) {
+          setShowOffer(true);
           setShowNotifications(true);
           startNotifications();
+        } else {
+          setShowOffer(false);
         }
       },
       { threshold: 0.1 }
@@ -59,7 +63,6 @@ const SpanishMemoryLanding: React.FC = () => {
   }, [showNotifications]);
 
   useEffect(() => {
-    // Carrega o script do vturb-smartplayer
     if (!document.querySelector('[src*="68c1f27dfc60e3d12b16bf13"]')) {
       const script = document.createElement('script');
       script.src = 'https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68c1f27dfc60e3d12b16bf13/v4/player.js';
@@ -121,26 +124,50 @@ const SpanishMemoryLanding: React.FC = () => {
         <div className="absolute w-full h-full bg-[radial-gradient(circle_at_30%_40%,rgba(0,255,136,0.08)_0%,transparent_60%),radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.06)_0%,transparent_60%)] animate-pulse" />
       </div>
 
-      {/* Urgency Bar */}
-      <div className="bg-gradient-to-r from-red-600 to-red-500 text-white text-center font-bold py-3 px-4 sticky top-0 z-50 shadow-lg">
-        <div className="flex items-center justify-center gap-2 text-sm md:text-base">
-          <span className="animate-pulse">⚡</span>
-          <span>OFERTA LIMITADA: 50% OFF • Restam apenas <span className="bg-white text-red-600 px-2 py-1 rounded-full font-black">{spots}</span> vagas</span>
-          <span className="animate-pulse">⚡</span>
+      {/* Urgency Bar (mostra apenas na seção de preços) */}
+      {showOffer && (
+        <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-red-600 to-red-500 text-white text-center font-bold py-3 px-4 z-50 shadow-lg animate-[slideDown_0.5s_ease-out]">
+          <div className="flex items-center justify-center gap-2 text-sm md:text-base">
+            <span className="animate-pulse">⚡</span>
+            <span>OFERTA LIMITADA: 50% OFF • Restam apenas <span className="bg-white text-red-600 px-2 py-1 rounded-full font-black">{spots}</span> vagas</span>
+            <span className="animate-pulse">⚡</span>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* News Section */}
+      <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-emerald-900/20 to-black/80">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="bg-gray-800/60 backdrop-blur-sm p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 shadow-2xl">
+            <div className="text-4xl md:text-5xl mb-4 animate-pulse">📰</div>
+            <h2 className="text-2xl md:text-4xl font-black text-emerald-400 mb-4">
+              Inteligência Artificial Revoluciona o Jogo do Amor!
+            </h2>
+            <p className="text-base md:text-lg text-gray-300 leading-relaxed mb-6">
+              Nossa IA de ponta <span className="text-emerald-400 font-bold">entende exatamente</span> o que sua crush quer ouvir, analisando cada detalhe da conversa em tempo real. Diga adeus a respostas genéricas e olá a mensagens que <span className="text-emerald-400 font-bold">criam conexão instantânea</span>!
+            </p>
+            <a
+              href="#pricing"
+              className="inline-flex items-center gap-3 px-8 md:px-10 py-3 md:py-4 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-base md:text-lg rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
+            >
+              <span>🔥</span>
+              Descubra Agora
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-4 py-12 md:py-20">
+      <section className="min-h-screen flex items-center justify-center px-4 py-12 md:py-20 pt-16 md:pt-20">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full font-semibold text-black mb-6 md:mb-8 text-sm md:text-base shadow-lg">
             <span className="animate-bounce">🔥</span>
             NOVA TECNOLOGIA IA 2025
           </div>
-          <h1 className="text-[clamp(32px,8vw,72px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent">
-            Pare de Perder Matches<br />Por Não Saber o Que Dizer
+          <h1 className="text-[clamp(28px,7vw,56px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent sm:whitespace-nowrap">
+            Pare de Perder Matches Por Não Saber o Que Dizer
           </h1>
-          <p className="text-[clamp(18px,3vw,24px)] text-[#B0B0B0] mb-10 max-w-[600px] mx-auto">
+          <p className="text-[clamp(16px,2.5vw,20px)] text-[#B0B0B0] mb-10 max-w-[600px] mx-auto">
             A <span className="text-[#00FF88] font-bold">Inteligência Artificial</span> que analisa suas conversas e te diz{' '}
             <span className="text-[#00FF88] font-bold">exatamente</span> o que responder para despertar interesse e marcar encontros reais
           </p>
