@@ -1,17 +1,93 @@
 import React, { useState, useEffect } from 'react';
 import '../index.css';
 
+interface PurchaseNotification {
+  id: number;
+  name: string;
+  city: string;
+  plan: string;
+  show: boolean;
+}
+
 const SpanishMemoryLanding: React.FC = () => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [modal, setModal] = useState<string | null>(null);
   const [spots, setSpots] = useState(37);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState<PurchaseNotification[]>([]);
+
+  const purchaseData = [
+    { name: 'Rafael C.', city: 'São Paulo', plan: 'Pro' },
+    { name: 'Lucas M.', city: 'Rio de Janeiro', plan: 'Premium' },
+    { name: 'Pedro S.', city: 'Curitiba', plan: 'Pro' },
+    { name: 'André F.', city: 'Porto Alegre', plan: 'Básico' },
+    { name: 'Gabriel B.', city: 'Brasília', plan: 'Pro' },
+    { name: 'Thiago H.', city: 'Belo Horizonte', plan: 'Premium' },
+    { name: 'João P.', city: 'Salvador', plan: 'Pro' },
+    { name: 'Carlos R.', city: 'Fortaleza', plan: 'Básico' },
+    { name: 'Bruno L.', city: 'Recife', plan: 'Pro' },
+    { name: 'Diego M.', city: 'Florianópolis', plan: 'Premium' },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSpots((prev) => (prev > 20 ? prev - 1 : prev));
-    }, 30000);
+      setSpots((prev) => (prev > 15 ? prev - 1 : prev));
+    }, 45000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const pricingSection = entries[0];
+        if (pricingSection.isIntersecting && !showNotifications) {
+          setShowNotifications(true);
+          startNotifications();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    const pricingElement = document.getElementById('pricing');
+    if (pricingElement) {
+      observer.observe(pricingElement);
+    }
+    return () => {
+      if (pricingElement) {
+        observer.unobserve(pricingElement);
+      }
+    };
+  }, [showNotifications]);
+
+  const startNotifications = () => {
+    const showNotification = () => {
+      const randomPurchase = purchaseData[Math.floor(Math.random() * purchaseData.length)];
+      const newNotification: PurchaseNotification = {
+        id: Date.now(),
+        name: randomPurchase.name,
+        city: randomPurchase.city,
+        plan: randomPurchase.plan,
+        show: true,
+      };
+      setNotifications((prev) => [...prev, newNotification]);
+      setTimeout(() => {
+        setNotifications((prev) =>
+          prev.map((notif) =>
+            notif.id === newNotification.id ? { ...notif, show: false } : notif
+          )
+        );
+        setTimeout(() => {
+          setNotifications((prev) => prev.filter((notif) => notif.id !== newNotification.id));
+        }, 500);
+      }, 4000);
+    };
+    setTimeout(showNotification, 1000);
+    const intervalId = setInterval(() => {
+      showNotification();
+    }, Math.random() * 7000 + 8000);
+    setTimeout(() => {
+      clearInterval(intervalId);
+    }, 300000);
+  };
 
   const toggleFaq = (index: number) => {
     setActiveFaq(activeFaq === index ? null : index);
@@ -26,163 +102,222 @@ const SpanishMemoryLanding: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans">
-      <div className="fixed inset-0 bg-gradient-to-b from-black to-[#0A0A0A] z-[-1]">
-        <div className="absolute w-[200%] h-[200%] top-[-50%] left-[-50%] bg-[radial-gradient(circle_at_20%_50%,rgba(0,255,136,0.1)_0%,transparent_50%),radial-gradient(circle_at_80%_50%,rgba(255,0,85,0.05)_0%,transparent_50%)] animate-[rotate_20s_linear_infinite]" />
+    <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
+      {/* Background Animation */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black z-[-1]">
+        <div className="absolute w-full h-full bg-[radial-gradient(circle_at_30%_40%,rgba(0,255,136,0.08)_0%,transparent_60%),radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.06)_0%,transparent_60%)] animate-pulse" />
       </div>
 
-      <div className="bg-[#FF0055] text-white text-center font-bold py-4 sticky top-0 z-50 animate-[slideDown_0.5s_ease-out]">
-        ⚡ OFERTA LIMITADA: 50% OFF nos primeiros 100 assinantes! Restam apenas <span>{spots}</span> vagas
-      </div>
-
-      <section className="min-h-screen flex items-center justify-center p-5">
-        <div className="max-w-[1200px] text-center">
-          <div className="inline-block px-5 py-2 bg-gradient-to-r from-[#00FF88] to-[#00CC6A] rounded-full font-semibold text-[#0A0A0A] mb-8 animate-[pulse_2s_infinite]">
-            🔥 NOVA TECNOLOGIA IA 2025
-          </div>
-          <h1 className="text-[clamp(32px,8vw,72px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent">
-            Pare de Perder Matches<br />Por Não Saber o Que Dizer
-          </h1>
-          <p className="text-[clamp(18px,3vw,24px)] text-[#B0B0B0] mb-10 max-w-[600px] mx-auto">
-            A <span className="text-[#00FF88] font-bold">Inteligência Artificial</span> que analisa suas conversas e te diz{' '}
-            <span className="text-[#00FF88] font-bold">exatamente</span> o que responder para despertar interesse e marcar encontros reais
-          </p>
-          <div className="flex justify-center gap-10 mb-10 flex-wrap">
-            <div className="text-center animate-[fadeInUp_0.6s_ease-out]">
-              <div className="text-4xl font-black text-[#00FF88]">93%</div>
-              <div className="text-sm text-[#B0B0B0]">Taxa de Resposta</div>
-            </div>
-            <div className="text-center animate-[fadeInUp_0.6s_ease-out]">
-              <div className="text-4xl font-black text-[#00FF88]">4.8x</div>
-              <div className="text-sm text-[#B0B0B0]">Mais Encontros</div>
-            </div>
-            <div className="text-center animate-[fadeInUp_0.6s_ease-out]">
-              <div className="text-4xl font-black text-[#00FF88]">2.847</div>
-              <div className="text-sm text-[#B0B0B0]">Usuários Ativos</div>
-            </div>
-          </div>
-          <a
-            href="#pricing"
-            className="inline-block px-12 py-4 bg-gradient-to-r from-[#00FF88] to-[#00CC6A] text-[#0A0A0A] font-bold text-lg rounded-full shadow-[0_10px_30px_rgba(0,255,136,0.3)] hover:shadow-[0_15px_40px_rgba(0,255,136,0.4)] hover:-translate-y-1 transition-all relative overflow-hidden group"
-          >
-            QUERO COMEÇAR AGORA
-            <div className="absolute top-0 left-[-100%] w-full h-full bg-[rgba(255,255,255,0.2)] group-hover:left-full transition-[left_0.5s_ease]" />
-          </a>
-          <p className="mt-5 text-sm text-[#B0B0B0]">
-            ⚡ Acesso imediato via WhatsApp • Cancele quando quiser • Garantia de 7 dias
-          </p>
+      {/* Urgency Bar */}
+      <div className="bg-gradient-to-r from-red-600 to-red-500 text-white text-center font-bold py-3 px-4 sticky top-0 z-50 shadow-lg">
+        <div className="flex items-center justify-center gap-2 text-sm md:text-base">
+          <span className="animate-pulse">⚡</span>
+          <span>OFERTA LIMITADA: 50% OFF • Restam apenas <span className="bg-white text-red-600 px-2 py-1 rounded-full font-black">{spots}</span> vagas</span>
+          <span className="animate-pulse">⚡</span>
         </div>
-      </section>
+      </div>
 
-      <section className="py-20 bg-[rgba(0,255,136,0.03)]">
-        <div className="max-w-[1200px] mx-auto">
-          <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">
-            <span className="text-[#25D366]">WhatsApp</span> - Simples e Direto
-          </h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8">
+      {/* Hero Section */}
+      <section className="min-h-screen flex items-center justify-center px-4 py-12 md:py-20">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full font-semibold text-black mb-6 md:mb-8 text-sm md:text-base shadow-lg">
+            <span className="animate-bounce">🔥</span>
+            INTELIGÊNCIA ARTIFICIAL 2025
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-black leading-tight mb-6 md:mb-8">
+            <span className="bg-gradient-to-r from-white via-emerald-400 to-white bg-clip-text text-transparent">
+              Transforme Matches<br />em Encontros Reais
+            </span>
+          </h1>
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed">
+            A <span className="text-emerald-400 font-bold">IA mais avançada do Brasil</span> analisa suas conversas e te entrega{' '}
+            <span className="text-emerald-400 font-bold">respostas irresistíveis</span> que geram interesse e marcam encontros
+          </p>
+          <div className="mb-8 md:mb-12 flex justify-center">
+            <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: `<vturb-smartplayer id="vid-68c1f27dfc60e3d12b16bf13" style="display: block; margin: 0 auto; width: 100%; border-radius: 12px;"></vturb-smartplayer>
+                  <script type="text/javascript">
+                    if (!document.querySelector('[src*="68c1f27dfc60e3d12b16bf13"]')) {
+                      var s=document.createElement("script");
+                      s.src="https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68c1f27dfc60e3d12b16bf13/v4/player.js";
+                      s.async=true;
+                      document.head.appendChild(s);
+                    }
+                  </script>`
+                }}
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12 max-w-2xl mx-auto">
             {[
-              { icon: '📱', title: '1. Adicione nosso Número', desc: 'Salve nosso WhatsApp e envie "COMEÇAR" para ativar sua conta' },
-              { icon: '📸', title: '2. Envie o Print', desc: 'Tire print da conversa travada e envie para nossa IA analisar' },
-              { icon: '⚡', title: '3. Receba em 30 Segundos', desc: 'IA analisa e envia 3 opções de resposta com explicação' },
-              { icon: '🔥', title: '4. Copie e Cole', desc: 'Escolha a melhor resposta, personalize se quiser e envie' },
-            ].map((step, index) => (
-              <div key={index} className="text-center">
-                <div className="w-20 h-20 bg-gradient-to-r from-[#25D366] to-[#128C7E] rounded-full flex items-center justify-center mx-auto mb-5 text-4xl">
-                  {step.icon}
-                </div>
-                <h3 className="text-[#00FF88] mb-4">{step.title}</h3>
-                <p className="text-[#B0B0B0]">{step.desc}</p>
+              { number: '94%', label: 'Taxa de Resposta' },
+              { number: '5.2x', label: 'Mais Encontros' },
+              { number: '3.124', label: 'Usuários Ativos' }
+            ].map((stat, index) => (
+              <div key={index} className="text-center p-4 bg-gray-800/50 rounded-xl backdrop-blur-sm border border-gray-700">
+                <div className="text-2xl md:text-4xl font-black text-emerald-400 mb-1">{stat.number}</div>
+                <div className="text-xs md:text-sm text-gray-400">{stat.label}</div>
               </div>
             ))}
           </div>
-          <div className="text-center mt-16 p-8 bg-[rgba(37,211,102,0.1)] rounded-[20px] border-2 border-[#25D366]">
-            <p className="text-2xl font-bold text-[#25D366] mb-5">💬 Tudo pelo WhatsApp, Sem Complicação!</p>
-            <p className="text-[#B0B0B0] mb-8">
-              Sem app para baixar, sem login complicado. É só adicionar nosso número e começar a usar!
+          <div className="space-y-4">
+            <a
+              href="#pricing"
+              className="inline-flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-lg md:text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300 group w-full max-w-md"
+            >
+              <span>QUERO RESULTADOS AGORA</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+            <p className="text-sm text-gray-400 flex items-center justify-center gap-2 flex-wrap">
+              <span>✅</span> Teste GRÁTIS por 7 dias
+              <span>•</span>
+              <span>✅</span> Acesso imediato via WhatsApp
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works - WhatsApp */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-transparent to-gray-900/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-black mb-4">
+              <span className="text-green-400">WhatsApp</span> - Simples e Rápido
+            </h2>
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+              Sem apps complicados. Tudo funciona direto no seu WhatsApp
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {[
+              {
+                icon: '📱',
+                title: '1. Adicione o Número',
+                desc: 'Salve nosso WhatsApp e envie "COMEÇAR" para ativar',
+                color: 'from-blue-400 to-blue-500'
+              },
+              {
+                icon: '📸',
+                title: '2. Envie o Print',
+                desc: 'Tire print da conversa e envie para análise da IA',
+                color: 'from-purple-400 to-purple-500'
+              },
+              {
+                icon: '⚡',
+                title: '3. IA Analisa (30s)',
+                desc: 'Receba 3 opções de resposta personalizadas',
+                color: 'from-yellow-400 to-orange-400'
+              },
+              {
+                icon: '🔥',
+                title: '4. Copie e Conquiste',
+                desc: 'Escolha a melhor resposta e veja os resultados',
+                color: 'from-red-400 to-pink-400'
+              },
+            ].map((step, index) => (
+              <div key={index} className="text-center group">
+                <div className={`w-16 h-16 md:w-20 md:h-20 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl md:text-4xl shadow-xl group-hover:scale-110 transition-transform duration-300`}>
+                  {step.icon}
+                </div>
+                <h3 className="text-lg md:text-xl font-bold text-emerald-400 mb-2">{step.title}</h3>
+                <p className="text-sm md:text-base text-gray-400 leading-relaxed">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-12 md:mt-16 text-center p-6 md:p-8 bg-gradient-to-r from-green-900/30 to-green-800/30 rounded-3xl border-2 border-green-400 backdrop-blur-sm">
+            <div className="text-2xl md:text-3xl font-bold text-green-400 mb-4 flex items-center justify-center gap-2">
+              <span className="animate-bounce">💬</span>
+              Tudo pelo WhatsApp, Zero Complicação!
+            </div>
+            <p className="text-gray-300 mb-6 md:mb-8 text-lg">
+              Sem downloads, sem logins. É só adicionar e começar a conquistar!
             </p>
             <a
               href="#pricing"
-              className="inline-block px-12 py-4 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-[#0A0A0A] font-bold text-lg rounded-full shadow-[0_10px_30px_rgba(0,255,136,0.3)] hover:shadow-[0_15px_40px_rgba(0,255,136,0.4)] hover:-translate-y-1 transition-all"
+              className="inline-flex items-center gap-3 px-8 md:px-12 py-4 bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-lg rounded-full shadow-2xl hover:-translate-y-1 transition-all"
             >
+              <span>🚀</span>
               ATIVAR AGORA NO WHATSAPP
             </a>
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-[rgba(10,10,10,0.5)] backdrop-blur-[10px]">
-        <div className="max-w-[1200px] mx-auto">
-          <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Como Funciona na Prática</h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-10">
+      {/* Demo Section */}
+      <section className="py-16 md:py-24 px-4 bg-gray-900/50">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+            Veja a Transformação na Prática
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             {[
               {
-                step: '1',
-                header: '😰 Ela Responde e Você Trava',
+                step: '😰',
+                title: 'ANTES: Conversa Travada',
                 messages: [
                   { type: 'other', text: 'Oi! Vi que você também curte trilhas 😊' },
                   { type: 'user', text: 'Oi! Sim, adoro! E você...' },
-                  { type: 'other', text: 'Fiz a trilha da Pedra Bonita semana passada! Foi incrível 🏔️' },
-                  { type: 'center', text: '🤔 "E agora? O que eu respondo?"', className: 'text-[#B0B0B0]' },
+                  { type: 'other', text: 'Fiz a trilha da Pedra Bonita semana passada! 🏔️' },
+                  { type: 'center', text: '🤔 "E agora? O que responder?"', className: 'text-gray-400 italic' },
                 ],
+                bgColor: 'from-red-900/20 to-red-800/20',
+                borderColor: 'border-red-500/30'
               },
               {
-                step: '2',
-                header: '🤖 Envia Print para Nossa IA',
+                step: '🤖',
+                title: 'NOSSA IA ANALISANDO',
                 messages: [
                   {
-                    type: 'ai-suggestion',
-                    text: '💡 <strong>IA Analisando:</strong><br> • Ela demonstrou interesse genuíno<br> • Abriu espaço para conexão emocional<br> • Momento perfeito para criar tensão',
+                    type: 'ai',
+                    html: '<div class="bg-emerald-500/20 p-4 rounded-lg border border-emerald-400/30"><strong class="text-emerald-400">💡 IA Detectou:</strong><br/>• Interesse genuíno dela<br/>• Oportunidade de conexão<br/>• Momento ideal para criar mistério</div>',
                   },
                   {
-                    type: 'ai-suggestion',
-                    text: '✨ <strong>Resposta Sugerida:</strong><br> "Pedra Bonita é demais! A vista lá de cima vale cada gota de suor haha. Você foi no nascer ou pôr do sol? Porque tenho uma teoria sobre qual é melhor... 😏"',
-                    className: 'bg-[rgba(0,255,136,0.2)]',
+                    type: 'ai',
+                    html: '<div class="bg-blue-500/20 p-4 rounded-lg border border-blue-400/30"><strong class="text-blue-400">✨ Resposta Sugerida:</strong><br/>"Pedra Bonita é incrível! Você foi no nascer ou pôr do sol? Tenho uma teoria sobre qual momento é melhor... 😏"</div>',
                   },
                 ],
+                bgColor: 'from-emerald-900/20 to-blue-900/20',
+                borderColor: 'border-emerald-500/50'
               },
               {
-                step: '3',
-                header: '🔥 Resultado Imediato',
+                step: '🔥',
+                title: 'DEPOIS: Resultado Imediato',
                 messages: [
                   {
                     type: 'user',
-                    text: 'Pedra Bonita é demais! A vista lá de cima vale cada gota de suor haha. Você foi no nascer ou pôr do sol? Porque tenho uma teoria sobre qual é melhor... 😏',
+                    text: 'Pedra Bonita é incrível! Você foi no nascer ou pôr do sol? Tenho uma teoria sobre qual momento é melhor... 😏',
                   },
                   { type: 'other', text: 'Hahaha agora fiquei curiosa! Fui no pôr do sol... qual é sua teoria? 👀' },
-                  { type: 'other', text: 'Aliás, você parece conhecer várias trilhas legais por aqui...' },
-                  { type: 'center', text: '✅ Conversa fluindo naturalmente!', className: 'text-[#00FF88]' },
+                  { type: 'other', text: 'Você parece conhecer os melhores lugares...' },
+                  { type: 'center', text: '✅ Conversa fluindo perfeitamente!', className: 'text-emerald-400 font-bold' },
                 ],
+                bgColor: 'from-emerald-900/20 to-green-800/20',
+                borderColor: 'border-emerald-500/50'
               },
             ].map((demo, index) => (
               <div
                 key={index}
-                className="bg-[rgba(20,20,20,0.95)] p-8 rounded-[20px] border border-[rgba(0,255,136,0.2)] hover:border-[#00FF88] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,255,136,0.2)] transition-all relative"
+                className={`bg-gradient-to-b ${demo.bgColor} p-6 md:p-8 rounded-3xl border-2 ${demo.borderColor} backdrop-blur-sm hover:-translate-y-2 transition-all duration-300 shadow-2xl`}
               >
-                <div className="absolute top-5 right-5 w-10 h-10 bg-gradient-to-r from-[#00FF88] to-[#00CC6A] rounded-full flex items-center justify-center font-bold text-[#0A0A0A]">
-                  {demo.step}
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-3xl">{demo.step}</span>
+                  <h3 className="text-lg md:text-xl font-bold">{demo.title}</h3>
                 </div>
-                <div className="text-lg font-bold text-[#00FF88] mb-5">{demo.header}</div>
-                <div className="bg-[rgba(0,0,0,0.5)] rounded-[15px] p-5 min-h-[200px]">
+                <div className="bg-black/40 rounded-2xl p-4 md:p-6 min-h-[280px] space-y-3">
                   {demo.messages.map((msg, i) => (
-                    <div
-                      key={i}
-                      className={`mb-4 animate-[messageSlide_0.5s_ease-out] ${
-                        msg.type === 'user' ? 'text-right' : msg.type === 'center' ? 'text-center' : ''
-                      } ${msg.className || ''}`}
-                      dangerouslySetInnerHTML={
-                        msg.type.includes('ai-suggestion') ? { __html: msg.text } : undefined
-                      }
-                    >
-                      {msg.type.includes('ai-suggestion') ? null : (
-                        <div
-                          className={`inline-block px-4 py-3 rounded-[20px] max-w-[80%] ${
-                            msg.type === 'user'
-                              ? 'bg-gradient-to-r from-[#00FF88] to-[#00CC6A] text-[#0A0A0A] font-semibold'
-                              : msg.type === 'other'
-                              ? 'bg-[rgba(255,255,255,0.1)] text-white'
-                              : ''
-                          }`}
-                        >
+                    <div key={i} className={`${msg.type === 'user' ? 'text-right' : msg.type === 'center' ? 'text-center' : ''}`}>
+                      {msg.html ? (
+                        <div dangerouslySetInnerHTML={{ __html: msg.html }} />
+                      ) : (
+                        <div className={`inline-block px-4 py-3 rounded-2xl max-w-[85%] text-sm md:text-base ${
+                          msg.type === 'user'
+                            ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-semibold'
+                            : msg.type === 'other'
+                            ? 'bg-gray-700/80 text-white'
+                            : msg.className || ''
+                        }`}>
                           {msg.text}
                         </div>
                       )}
@@ -195,109 +330,163 @@ const SpanishMemoryLanding: React.FC = () => {
         </div>
       </section>
 
-      <section className="py-24 bg-[rgba(0,0,0,0.8)]">
-        <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Recursos Que Vão Mudar Seu Jogo</h2>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 max-w-[1200px] mx-auto">
-          {[
-            { icon: '🎯', title: 'Análise de Bio Inteligente', desc: 'Nossa IA analisa a bio dela e sugere a primeira mensagem perfeita baseada nos interesses em comum' },
-            { icon: '💬', title: 'Ressuscitador de Match', desc: 'Aquela conversa que morreu? A IA cria mensagens irresistíveis para reengajar matches parados' },
-            { icon: '🔥', title: 'Modo Escalada', desc: 'Aumenta gradualmente a tensão romântica de forma natural, sem parecer invasivo ou desesperado' },
-            { icon: '📊', title: 'Detector de Interesse', desc: 'Analisa os padrões de resposta e te diz se ela está realmente interessada ou apenas sendo educada' },
-            { icon: '⏰', title: 'Timing Perfeito', desc: 'Sugere o momento exato para pedir o número, chamar pra sair ou avançar na conversa' },
-            { icon: '🎭', title: 'Personalidade Adaptável', desc: 'Se adapta ao seu estilo de conversa mantendo sua autenticidade enquanto otimiza resultados' },
-          ].map((feature, index) => (
-            <div
-              key={index}
-              className="bg-[rgba(20,20,20,0.95)] p-8 rounded-[20px] border border-[rgba(0,255,136,0.2)] hover:border-[#00FF88] hover:-translate-y-1 transition-all relative"
-            >
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#00FF88] to-[#00CC6A]" />
-              <div className="text-5xl mb-5">{feature.icon}</div>
-              <div className="text-xl font-bold text-[#00FF88] mb-4">{feature.title}</div>
-              <div className="text-[#B0B0B0] leading-relaxed">{feature.desc}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="py-24 bg-[rgba(10,10,10,0.5)]">
-        <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Resultados Reais de Quem Já Usa</h2>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-8 max-w-[1200px] mx-auto">
-          {[
-            {
-              text: 'Finalmente algo que funciona de verdade. A IA analisa o contexto e sugere respostas que fazem sentido. Minhas conversas fluem muito melhor agora.',
-              author: 'Rafael C.',
-              detail: 'São Paulo • 28 anos',
-              initials: 'RC',
-            },
-            {
-              text: 'Sou tímido e sempre tive dificuldade em manter conversas. Com as sugestões da IA, consigo me expressar melhor e as conversas fluem naturalmente.',
-              author: 'Lucas M.',
-              detail: 'Rio de Janeiro • 24 anos',
-              initials: 'LM',
-            },
-            {
-              text: 'O detector de interesse é GENIAL! Parei de perder tempo com quem não estava afim. Agora foco só nas conversas que vão dar resultado.',
-              author: 'Thiago H.',
-              detail: 'Belo Horizonte • 31 anos',
-              initials: 'TH',
-            },
-            {
-              text: 'Tinha vários matches parados há meses sem saber como retomar. As sugestões da IA me ajudaram a reativar várias conversas!',
-              author: 'Pedro S.',
-              detail: 'Curitiba • 26 anos',
-              initials: 'PS',
-            },
-            {
-              text: 'Estava cético no início, mas as sugestões são realmente inteligentes. A IA entende o contexto e sugere respostas que fazem sentido.',
-              author: 'André F.',
-              detail: 'Porto Alegre • 29 anos',
-              initials: 'AF',
-            },
-            {
-              text: 'É como ter um amigo expert sempre disponível. As dicas são práticas e me ajudam a manter conversas interessantes.',
-              author: 'Gabriel B.',
-              detail: 'Brasília • 27 anos',
-              initials: 'GB',
-            },
-          ].map((testimonial, index) => (
-            <div
-              key={index}
-              className="bg-[rgba(20,20,20,0.95)] p-8 rounded-[20px] border border-[rgba(0,255,136,0.2)] relative"
-            >
-              <div className="absolute top-3 left-5 text-6xl text-[#00FF88] opacity-30">"</div>
-              <div className="text-yellow-400 mb-5">⭐⭐⭐⭐⭐</div>
-              <div className="italic leading-relaxed mb-5">{testimonial.text}</div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-[#00FF88] to-[#00CC6A] rounded-full flex items-center justify-center font-bold text-[#0A0A0A]">
-                  {testimonial.initials}
-                </div>
-                <div>
-                  <div className="font-bold text-[#00FF88]">{testimonial.author}</div>
-                  <div className="text-sm text-[#B0B0B0]">{testimonial.detail}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="py-24 bg-[rgba(0,0,0,0.9)]">
-        <div className="max-w-[1200px] mx-auto">
-          <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Por Que Somos Diferentes</h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-10">
+      {/* Features Section */}
+      <section className="py-16 md:py-24 px-4 bg-black/50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+            Recursos Que Garantem Resultados
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[
               {
-                title: '❌ Cursos e Coaching',
+                icon: '🎯',
+                title: 'Análise de Perfil IA',
+                desc: 'Analisa a bio dela e cria a primeira mensagem perfeita baseada em interesses mútuos',
+                gradient: 'from-purple-500 to-pink-500'
+              },
+              {
+                icon: '💬',
+                title: 'Ressuscita Conversas',
+                desc: 'Transforma matches mortos em conversas ativas com mensagens irresistíveis',
+                gradient: 'from-blue-500 to-cyan-500'
+              },
+              {
+                icon: '🔥',
+                title: 'Escalada Inteligente',
+                desc: 'Aumenta a tensão romântica naturalmente, sem soar desesperado ou invasivo',
+                gradient: 'from-orange-500 to-red-500'
+              },
+              {
+                icon: '📊',
+                title: 'Detector de Interesse',
+                desc: 'Identifica se ela está realmente interessada ou apenas sendo educada',
+                gradient: 'from-green-500 to-emerald-500'
+              },
+              {
+                icon: '⏰',
+                title: 'Timing Perfeito',
+                desc: 'Te avisa o momento exato para pedir o número ou chamar para sair',
+                gradient: 'from-yellow-500 to-orange-500'
+              },
+              {
+                icon: '🎭',
+                title: 'Personalidade Única',
+                desc: 'Mantém seu estilo autêntico enquanto otimiza para máximos resultados',
+                gradient: 'from-indigo-500 to-purple-500'
+              },
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className="bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border border-gray-700 hover:border-emerald-500/50 hover:-translate-y-2 transition-all duration-300 group"
+              >
+                <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r ${feature.gradient} rounded-2xl text-2xl mb-4 group-hover:scale-110 transition-transform`}>
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold text-emerald-400 mb-3">{feature.title}</h3>
+                <p className="text-gray-400 leading-relaxed">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black/50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+            Resultados Comprovados
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {[
+              {
+                text: 'As sugestões da IA são incríveis! Minhas conversas fluem naturalmente agora e tenho muito mais encontros marcados.',
+                author: 'Rafael C.',
+                location: 'São Paulo • 28 anos',
+                initials: 'RC',
+                rating: 5
+              },
+              {
+                text: 'Sou introvertido e sempre travava. Com a IA, consigo me expressar melhor e as garotas respondem muito mais.',
+                author: 'Lucas M.',
+                location: 'Rio de Janeiro • 24 anos',
+                initials: 'LM',
+                rating: 5
+              },
+              {
+                text: 'O detector de interesse mudou minha vida! Paro de perder tempo e foco nas que realmente querem me conhecer.',
+                author: 'Thiago H.',
+                location: 'Belo Horizonte • 31 anos',
+                initials: 'TH',
+                rating: 5
+              },
+              {
+                text: 'Tinha matches parados há meses. A IA me ajudou a reativar várias conversas e já saí com 3 delas!',
+                author: 'Pedro S.',
+                location: 'Curitiba • 26 anos',
+                initials: 'PS',
+                rating: 5
+              },
+              {
+                text: 'Estava cético, mas funciona mesmo. A IA entende o contexto e sugere respostas que fazem total sentido.',
+                author: 'André F.',
+                location: 'Porto Alegre • 29 anos',
+                initials: 'AF',
+                rating: 5
+              },
+              {
+                text: 'É como ter um wingman expert 24/7. As dicas são práticas e me ajudam a manter conversas interessantes.',
+                author: 'Gabriel B.',
+                location: 'Brasília • 27 anos',
+                initials: 'GB',
+                rating: 5
+              },
+            ].map((testimonial, index) => (
+              <div
+                key={index}
+                className="bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border border-gray-700 hover:border-emerald-500/50 transition-all duration-300"
+              >
+                <div className="flex mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <span key={i} className="text-yellow-400">⭐</span>
+                  ))}
+                </div>
+                <blockquote className="text-gray-300 leading-relaxed mb-6 italic">
+                  "{testimonial.text}"
+                </blockquote>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center font-bold text-black text-sm">
+                    {testimonial.initials}
+                  </div>
+                  <div>
+                    <div className="font-bold text-emerald-400">{testimonial.author}</div>
+                    <div className="text-sm text-gray-500">{testimonial.location}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison */}
+      <section className="py-16 md:py-24 px-4 bg-black/80">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+            Por Que Somos Diferentes
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+            {[
+              {
+                title: '❌ Outros Métodos',
                 items: [
                   'Teoria genérica que não funciona',
                   'Demora semanas para ver resultado',
                   'Custa R$2000+ em média',
-                  'Você fica na dúvida na hora H',
-                  'Técnicas ultrapassadas',
+                  'Te deixa na dúvida na hora H',
+                  'Métodos ultrapassados'
                 ],
-                color: '#FF0055',
-                bg: 'rgba(255,0,85,0.1)',
-                border: 'rgba(255,0,85,0.3)',
+                bgColor: 'from-red-900/30 to-red-800/20',
+                borderColor: 'border-red-500/30'
               },
               {
                 title: '✅ MandaEssa.ai',
@@ -306,39 +495,35 @@ const SpanishMemoryLanding: React.FC = () => {
                   'Resposta em 30 segundos',
                   'A partir de R$39,90/mês',
                   'Sugestões em tempo real',
-                  'Atualizada constantemente',
+                  'Tecnologia de ponta'
                 ],
-                color: '#00FF88',
-                bg: 'rgba(0,255,136,0.1)',
-                border: '#00FF88',
-                className: 'scale-105 shadow-[0_20px_40px_rgba(0,255,136,0.2)]',
+                bgColor: 'from-emerald-900/30 to-emerald-800/20',
+                borderColor: 'border-emerald-500',
+                highlight: true
               },
               {
                 title: '❌ Templates Prontos',
                 items: [
                   'Todo mundo usa os mesmos',
                   'Não se adapta ao contexto',
-                  'Parece robótico e forçado',
-                  'Ela percebe que é copy/paste',
-                  'Zero personalização',
+                  'Parece robótico e fake',
+                  'Elas percebem que é copy/paste',
+                  'Zero personalização'
                 ],
-                color: '#FF0055',
-                bg: 'rgba(255,0,85,0.1)',
-                border: 'rgba(255,0,85,0.3)',
-              },
+                bgColor: 'from-red-900/30 to-red-800/20',
+                borderColor: 'border-red-500/30'
+              }
             ].map((comp, index) => (
               <div
                 key={index}
-                className={`p-8 rounded-[20px] border-2 ${comp.className || ''}`}
-                style={{ background: comp.bg, borderColor: comp.border }}
+                className={`bg-gradient-to-b ${comp.bgColor} p-6 md:p-8 rounded-3xl border-2 ${comp.borderColor} backdrop-blur-sm ${comp.highlight ? 'scale-105 shadow-2xl shadow-emerald-500/20' : ''}`}
               >
-                <h3 className="mb-5" style={{ color: comp.color }}>
-                  {comp.title}
-                </h3>
-                <ul className="list-none text-[#B0B0B0]">
+                <h3 className="text-xl md:text-2xl font-bold mb-6 text-center">{comp.title}</h3>
+                <ul className="space-y-3">
                   {comp.items.map((item, i) => (
-                    <li key={i} className="py-2">
-                      • {item}
+                    <li key={i} className="flex items-start gap-3 text-gray-300">
+                      <span className="text-lg flex-shrink-0">•</span>
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -348,371 +533,488 @@ const SpanishMemoryLanding: React.FC = () => {
         </div>
       </section>
 
-      <section className="py-24 bg-[rgba(0,0,0,0.8)]" id="pricing">
-        <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Escolha Seu Plano</h2>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 max-w-[1000px] mx-auto">
-          {[
-            {
-              name: 'Básico',
-              price: 'R$ 39,90/mês',
-              features: [
-                '20 análises por mês',
-                'Sugestões básicas de resposta',
-                'Detector de interesse',
-                'Suporte via WhatsApp',
-                'Atualizações mensais',
-              ],
-              link: 'https://pay.kiwify.com.br/8FUUpEG',
-              button: 'COMEÇAR AGORA',
-            },
-            {
-              name: 'Pro',
-              price: 'R$ 97/mês',
-              features: [
-                '50 análises por mês',
-                'Modo Escalada ativado',
-                'Ressuscitador de matches',
-                'Análise de bio avançada',
-                'Templates exclusivos',
-                'Suporte prioritário 24/7',
-              ],
-              link: 'https://pay.kiwify.com.br/0pegT9S',
-              button: 'QUERO ESTE',
-              featured: true,
-            },
-            {
-              name: 'Premium',
-              price: 'R$ 247/mês',
-              features: [
-                'Análises ILIMITADAS',
-                'Todos os recursos Pro',
-                'IA personalizada pro seu estilo',
-                'Modo Expert ativado',
-                'Consultoria 1-1 mensal',
-                'Grupo VIP exclusivo',
-              ],
-              link: 'https://pay.kiwify.com.br/TL2Ixa1',
-              button: 'ACESSO VIP',
-            },
-          ].map((plan, index) => (
-            <div
-              key={index}
-              className={`bg-[rgba(20,20,20,0.95)] p-10 rounded-[20px] border border-[rgba(0,255,136,0.2)] relative transition-all ${
-                plan.featured ? 'border-[#00FF88] scale-105 shadow-[0_20px_40px_rgba(0,255,136,0.3)]' : ''
-              }`}
-            >
-              {plan.featured && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#00FF88] to-[#00CC6A] text-[#0A0A0A] px-5 py-1 rounded-full text-xs font-bold">
-                  MAIS POPULAR
+      {/* Free Trial Section */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-emerald-900/30 via-blue-900/20 to-purple-900/20">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="bg-gray-800/60 backdrop-blur-sm p-8 md:p-12 rounded-3xl border-2 border-emerald-500 shadow-2xl shadow-emerald-500/20">
+            <div className="text-5xl md:text-6xl mb-6 animate-bounce">🎁</div>
+            <h2 className="text-3xl md:text-5xl font-black text-emerald-400 mb-6">
+              Teste GRÁTIS por 7 Dias
+            </h2>
+            <p className="text-xl md:text-2xl font-bold mb-4">
+              Experimente TUDO sem pagar nada
+            </p>
+            <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+              Use nossa IA por 7 dias completos e veja os resultados. Se não melhorar suas conversas e conseguir mais encontros,
+              você não paga nada e ainda recebe 100% do seu dinheiro de volta.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-8 mb-8">
+              {[
+                { text: '7 DIAS', subtitle: 'Grátis' },
+                { text: '100%', subtitle: 'Garantia' },
+                { text: '0', subtitle: 'Risco' },
+                { text: '24/7', subtitle: 'Suporte' }
+              ].map((item, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-2xl md:text-4xl font-black text-emerald-400 mb-1">{item.text}</div>
+                  <div className="text-gray-400 text-sm">{item.subtitle}</div>
                 </div>
-              )}
-              <div className="text-2xl font-bold text-[#00FF88] mb-2">{plan.name}</div>
-              <div className="text-5xl font-black mb-2">
-                {plan.price.split('/')[0]}<small className="text-base text-[#B0B0B0] font-normal">/{plan.price.split('/')[1]}</small>
-              </div>
-              <ul className="list-none my-8">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="py-2 border-b border-[rgba(255,255,255,0.1)] flex items-center gap-2">
-                    <span className="text-[#00FF88] font-bold">✓</span> {feature}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={plan.link}
-                className="block w-full text-center px-12 py-4 bg-gradient-to-r from-[#00FF88] to-[#00CC6A] text-[#0A0A0A] font-bold text-lg rounded-full hover:shadow-[0_15px_40px_rgba(0,255,136,0.4)] hover:-translate-y-1 transition-all"
-              >
-                {plan.button}
-              </a>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="text-center mt-12">
-          <p className="text-2xl font-bold text-[#00FF88] mb-5">🔥 Oferta Especial: Plano Vitalício</p>
-          <p className="text-lg text-[#B0B0B0] mb-8">Pague uma vez e use para sempre! Economia de mais de 70%</p>
-          <div className="inline-block p-8 bg-[rgba(20,20,20,0.95)] rounded-[20px] border-2 border-[#00FF88]">
-            <div className="text-xl line-through text-[#B0B0B0]">De R$ 997</div>
-            <div className="text-5xl font-black text-[#00FF88]">R$ 297</div>
-            <div className="text-base text-[#B0B0B0] mb-5">Pagamento único • Acesso vitalício</div>
+            <div className="bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-6 mb-8">
+              <h3 className="text-xl font-bold text-emerald-400 mb-4">Como funciona o teste grátis:</h3>
+              <div className="text-left space-y-2 max-w-2xl mx-auto">
+                <p className="text-gray-300">✅ Ative sua conta e use por 7 dias completos</p>
+                <p className="text-gray-300">✅ Teste TODOS os recursos premium</p>
+                <p className="text-gray-300">✅ Não gostou? Cancele e não pague nada</p>
+                <p className="text-gray-300">✅ Gostou? Continue com desconto especial</p>
+              </div>
+            </div>
             <a
-              href="https://pay.kiwify.com.br/0pegT9S"
-              className="inline-block px-12 py-4 bg-gradient-to-r from-[#00FF88] to-[#00CC6A] text-[#0A0A0A] font-bold text-lg rounded-full hover:shadow-[0_15px_40px_rgba(0,255,136,0.4)] hover:-translate-y-1 transition-all"
+              href="#pricing"
+              className="inline-flex items-center gap-3 px-10 md:px-14 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
             >
-              GARANTIR VITALÍCIO
+              <span>🚀</span>
+              COMEÇAR TESTE GRÁTIS
             </a>
           </div>
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-r from-[rgba(0,255,136,0.05)] to-[rgba(0,0,0,0.9)]">
-        <div className="max-w-[800px] mx-auto text-center">
-          <div className="bg-[rgba(20,20,20,0.95)] p-12 rounded-[30px] border-4 border-[#00FF88]">
-            <h2 className="text-5xl text-[#00FF88] mb-8">🛡️ Garantia Total</h2>
-            <p className="text-2xl font-bold mb-5">7 Dias de Garantia Incondicional</p>
-            <p className="text-lg text-[#B0B0B0] mb-8">
-              Se em 7 dias você não tiver resultados melhores nas suas conversas, devolvemos 100% do seu dinheiro. Sem
-              perguntas, sem burocracia.
-            </p>
-            <div className="flex justify-center gap-10 flex-wrap">
-              {[
-                { number: '100%', label: 'Reembolso' },
-                { number: '0', label: 'Risco' },
-                { number: '7', label: 'Dias' },
-              ].map((item, index) => (
-                <div key={index}>
-                  <div className="text-4xl font-black text-[#00FF88]">{item.number}</div>
-                  <div className="text-[#B0B0B0]">{item.label}</div>
+      {/* Pricing */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black" id="pricing">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+            Escolha Seu Plano
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12">
+            {[
+              {
+                name: 'Básico',
+                price: 'R$ 39,90',
+                period: '/mês',
+                features: [
+                  '20 análises por mês',
+                  'Sugestões básicas de resposta',
+                  'Detector de interesse',
+                  'Suporte via WhatsApp',
+                  'Atualizações mensais'
+                ],
+                link: 'https://pay.kiwify.com.br/8FUUpEG',
+                button: 'COMEÇAR TESTE GRÁTIS',
+                popular: false
+              },
+              {
+                name: 'Pro',
+                price: 'R$ 97',
+                period: '/mês',
+                features: [
+                  '50 análises por mês',
+                  'Modo Escalada ativado',
+                  'Ressuscitador de matches',
+                  'Análise de perfil avançada',
+                  'Templates exclusivos',
+                  'Suporte prioritário 24/7'
+                ],
+                link: 'https://pay.kiwify.com.br/0pegT9S',
+                button: 'TESTE GRÁTIS PRO',
+                popular: true
+              },
+              {
+                name: 'Premium',
+                price: 'R$ 247',
+                period: '/mês',
+                features: [
+                  'Análises ILIMITADAS',
+                  'Todos os recursos Pro',
+                  'IA personalizada pro seu perfil',
+                  'Modo Expert ativado',
+                  'Consultoria 1-1 mensal',
+                  'Grupo VIP exclusivo'
+                ],
+                link: 'https://pay.kiwify.com.br/TL2Ixa1',
+                button: 'TESTE PREMIUM GRÁTIS',
+                popular: false
+              }
+            ].map((plan, index) => (
+              <div
+                key={index}
+                className={`relative bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border-2 transition-all duration-300 ${
+                  plan.popular
+                    ? 'border-emerald-500 scale-105 shadow-2xl shadow-emerald-500/20'
+                    : 'border-gray-700 hover:border-emerald-500/50'
+                }`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-black px-4 py-1 rounded-full text-sm font-bold">
+                      MAIS ESCOLHIDO
+                    </span>
+                  </div>
+                )}
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-emerald-400 mb-2">{plan.name}</h3>
+                  <div className="text-4xl md:text-5xl font-black mb-1">
+                    {plan.price}
+                    <span className="text-base text-gray-400 font-normal">{plan.period}</span>
+                  </div>
+                  <p className="text-sm text-emerald-400 font-semibold">7 dias grátis, depois {plan.price}/mês</p>
                 </div>
-              ))}
+                <ul className="space-y-3 mb-8">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="text-emerald-400 font-bold mt-1">✓</span>
+                      <span className="text-gray-300">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={plan.link}
+                  className={`block w-full text-center px-6 py-4 font-bold text-lg rounded-full transition-all duration-300 ${
+                    plan.popular
+                      ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 text-black hover:shadow-2xl hover:shadow-emerald-400/25'
+                      : 'bg-gradient-to-r from-gray-700 to-gray-600 text-white hover:from-emerald-400 hover:to-emerald-500 hover:text-black'
+                  } hover:-translate-y-1`}
+                >
+                  {plan.button}
+                </a>
+                <p className="text-center text-xs text-gray-500 mt-3">
+                  Cancele a qualquer momento durante o teste
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center">
+            <div className="bg-emerald-500/10 border-2 border-emerald-400 rounded-2xl p-6 md:p-8 max-w-2xl mx-auto">
+              <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-4">
+                💡 Por que oferecemos teste grátis?
+              </h3>
+              <p className="text-gray-300 leading-relaxed">
+                Porque temos certeza que nossa IA vai transformar suas conversas.
+                Em 7 dias você vai ver a diferença e não vai querer cancelar!
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-[rgba(0,255,136,0.03)]">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-8 text-center">
+      {/* Social Proof Stats */}
+      <section className="py-16 px-4 bg-emerald-500/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 text-center">
             {[
-              { number: '2.847', label: 'Usuários Ativos' },
-              { number: '47.329', label: 'Conversas Salvas' },
-              { number: '93%', label: 'Taxa de Sucesso' },
+              { number: '3.124', label: 'Usuários Ativos' },
+              { number: '52.847', label: 'Conversas Salvas' },
+              { number: '94%', label: 'Taxa de Sucesso' },
               { number: '4.9⭐', label: 'Avaliação Média' },
               { number: '24/7', label: 'Disponível' },
-              { number: '30s', label: 'Tempo de Resposta' },
+              { number: '30s', label: 'Tempo Resposta' }
             ].map((stat, index) => (
-              <div key={index}>
-                <div className="text-5xl font-black text-[#00FF88]">{stat.number}</div>
-                <div className="text-[#B0B0B0]">{stat.label}</div>
+              <div key={index} className="p-4">
+                <div className="text-3xl md:text-4xl font-black text-emerald-400 mb-2">{stat.number}</div>
+                <div className="text-sm text-gray-400">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-24">
-        <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Perguntas Frequentes</h2>
-        <div className="max-w-[800px] mx-auto">
-          {[
-            {
-              question: 'É realmente uma IA ou são pessoas respondendo?',
-              answer:
-                'É 100% Inteligência Artificial treinada com milhões de conversas bem-sucedidas. Funciona 24/7 instantaneamente, analisando contexto, tom, timing e criando respostas personalizadas em segundos.',
-            },
-            {
-              question: 'Como funciona o envio das conversas?',
-              answer:
-                'Super simples! Você tira um print da conversa no app de namoro, envia para nosso WhatsApp e em menos de 30 segundos recebe várias sugestões de resposta com explicação do porquê funcionam.',
-            },
-            {
-              question: 'Funciona para WhatsApp e Instagram também?',
-              answer:
-                'Sim! Nossa IA analisa conversas de qualquer plataforma: Tinder, Bumble, Happn, WhatsApp, Instagram, Telegram. Se é conversa com intenção romântica, a IA te ajuda.',
-            },
-            {
-              question: 'Vou parecer falso usando as respostas?',
-              answer:
-                'Não! A IA aprende seu estilo de conversa e adapta as sugestões para soar natural como você. Além disso, você pode personalizar antes de enviar. É como ter um amigo expert te dando dicas, não um roteiro engessado.',
-            },
-            {
-              question: 'E se eu não gostar? Posso cancelar?',
-              answer:
-                'Claro! Você pode cancelar a qualquer momento direto pelo WhatsApp, sem burocracia. Mas temos 97% de retenção - a maioria dos usuários renovam porque os resultados são reais.',
-            },
-            {
-              question: 'Quanto tempo leva para ver resultados?',
-              answer:
-                'Logo na primeira conversa você já vai notar a diferença. A maioria dos usuários relata melhora significativa nas respostas já no primeiro dia de uso. Com uma semana, você estará dominando as conversas.',
-            },
-            {
-              question: 'Preciso baixar algum app?',
-              answer:
-                'Não! Tudo funciona 100% pelo WhatsApp. Você adiciona nosso número, ativa sua conta e já pode começar a enviar prints para receber sugestões. Simples assim!',
-            },
-            {
-              question: 'As respostas são personalizadas ou genéricas?',
-              answer:
-                'Totalmente personalizadas! Nossa IA analisa o contexto específico da SUA conversa, o tom, o histórico, e cria respostas únicas que fazem sentido naquele momento exato.',
-            },
-          ].map((faq, index) => (
-            <div
-              key={index}
-              className={`bg-[rgba(20,20,20,0.95)] rounded-[15px] mb-5 border border-[rgba(0,255,136,0.2)] overflow-hidden ${
-                activeFaq === index ? 'active' : ''
-              }`}
-            >
+      {/* FAQ */}
+      <section className="py-16 md:py-24 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+            Perguntas Frequentes
+          </h2>
+          <div className="space-y-4">
+            {[
+              {
+                question: 'Como funciona o teste grátis de 7 dias?',
+                answer: 'Simples! Você se cadastra, escolhe seu plano e usa TODOS os recursos por 7 dias completos sem pagar nada. Se não gostar, cancele antes dos 7 dias e não será cobrado. Se continuar, o plano será ativado automaticamente com desconto especial.'
+              },
+              {
+                question: 'É realmente uma IA ou são pessoas respondendo?',
+                answer: '100% Inteligência Artificial avançada, treinada com milhões de conversas bem-sucedidas. Funciona 24/7 instantaneamente, analisando contexto, tom e timing para criar respostas personalizadas em segundos.'
+              },
+              {
+                question: 'Como funciona o processo completo?',
+                answer: 'Você tira print da conversa no app de namoro, envia para nosso WhatsApp e em menos de 30 segundos recebe várias sugestões de resposta com explicação detalhada do porquê funcionam.'
+              },
+              {
+                question: 'Funciona para todas as plataformas?',
+                answer: 'Sim! Nossa IA analisa conversas de qualquer plataforma: Tinder, Bumble, Happn, WhatsApp, Instagram, Telegram. Se é conversa com interesse romântico, nossa IA te ajuda a conquistar.'
+              },
+              {
+                question: 'Vou parecer falso usando as respostas sugeridas?',
+                answer: 'Não! A IA aprende seu estilo natural de conversa e adapta as sugestões para soar autêntico. Você também pode personalizar antes de enviar. É como ter um amigo expert te orientando.'
+              },
+              {
+                question: 'E se não funcionar para mim?',
+                answer: 'Durante os 7 dias de teste grátis, você pode cancelar sem pagar nada. Depois disso, temos 97% de satisfação - a maioria renova porque os resultados são reais. Mas você sempre pode cancelar quando quiser.'
+              },
+              {
+                question: 'Quanto tempo para ver os primeiros resultados?',
+                answer: 'Na primeira conversa você já nota a diferença! A maioria relata melhora significativa no primeiro dia. Com uma semana de uso, você estará dominando completamente as conversas.'
+              },
+              {
+                question: 'Preciso instalar algum aplicativo?',
+                answer: 'Não! Funciona 100% pelo WhatsApp. Você adiciona nosso número, ativa sua conta e já pode começar a enviar prints para receber sugestões inteligentes.'
+              },
+              {
+                question: 'Posso cancelar a qualquer momento?',
+                answer: 'Sim! Durante o teste grátis de 7 dias, cancele sem pagar nada. Depois, você pode cancelar a qualquer momento direto pelo WhatsApp, sem burocracia ou taxas de cancelamento.'
+              }
+            ].map((faq, index) => (
               <div
-                className="p-6 cursor-pointer font-bold flex justify-between items-center hover:bg-[rgba(0,255,136,0.05)] transition-all"
-                onClick={() => toggleFaq(index)}
+                key={index}
+                className="bg-gray-800/40 backdrop-blur-sm rounded-2xl border border-gray-700 overflow-hidden hover:border-emerald-500/50 transition-all"
               >
-                {faq.question}
-                <span className={`text-lg transition-transform ${activeFaq === index ? 'rotate-45' : ''}`}>+</span>
+                <button
+                  className="w-full p-6 text-left font-bold text-lg flex justify-between items-center hover:bg-emerald-500/5 transition-all"
+                  onClick={() => toggleFaq(index)}
+                >
+                  <span className="pr-4">{faq.question}</span>
+                  <span className={`text-2xl transition-transform duration-300 flex-shrink-0 ${
+                    activeFaq === index ? 'rotate-45' : ''
+                  }`}>+</span>
+                </button>
+                <div className={`overflow-hidden transition-all duration-300 ${
+                  activeFaq === index ? 'max-h-96 pb-6' : 'max-h-0'
+                }`}>
+                  <div className="px-6 text-gray-300 leading-relaxed">
+                    {faq.answer}
+                  </div>
+                </div>
               </div>
-              <div
-                className="overflow-hidden transition-all duration-300 text-[#B0B0B0]"
-                style={{ maxHeight: activeFaq === index ? '300px' : '0', padding: activeFaq === index ? '0 25px 25px' : '0 25px' }}
-              >
-                {faq.answer}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="py-24 bg-gradient-to-r from-[rgba(0,255,136,0.1)] to-[rgba(255,0,85,0.05)]">
-        <div className="max-w-[800px] mx-auto text-center">
-          <h2 className="text-[clamp(32px,6vw,56px)] font-black mb-8">
-            Chega de Perder Oportunidades<br />
-            <span className="text-[#00FF88]">Comece a Converter Matches em Encontros</span>
+      {/* Final CTA */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-emerald-900/30 via-blue-900/20 to-purple-900/20">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
+            Pare de Perder Oportunidades<br />
+            <span className="text-emerald-400">Comece Seu Teste Grátis Hoje</span>
           </h2>
-          <p className="text-xl text-[#B0B0B0] mb-10">
-            Junte-se a mais de 2.800 homens que já transformaram sua vida amorosa com o poder da IA
+          <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed">
+            Junte-se a mais de 3.000 homens que transformaram suas vidas amorosas com nossa IA
           </p>
-          <div className="bg-[rgba(0,255,136,0.1)] border-2 border-[#00FF88] rounded-[20px] p-8 mb-10">
-            <p className="text-lg font-bold text-[#00FF88] mb-4">⚡ BÔNUS EXCLUSIVO HOJE</p>
-            <ul className="list-none text-left max-w-[500px] mx-auto">
+          <div className="bg-emerald-500/10 border-2 border-emerald-400 rounded-3xl p-6 md:p-8 mb-10 backdrop-blur-sm">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <span className="animate-pulse text-xl">🎁</span>
+              <h3 className="text-xl md:text-2xl font-bold text-emerald-400">BÔNUS EXCLUSIVO NO TESTE GRÁTIS</h3>
+              <span className="animate-pulse text-xl">🎁</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
               {[
-                '✅ E-book "100 Aberturas que Nunca Falham"',
-                '✅ Acesso ao Grupo VIP no Telegram',
-                '✅ 10 Análises Extras no Primeiro Mês',
-                '✅ Garantia de 7 Dias ou Seu Dinheiro de Volta',
+                '✅ E-book "100 Aberturas Irresistíveis"',
+                '✅ Acesso ao Grupo VIP Telegram',
+                '✅ Suporte prioritário 24/7',
+                '✅ Análises ilimitadas durante o teste'
               ].map((bonus, index) => (
-                <li key={index} className="py-2">
-                  {bonus}
-                </li>
+                <div key={index} className="flex items-center gap-2 text-gray-200">
+                  <span className="text-emerald-400 font-bold">✓</span>
+                  <span>{bonus}</span>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
           <a
             href="https://pay.kiwify.com.br/0pegT9S"
-            className="inline-block px-16 py-5 bg-gradient-to-r from-[#00FF88] to-[#00CC6A] text-[#0A0A0A] font-bold text-xl rounded-full hover:shadow-[0_15px_40px_rgba(0,255,136,0.4)] hover:-translate-y-1 transition-all"
+            className="inline-flex items-center gap-4 px-12 md:px-16 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl md:text-2xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-2 transition-all duration-300 mb-6"
           >
-            QUERO ACESSO IMEDIATO
+            <span className="animate-pulse">🚀</span>
+            COMEÇAR TESTE GRÁTIS AGORA
+            <span>→</span>
           </a>
-          <p className="mt-5 text-sm text-[#B0B0B0]">
-            🔒 Pagamento 100% seguro • 🚀 Acesso liberado em 2 minutos • 💬 Tudo via WhatsApp
-          </p>
+          <div className="flex items-center justify-center gap-4 text-sm text-gray-400 flex-wrap">
+            <span className="flex items-center gap-1">
+              <span>🎁</span> 7 dias grátis
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              <span>🔒</span> Cancele quando quiser
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              <span>💬</span> Tudo via WhatsApp
+            </span>
+          </div>
         </div>
       </section>
 
-      <footer className="py-10 bg-[#0A0A0A] border-t border-[rgba(0,255,136,0.2)]">
-        <div className="max-w-[1200px] mx-auto text-center">
-          <div className="flex justify-center gap-8 mb-5 flex-wrap">
+      {/* Footer */}
+      <footer className="py-12 px-4 bg-black border-t border-gray-800">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-6 mb-8">
             {[
               { text: 'Termos de Uso', onClick: () => showModal('terms') },
               { text: 'Política de Privacidade', onClick: () => showModal('privacy') },
               { text: 'Suporte', href: 'mailto:suporte@mandaessa.ai' },
-              { text: 'Contato', href: 'https://wa.me/558588395773' },
+              { text: 'Contato', href: 'https://wa.me/558588395773' }
             ].map((link, index) => (
               <a
                 key={index}
                 href={link.href || '#'}
                 onClick={link.onClick ? (e) => { e.preventDefault(); link.onClick(); } : undefined}
-                className="text-[#B0B0B0] text-sm hover:text-[#00FF88] transition-colors"
+                className="text-gray-400 hover:text-emerald-400 transition-colors text-sm"
               >
                 {link.text}
               </a>
             ))}
           </div>
-          <p className="text-sm text-[#B0B0B0]">© 2025 MandaEssa.ai - Todos os direitos reservados</p>
-          <div className="mt-8 pt-8 border-t border-[rgba(255,255,255,0.1)] text-[#666] text-xs leading-relaxed">
+          <p className="text-center text-gray-500 text-sm mb-8">
+            © 2025 MandaEssa.ai - Todos os direitos reservados
+          </p>
+          <div className="text-center text-gray-600 text-xs leading-relaxed space-y-4 max-w-4xl mx-auto">
             <p>
-              <strong>Aviso Legal:</strong> Os resultados podem variar de pessoa para pessoa. O MandaEssa.ai é uma ferramenta
-              de assistência para comunicação e não garante resultados específicos em relacionamentos. Nosso serviço oferece
-              sugestões baseadas em inteligência artificial para melhorar suas habilidades de conversação. O sucesso depende de
-              diversos fatores incluindo seu perfil, fotos, e compatibilidade com os matches. Este produto não deve ser usado
-              para fins inadequados, assédio ou qualquer forma de comunicação não consensual. Ao usar nosso serviço, você
-              concorda em respeitar todas as pessoas com quem interage e usar as sugestões de forma ética e respeitosa. Não
-              nos responsabilizamos por uso indevido da ferramenta. Para mais informações, consulte nossos Termos de Uso
-              completos.
+              <strong>Aviso Legal:</strong> Os resultados podem variar individualmente. O MandaEssa.ai é uma ferramenta
+              de assistência para comunicação que oferece sugestões baseadas em IA para melhorar habilidades de conversação.
+              O sucesso depende de diversos fatores incluindo seu perfil, fotos e compatibilidade. Use sempre de forma
+              ética e respeitosa.
             </p>
-            <p className="mt-4">
-              <strong>Política de Reembolso:</strong> Oferecemos garantia de 7 dias. Se não ficar satisfeito, devolvemos 100%
-              do seu dinheiro.
+            <p>
+              <strong>Teste Grátis:</strong> 7 dias de acesso completo sem custo. Cancele antes do término para não ser cobrado.
+              Após o teste, renovação automática conforme plano escolhido. Cancele a qualquer momento.
             </p>
-            <p className="mt-4 text-[#555]">
-              Este site não é afiliado ao Facebook, Instagram, WhatsApp ou qualquer plataforma de namoro mencionada. Todos os
-              nomes de produtos, logos e marcas pertencem aos seus respectivos proprietários.
+            <p className="text-gray-700">
+              Este site não é afiliado ao Facebook, Instagram, WhatsApp ou qualquer plataforma de namoro mencionada.
+              Todas as marcas pertencem aos seus respectivos proprietários.
             </p>
           </div>
         </div>
       </footer>
 
+      {/* WhatsApp Float Button */}
       <a
-        href="https://wa.me/558588395773?text=Quero%20saber%20mais%20sobre%20o%20MandaEssa.ai"
-        className="fixed bottom-8 right-8 bg-[#25D366] w-16 h-16 rounded-full flex items-center justify-center text-white text-3xl shadow-[0_10px_30px_rgba(37,211,102,0.5)] hover:scale-110 transition-all animate-[whatsappPulse_2s_infinite] z-[1000]"
+        href="https://wa.me/558588395773?text=Quero%20saber%20mais%20sobre%20o%20teste%20gratis%20do%20MandaEssa.ai"
+        className="fixed bottom-6 right-6 bg-gradient-to-r from-green-400 to-green-500 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center text-white text-2xl md:text-3xl shadow-2xl hover:scale-110 transition-all duration-300 z-50 animate-pulse"
       >
         💬
       </a>
 
-      {modal === 'terms' && (
-        <div className="fixed inset-0 bg-[rgba(0,0,0,0.9)] z-[10000] overflow-y-auto">
-          <div className="max-w-[800px] mx-auto my-12 bg-[rgba(20,20,20,0.95)] p-10 rounded-[20px]">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-[#00FF88] text-3xl">Termos de Uso</h2>
-              <span className="cursor-pointer text-3xl text-[#B0B0B0]" onClick={closeModal}>
-                &times;
-              </span>
+      {/* Purchase Notifications */}
+      <div className="fixed bottom-6 left-6 z-40 space-y-3 purchase-notification">
+        {notifications.map((notification) => (
+          <div
+            key={notification.id}
+            className={`bg-white text-gray-900 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-2xl border-l-4 border-emerald-500 max-w-xs transform transition-all duration-500 ${
+              notification.show
+                ? 'translate-x-0 opacity-100'
+                : '-translate-x-full opacity-0'
+            }`}
+          >
+            <div className="flex items-start gap-2 md:gap-3">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm flex-shrink-0">
+                {notification.name.split(' ')[0][0]}{notification.name.split(' ')[1]?.[0]}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1 md:gap-2 mb-1">
+                  <span className="text-green-600 text-xs md:text-sm">●</span>
+                  <span className="font-semibold text-xs md:text-sm">{notification.name}</span>
+                </div>
+                <p className="text-xs text-gray-600 mb-1">
+                  {notification.city}
+                </p>
+                <p className="text-xs font-medium text-emerald-600">
+                  Ativou o plano {notification.plan}
+                </p>
+              </div>
+              <div className="text-xs text-gray-400">
+                agora
+              </div>
             </div>
-            <div className="text-[#B0B0B0] leading-relaxed">
-              <h3 className="text-lg font-bold">1. Aceitação dos Termos</h3>
-              <p>Ao utilizar o MandaEssa.ai, você concorda com estes Termos de Uso. Se não concordar, não utilize nossos serviços.</p>
-              <h3 className="text-lg font-bold mt-4">2. Descrição do Serviço</h3>
-              <p>
-                O MandaEssa.ai é um serviço de inteligência artificial que fornece sugestões de conversação para melhorar suas
-                habilidades de comunicação em contextos românticos.
-              </p>
-              <h3 className="text-lg font-bold mt-4">3. Uso Apropriado</h3>
-              <p>Você concorda em usar o serviço de forma ética e respeitosa. É proibido usar para:</p>
-              <ul className="list-disc pl-5">
-                <li>Assédio ou comportamento inadequado</li>
-                <li>Enganar ou manipular outras pessoas</li>
-                <li>Violar leis locais ou direitos de terceiros</li>
-                <li>Compartilhar conteúdo ofensivo ou ilegal</li>
-              </ul>
-              <h3 className="text-lg font-bold mt-4">4. Privacidade e Dados</h3>
-              <p>Respeitamos sua privacidade. Não armazenamos conversas pessoais. Prints enviados são processados e deletados automaticamente.</p>
-              <h3 className="text-lg font-bold mt-4">5. Pagamento e Reembolso</h3>
-              <p>Oferecemos garantia de 7 dias. Cancelamentos podem ser feitos a qualquer momento via WhatsApp.</p>
-              <h3 className="text-lg font-bold mt-4">6. Limitação de Responsabilidade</h3>
-              <p>
-                O MandaEssa.ai não se responsabiliza por resultados específicos ou pelo uso indevido do serviço. O sucesso depende de fatores individuais.
-              </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Modals */}
+      {modal === 'terms' && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] overflow-y-auto p-4">
+          <div className="max-w-4xl mx-auto my-8 bg-gray-900 rounded-3xl border border-gray-700 shadow-2xl">
+            <div className="flex justify-between items-center p-6 border-b border-gray-700">
+              <h2 className="text-2xl md:text-3xl font-bold text-emerald-400">Termos de Uso</h2>
+              <button
+                className="text-gray-400 hover:text-white text-3xl"
+                onClick={closeModal}
+              >
+                ×
+              </button>
+            </div>
+            <div className="p-6 text-gray-300 leading-relaxed space-y-6">
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">1. Aceitação dos Termos</h3>
+                <p>Ao utilizar o MandaEssa.ai, você concorda com estes Termos de Uso. Se não concordar, não utilize nossos serviços.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">2. Descrição do Serviço</h3>
+                <p>O MandaEssa.ai é um serviço de IA que fornece sugestões de conversação para melhorar habilidades de comunicação em contextos românticos.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">3. Teste Grátis</h3>
+                <p>Oferecemos 7 dias de teste gratuito com acesso completo. Após o período, cobrança automática conforme plano escolhido. Cancele a qualquer momento.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">4. Uso Apropriado</h3>
+                <p>Você concorda em usar o serviço de forma ética e respeitosa. É proibido usar para:</p>
+                <ul className="list-disc pl-6 mt-2 space-y-1">
+                  <li>Assédio ou comportamento inadequado</li>
+                  <li>Enganar ou manipular outras pessoas</li>
+                  <li>Violar leis locais ou direitos de terceiros</li>
+                  <li>Compartilhar conteúdo ofensivo ou ilegal</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">5. Privacidade e Dados</h3>
+                <p>Respeitamos sua privacidade. Não armazenamos conversas pessoais. Prints enviados são processados e deletados automaticamente.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">6. Limitação de Responsabilidade</h3>
+                <p>O MandaEssa.ai não se responsabiliza por resultados específicos ou pelo uso indevido do serviço. O sucesso depende de fatores individuais.</p>
+              </div>
             </div>
           </div>
         </div>
       )}
-
       {modal === 'privacy' && (
-        <div className="fixed inset-0 bg-[rgba(0,0,0,0.9)] z-[10000] overflow-y-auto">
-          <div className="max-w-[800px] mx-auto my-12 bg-[rgba(20,20,20,0.95)] p-10 rounded-[20px]">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-[#00FF88] text-3xl">Política de Privacidade</h2>
-              <span className="cursor-pointer text-3xl text-[#B0B0B0]" onClick={closeModal}>
-                &times;
-              </span>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] overflow-y-auto p-4">
+          <div className="max-w-4xl mx-auto my-8 bg-gray-900 rounded-3xl border border-gray-700 shadow-2xl">
+            <div className="flex justify-between items-center p-6 border-b border-gray-700">
+              <h2 className="text-2xl md:text-3xl font-bold text-emerald-400">Política de Privacidade</h2>
+              <button
+                className="text-gray-400 hover:text-white text-3xl"
+                onClick={closeModal}
+              >
+                ×
+              </button>
             </div>
-            <div className="text-[#B0B0B0] leading-relaxed">
-              <h3 className="text-lg font-bold">1. Coleta de Dados</h3>
-              <p>
-                Coletamos apenas os dados necessários para fornecer o serviço, como prints de conversas enviados pelo usuário,
-                que são processados e deletados automaticamente.
-              </p>
-              <h3 className="text-lg font-bold mt-4">2. Uso dos Dados</h3>
-              <p>Os dados são usados exclusivamente para gerar sugestões de respostas e melhorar o serviço. Não compartilhamos seus dados com terceiros.</p>
-              <h3 className="text-lg font-bold mt-4">3. Segurança</h3>
-              <p>
-                Empregamos medidas de segurança robustas para proteger seus dados durante o processamento. Todas as interações
-                são criptografadas.
-              </p>
-              <h3 className="text-lg font-bold mt-4">4. Seus Direitos</h3>
-              <p>Você tem o direito de acessar, corrigir ou solicitar a exclusão de seus dados a qualquer momento.</p>
-              <h3 className="text-lg font-bold mt-4">5. Contato</h3>
-              <p>
-                Para dúvidas sobre privacidade, entre em contato via{' '}
-                <a href="mailto:suporte@mandaessa.ai" className="text-[#00FF88]">
-                  suporte@mandaessa.ai
-                </a>
-                .
-              </p>
+            <div className="p-6 text-gray-300 leading-relaxed space-y-6">
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">1. Coleta de Dados</h3>
+                <p>Coletamos apenas dados necessários para fornecer o serviço, como prints de conversas enviados pelo usuário, que são processados e deletados automaticamente.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">2. Uso dos Dados</h3>
+                <p>Os dados são usados exclusivamente para gerar sugestões de respostas e melhorar o serviço. Não compartilhamos seus dados com terceiros.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">3. Segurança</h3>
+                <p>Empregamos medidas de segurança robustas para proteger seus dados durante o processamento. Todas as interações são criptografadas.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">4. Seus Direitos</h3>
+                <p>Você tem o direito de acessar, corrigir ou solicitar a exclusão de seus dados a qualquer momento.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">5. Contato</h3>
+                <p>
+                  Para dúvidas sobre privacidade, entre em contato via{' '}
+                  <a href="mailto:suporte@mandaessa.ai" className="text-emerald-400 hover:underline">
+                    suporte@mandaessa.ai
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
         </div>
