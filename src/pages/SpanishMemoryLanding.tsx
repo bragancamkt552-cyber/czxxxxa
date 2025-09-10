@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { render } from 'react-dom';
+import '../index.css';
 
-const App: React.FC = () => {
+const SpanishMemoryLanding: React.FC = () => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [modal, setModal] = useState<string | null>(null);
   const [spots, setSpots] = useState(37);
 
   useEffect(() => {
-    // Simulate dynamic spots countdown
     const interval = setInterval(() => {
       setSpots((prev) => (prev > 20 ? prev - 1 : prev));
     }, 30000);
@@ -28,17 +27,14 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans">
-      {/* Background Animation */}
       <div className="fixed inset-0 bg-gradient-to-b from-black to-[#0A0A0A] z-[-1]">
         <div className="absolute w-[200%] h-[200%] top-[-50%] left-[-50%] bg-[radial-gradient(circle_at_20%_50%,rgba(0,255,136,0.1)_0%,transparent_50%),radial-gradient(circle_at_80%_50%,rgba(255,0,85,0.05)_0%,transparent_50%)] animate-[rotate_20s_linear_infinite]" />
       </div>
 
-      {/* Urgency Banner */}
       <div className="bg-[#FF0055] text-white text-center font-bold py-4 sticky top-0 z-50 animate-[slideDown_0.5s_ease-out]">
         ⚡ OFERTA LIMITADA: 50% OFF nos primeiros 100 assinantes! Restam apenas <span>{spots}</span> vagas
       </div>
 
-      {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center p-5">
         <div className="max-w-[1200px] text-center">
           <div className="inline-block px-5 py-2 bg-gradient-to-r from-[#00FF88] to-[#00CC6A] rounded-full font-semibold text-[#0A0A0A] mb-8 animate-[pulse_2s_infinite]">
@@ -78,7 +74,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* How It Works WhatsApp */}
       <section className="py-20 bg-[rgba(0,255,136,0.03)]">
         <div className="max-w-[1200px] mx-auto">
           <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">
@@ -115,7 +110,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Demo Section */}
       <section className="py-24 bg-[rgba(10,10,10,0.5)] backdrop-blur-[10px]">
         <div className="max-w-[1200px] mx-auto">
           <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Como Funciona na Prática</h2>
@@ -201,7 +195,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Features */}
       <section className="py-24 bg-[rgba(0,0,0,0.8)]">
         <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Recursos Que Vão Mudar Seu Jogo</h2>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 max-w-[1200px] mx-auto">
@@ -226,7 +219,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
       <section className="py-24 bg-[rgba(10,10,10,0.5)]">
         <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Resultados Reais de Quem Já Usa</h2>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-8 max-w-[1200px] mx-auto">
@@ -289,7 +281,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Comparison Section */}
       <section className="py-24 bg-[rgba(0,0,0,0.9)]">
         <div className="max-w-[1200px] mx-auto">
           <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Por Que Somos Diferentes</h2>
@@ -357,7 +348,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Pricing */}
       <section className="py-24 bg-[rgba(0,0,0,0.8)]" id="pricing">
         <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Escolha Seu Plano</h2>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 max-w-[1000px] mx-auto">
@@ -453,7 +443,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Guarantee Section */}
       <section className="py-20 bg-gradient-to-r from-[rgba(0,255,136,0.05)] to-[rgba(0,0,0,0.9)]">
         <div className="max-w-[800px] mx-auto text-center">
           <div className="bg-[rgba(20,20,20,0.95)] p-12 rounded-[30px] border-4 border-[#00FF88]">
@@ -479,7 +468,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Social Proof Numbers */}
       <section className="py-16 bg-[rgba(0,255,136,0.03)]">
         <div className="max-w-[1200px] mx-auto">
           <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-8 text-center">
@@ -500,7 +488,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="py-24">
         <h2 className="text-[clamp(28px,5vw,48px)] font-black text-center mb-16">Perguntas Frequentes</h2>
         <div className="max-w-[800px] mx-auto">
@@ -570,7 +557,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Final CTA */}
       <section className="py-24 bg-gradient-to-r from-[rgba(0,255,136,0.1)] to-[rgba(255,0,85,0.05)]">
         <div className="max-w-[800px] mx-auto text-center">
           <h2 className="text-[clamp(32px,6vw,56px)] font-black mb-8">
@@ -607,7 +593,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-10 bg-[#0A0A0A] border-t border-[rgba(0,255,136,0.2)]">
         <div className="max-w-[1200px] mx-auto text-center">
           <div className="flex justify-center gap-8 mb-5 flex-wrap">
@@ -651,7 +636,6 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      {/* WhatsApp Float Button */}
       <a
         href="https://wa.me/558588395773?text=Quero%20saber%20mais%20sobre%20o%20MandaEssa.ai"
         className="fixed bottom-8 right-8 bg-[#25D366] w-16 h-16 rounded-full flex items-center justify-center text-white text-3xl shadow-[0_10px_30px_rgba(37,211,102,0.5)] hover:scale-110 transition-all animate-[whatsappPulse_2s_infinite] z-[1000]"
@@ -659,7 +643,6 @@ const App: React.FC = () => {
         💬
       </a>
 
-      {/* Terms Modal */}
       {modal === 'terms' && (
         <div className="fixed inset-0 bg-[rgba(0,0,0,0.9)] z-[10000] overflow-y-auto">
           <div className="max-w-[800px] mx-auto my-12 bg-[rgba(20,20,20,0.95)] p-10 rounded-[20px]">
@@ -688,7 +671,7 @@ const App: React.FC = () => {
               <h3 className="text-lg font-bold mt-4">4. Privacidade e Dados</h3>
               <p>Respeitamos sua privacidade. Não armazenamos conversas pessoais. Prints enviados são processados e deletados automaticamente.</p>
               <h3 className="text-lg font-bold mt-4">5. Pagamento e Reembolso</h3>
-              <p>Oferecemos garantia de 7 dias. Cancelamentos podem be feitos a qualquer momento via WhatsApp.</p>
+              <p>Oferecemos garantia de 7 dias. Cancelamentos podem ser feitos a qualquer momento via WhatsApp.</p>
               <h3 className="text-lg font-bold mt-4">6. Limitação de Responsabilidade</h3>
               <p>
                 O MandaEssa.ai não se responsabiliza por resultados específicos ou pelo uso indevido do serviço. O sucesso depende de fatores individuais.
@@ -698,7 +681,6 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Privacy Modal */}
       {modal === 'privacy' && (
         <div className="fixed inset-0 bg-[rgba(0,0,0,0.9)] z-[10000] overflow-y-auto">
           <div className="max-w-[800px] mx-auto my-12 bg-[rgba(20,20,20,0.95)] p-10 rounded-[20px]">
@@ -739,35 +721,4 @@ const App: React.FC = () => {
   );
 };
 
-// Animation keyframes
-const styles = `
-  @keyframes rotate {
-    to { transform: rotate(360deg); }
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes messageSlide {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes whatsappPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
-  @keyframes slideDown {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
-  }
-`;
-
-const styleSheet = document.createElement('style');
-styleSheet.textContent = styles;
-document.head.appendChild(styleSheet);
-
-render(<App />, document.getElementById('root'));
+export default SpanishMemoryLanding;
