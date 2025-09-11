@@ -90,10 +90,24 @@ const SpanishMemoryLanding: React.FC = () => {
         fbq('track', 'PageView');
       `;
       document.head.appendChild(pixelScript2);
+      const gtagScript = document.createElement('script');
+      gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=AW-11028750083';
+      gtagScript.async = true;
+      document.head.appendChild(gtagScript);
+      const gtagConfig = document.createElement('script');
+      gtagConfig.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-11028750083');
+      `;
+      document.head.appendChild(gtagConfig);
       return () => {
         document.head.removeChild(script);
         document.head.removeChild(pixelScript1);
         document.head.removeChild(pixelScript2);
+        document.head.removeChild(gtagScript);
+        document.head.removeChild(gtagConfig);
       };
     }
   }, []);
