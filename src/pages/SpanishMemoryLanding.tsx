@@ -143,7 +143,7 @@ const SpanishMemoryLanding: React.FC = () => {
             NOVA TECNOLOGIA IA 2025
           </div>
           <h1 className="text-[clamp(28px,6vw,64px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent overflow-visible whitespace-normal">
-            Pare de Perder Matches Por Não Saber o Que Dizer
+            Não sabe o que falar pra conquistá-la? A ia fala por você...
           </h1>
           <p className="text-[clamp(16px,2.5vw,20px)] text-[#B0B0B0] mb-10 max-w-[600px] mx-auto">
             A <span className="text-[#00FF88] font-bold">Inteligência Artificial</span> que analisa suas conversas e te diz{' '}
