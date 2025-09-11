@@ -211,28 +211,28 @@ const Relaciex: React.FC = () => {
             <p className="text-sm text-gray-400 flex items-center justify-center gap-2 flex-wrap">
               <span>✅</span> Prueba GRATIS por 7 días
               <span>•</span>
-              <span>✅</span> Acceso inmediato vía WhatsApp
+              <span>✅</span> Acceso inmediato
             </p>
           </div>
         </div>
       </section>
-      {/* Cómo Funciona - WhatsApp */}
+      {/* Cómo Funciona */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-transparent to-gray-900/50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-5xl font-black mb-4">
-              <span className="text-green-400">WhatsApp</span> - Simple y Rápido
+              <span className="text-green-400">Simple y Rápido</span>
             </h2>
             <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-              Sin aplicaciones complicadas. Todo funciona directamente en tu WhatsApp
+              Sin aplicaciones complicadas. Todo funciona directamente
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               {
                 icon: '📱',
-                title: '1. Añade el Número',
-                desc: 'Guarda nuestro WhatsApp y envía "COMENZAR" para activar',
+                title: '1. Añade',
+                desc: 'Añade tu plan y comienza a usar',
                 color: 'from-blue-400 to-blue-500'
               },
               {
@@ -266,17 +266,17 @@ const Relaciex: React.FC = () => {
           <div className="mt-12 md:mt-16 text-center p-6 md:p-8 bg-gradient-to-r from-green-900/30 to-green-800/30 rounded-3xl border-2 border-green-400 backdrop-blur-sm">
             <div className="text-2xl md:text-3xl font-bold text-green-400 mb-4 flex items-center justify-center gap-2">
               <span className="animate-bounce">💬</span>
-              ¡Todo por WhatsApp, Cero Complicaciones!
+              ¡Cero Complicaciones!
             </div>
             <p className="text-gray-300 mb-6 md:mb-8 text-lg">
-              Sin descargas, sin inicios de sesión. ¡Solo añade y comienza a conquistar!
+              Sin descargas, sin inicios de sesión. ¡Solo comienza a conquistar!
             </p>
             <a
               href="#pricing"
               className="inline-flex items-center gap-3 px-8 md:px-12 py-4 bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-lg rounded-full shadow-2xl hover:-translate-y-1 transition-all"
             >
               <span>🚀</span>
-              ACTIVAR AHORA EN WHATSAPP
+              ACTIVAR AHORA
             </a>
           </div>
         </div>
@@ -628,7 +628,7 @@ const Relaciex: React.FC = () => {
                   '20 análisis por mes',
                   'Sugerencias básicas de respuesta',
                   'Detector de interés',
-                  'Soporte vía WhatsApp',
+                  'Soporte vía e-mail',
                   'Actualizaciones mensuales'
                 ],
                 link: 'https://pay.hotmart.com/V101744430X?off=1xkq9czk',
@@ -766,11 +766,11 @@ const Relaciex: React.FC = () => {
               },
               {
                 question: '¿Cómo funciona el proceso completo?',
-                answer: 'Tomas una captura de la conversación en la aplicación de citas, la envías a nuestro WhatsApp y en menos de 30 segundos recibes varias sugerencias de respuesta con una explicación detallada de por qué funcionan.'
+                answer: 'Tomas una captura de la conversación en la aplicación de citas, la envías a nuestro sistema y en menos de 30 segundos recibes varias sugerencias de respuesta con una explicación detallada de por qué funcionan.'
               },
               {
                 question: '¿Funciona para todas las plataformas?',
-                answer: '¡Sí! Nuestra IA analiza conversaciones de cualquier plataforma: Tinder, Bumble, Happn, WhatsApp, Instagram, Telegram. Si es una conversación con interés romántico, nuestra IA te ayuda a conquistar.'
+                answer: '¡Sí! Nuestra IA analiza conversaciones de cualquier plataforma: Tinder, Bumble, Happn, Instagram, Telegram. Si es una conversación con interés romántico, nuestra IA te ayuda a conquistar.'
               },
               {
                 question: '¿Pareceré falso usando las respuestas sugeridas?',
@@ -786,11 +786,11 @@ const Relaciex: React.FC = () => {
               },
               {
                 question: '¿Necesito instalar alguna aplicación?',
-                answer: '¡No! Funciona 100% por WhatsApp. Añades nuestro número, activas tu cuenta y ya puedes empezar a enviar capturas para recibir sugerencias inteligentes.'
+                answer: '¡No! Funciona 100% online. Activas tu cuenta y ya puedes empezar a enviar capturas para recibir sugerencias inteligentes.'
               },
               {
                 question: '¿Puedo cancelar en cualquier momento?',
-                answer: '¡Sí! Durante la prueba gratis de 7 días, cancela sin pagar nada. Después, puedes cancelar en cualquier momento directamente por WhatsApp, sin burocracia ni tasas de cancelación.'
+                answer: '¡Sí! Durante la prueba gratis de 7 días, cancela sin pagar nada. Después, puedes cancelar en cualquier momento directamente por soporte, sin burocracia ni tasas de cancelación.'
               }
             ].map((faq, index) => (
               <div
@@ -864,10 +864,6 @@ const Relaciex: React.FC = () => {
             <span className="flex items-center gap-1">
               <span>🔒</span> Cancela cuando quieras
             </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <span>💬</span> Todo vía WhatsApp
-            </span>
           </div>
         </div>
       </section>
@@ -878,8 +874,7 @@ const Relaciex: React.FC = () => {
             {[
               { text: 'Términos de Uso', onClick: () => showModal('terms') },
               { text: 'Política de Privacidad', onClick: () => showModal('privacy') },
-              { text: 'Soporte', href: 'mailto:soporte@mandaessa.ai' },
-              { text: 'Contacto', href: 'https://wa.me/558588395773' }
+              { text: 'Soporte', href: 'mailto:soporte@mandaessa.ai' }
             ].map((link, index) => (
               <a
                 key={index}
@@ -906,19 +901,12 @@ const Relaciex: React.FC = () => {
               Después de la prueba, renovación automática según el plan elegido. Cancela en cualquier momento.
             </p>
             <p className="text-gray-700">
-              Este sitio no está afiliado a Facebook, Instagram, WhatsApp ni ninguna plataforma de citas mencionada.
+              Este sitio no está afiliado a Facebook, Instagram ni ninguna plataforma de citas mencionada.
               Todas las marcas pertenecen a sus respectivos propietarios.
             </p>
           </div>
         </div>
       </footer>
-      {/* Botón Flotante de WhatsApp */}
-      <a
-        href="https://wa.me/558588395773?text=Quiero%20saber%20m%C3%A1s%20sobre%20la%20prueba%20gratis%20de%20MandaEssa.ai"
-        className="fixed bottom-6 right-6 bg-gradient-to-r from-green-400 to-green-500 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center text-white text-2xl md:text-3xl shadow-2xl hover:scale-110 transition-all duration-300 z-50 animate-pulse"
-      >
-        💬
-      </a>
       {/* Notificaciones de Compra */}
       <div className="fixed bottom-6 left-6 z-40 space-y-3 purchase-notification">
         {notifications.map((notification) => (
