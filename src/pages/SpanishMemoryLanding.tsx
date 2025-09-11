@@ -211,28 +211,28 @@ const SpanishMemoryLanding: React.FC = () => {
             <p className="text-sm text-gray-400 flex items-center justify-center gap-2 flex-wrap">
               <span>✅</span> Teste GRÁTIS por 7 dias
               <span>•</span>
-              <span>✅</span> Acesso imediato via WhatsApp
+              <span>✅</span> Acesso imediato
             </p>
           </div>
         </div>
       </section>
-      {/* How It Works - WhatsApp */}
+      {/* How It Works */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-transparent to-gray-900/50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-5xl font-black mb-4">
-              <span className="text-green-400">WhatsApp</span> - Simples e Rápido
+              <span className="text-green-400">Simples e Rápido</span>
             </h2>
             <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-              Sem apps complicados. Tudo funciona direto no seu WhatsApp
+              Sem apps complicados. Tudo funciona diretamente
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               {
                 icon: '📱',
-                title: '1. Adicione o Número',
-                desc: 'Salve nosso WhatsApp e envie "COMEÇAR" para ativar',
+                title: '1. Adicione',
+                desc: 'Adicione seu plano e comece a usar',
                 color: 'from-blue-400 to-blue-500'
               },
               {
@@ -266,17 +266,17 @@ const SpanishMemoryLanding: React.FC = () => {
           <div className="mt-12 md:mt-16 text-center p-6 md:p-8 bg-gradient-to-r from-green-900/30 to-green-800/30 rounded-3xl border-2 border-green-400 backdrop-blur-sm">
             <div className="text-2xl md:text-3xl font-bold text-green-400 mb-4 flex items-center justify-center gap-2">
               <span className="animate-bounce">💬</span>
-              Tudo pelo WhatsApp, Zero Complicação!
+              Zero Complicação!
             </div>
             <p className="text-gray-300 mb-6 md:mb-8 text-lg">
-              Sem downloads, sem logins. É só adicionar e começar a conquistar!
+              Sem downloads, sem logins. É só começar a conquistar!
             </p>
             <a
               href="#pricing"
               className="inline-flex items-center gap-3 px-8 md:px-12 py-4 bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-lg rounded-full shadow-2xl hover:-translate-y-1 transition-all"
             >
               <span>🚀</span>
-              ATIVAR AGORA NO WHATSAPP
+              ATIVAR AGORA
             </a>
           </div>
         </div>
@@ -628,7 +628,7 @@ const SpanishMemoryLanding: React.FC = () => {
                   '20 análises por mês',
                   'Sugestões básicas de resposta',
                   'Detector de interesse',
-                  'Suporte via WhatsApp',
+                  'Suporte via e-mail',
                   'Atualizações mensais'
                 ],
                 link: 'https://pay.kiwify.com.br/8FUUpEG',
@@ -766,11 +766,11 @@ const SpanishMemoryLanding: React.FC = () => {
               },
               {
                 question: 'Como funciona o processo completo?',
-                answer: 'Você tira print da conversa no app de namoro, envia para nosso WhatsApp e em menos de 30 segundos recebe várias sugestões de resposta com explicação detalhada do porquê funcionam.'
+                answer: 'Você tira print da conversa no app de namoro, envia para nosso sistema e em menos de 30 segundos recebe várias sugestões de resposta com explicação detalhada do porquê funcionam.'
               },
               {
                 question: 'Funciona para todas as plataformas?',
-                answer: 'Sim! Nossa IA analisa conversas de qualquer plataforma: Tinder, Bumble, Happn, WhatsApp, Instagram, Telegram. Se é conversa com interesse romântico, nossa IA te ajuda a conquistar.'
+                answer: 'Sim! Nossa IA analisa conversas de qualquer plataforma: Tinder, Bumble, Happn, Instagram, Telegram. Se é conversa com interesse romântico, nossa IA te ajuda a conquistar.'
               },
               {
                 question: 'Vou parecer falso usando as respostas sugeridas?',
@@ -786,11 +786,11 @@ const SpanishMemoryLanding: React.FC = () => {
               },
               {
                 question: 'Preciso instalar algum aplicativo?',
-                answer: 'Não! Funciona 100% pelo WhatsApp. Você adiciona nosso número, ativa sua conta e já pode começar a enviar prints para receber sugestões inteligentes.'
+                answer: 'Não! Funciona 100% online. Você ativa sua conta e já pode começar a enviar prints para receber sugestões inteligentes.'
               },
               {
                 question: 'Posso cancelar a qualquer momento?',
-                answer: 'Sim! Durante o teste grátis de 7 dias, cancele sem pagar nada. Depois, você pode cancelar a qualquer momento direto pelo WhatsApp, sem burocracia ou taxas de cancelamento.'
+                answer: 'Sim! Durante o teste grátis de 7 dias, cancele sem pagar nada. Depois, você pode cancelar a qualquer momento direto pelo suporte, sem burocracia ou taxas de cancelamento.'
               }
             ].map((faq, index) => (
               <div
@@ -864,10 +864,6 @@ const SpanishMemoryLanding: React.FC = () => {
             <span className="flex items-center gap-1">
               <span>🔒</span> Cancele quando quiser
             </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <span>💬</span> Tudo via WhatsApp
-            </span>
           </div>
         </div>
       </section>
@@ -878,8 +874,7 @@ const SpanishMemoryLanding: React.FC = () => {
             {[
               { text: 'Termos de Uso', onClick: () => showModal('terms') },
               { text: 'Política de Privacidade', onClick: () => showModal('privacy') },
-              { text: 'Suporte', href: 'mailto:suporte@mandaessa.ai' },
-              { text: 'Contato', href: 'https://wa.me/558588395773' }
+              { text: 'Suporte', href: 'mailto:suporte@mandaessa.ai' }
             ].map((link, index) => (
               <a
                 key={index}
@@ -906,19 +901,12 @@ const SpanishMemoryLanding: React.FC = () => {
               Após o teste, renovação automática conforme plano escolhido. Cancele a qualquer momento.
             </p>
             <p className="text-gray-700">
-              Este site não é afiliado ao Facebook, Instagram, WhatsApp ou qualquer plataforma de namoro mencionada.
+              Este site não é afiliado ao Facebook, Instagram ou qualquer plataforma de namoro mencionada.
               Todas as marcas pertencem aos seus respectivos proprietários.
             </p>
           </div>
         </div>
       </footer>
-      {/* WhatsApp Float Button */}
-      <a
-        href="https://wa.me/558588395773?text=Quero%20saber%20mais%20sobre%20o%20teste%20gratis%20do%20MandaEssa.ai"
-        className="fixed bottom-6 right-6 bg-gradient-to-r from-green-400 to-green-500 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center text-white text-2xl md:text-3xl shadow-2xl hover:scale-110 transition-all duration-300 z-50 animate-pulse"
-      >
-        💬
-      </a>
       {/* Purchase Notifications */}
       <div className="fixed bottom-6 left-6 z-40 space-y-3 purchase-notification">
         {notifications.map((notification) => (
