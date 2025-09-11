@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../index.css';
-
 interface PurchaseNotification {
   id: number;
   name: string;
@@ -8,7 +7,6 @@ interface PurchaseNotification {
   plan: string;
   show: boolean;
 }
-
 const SpanishMemoryLanding: React.FC = () => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [modal, setModal] = useState<string | null>(null);
@@ -16,7 +14,6 @@ const SpanishMemoryLanding: React.FC = () => {
   const [showOffer, setShowOffer] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<PurchaseNotification[]>([]);
-
   const purchaseData = [
     { name: 'Rafael C.', city: 'São Paulo', plan: 'Pro' },
     { name: 'Lucas M.', city: 'Rio de Janeiro', plan: 'Premium' },
@@ -29,14 +26,12 @@ const SpanishMemoryLanding: React.FC = () => {
     { name: 'Bruno L.', city: 'Recife', plan: 'Pro' },
     { name: 'Diego M.', city: 'Florianópolis', plan: 'Premium' },
   ];
-
   useEffect(() => {
     const interval = setInterval(() => {
       setSpots((prev) => (prev > 15 ? prev - 1 : prev));
     }, 10000); // Diminui a cada 10 segundos
     return () => clearInterval(interval);
   }, []);
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -61,19 +56,47 @@ const SpanishMemoryLanding: React.FC = () => {
       }
     };
   }, [showNotifications]);
-
   useEffect(() => {
     if (!document.querySelector('[src*="68c1f27dfc60e3d12b16bf13"]')) {
       const script = document.createElement('script');
       script.src = 'https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68c1f27dfc60e3d12b16bf13/v4/player.js';
       script.async = true;
       document.head.appendChild(script);
+      const pixelScript1 = document.createElement('script');
+      pixelScript1.innerHTML = `
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1351918292572124');
+        fbq('track', 'PageView');
+      `;
+      document.head.appendChild(pixelScript1);
+      const pixelScript2 = document.createElement('script');
+      pixelScript2.innerHTML = `
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1093258939518583');
+        fbq('track', 'PageView');
+      `;
+      document.head.appendChild(pixelScript2);
       return () => {
         document.head.removeChild(script);
+        document.head.removeChild(pixelScript1);
+        document.head.removeChild(pixelScript2);
       };
     }
   }, []);
-
   const startNotifications = () => {
     const showNotification = () => {
       const randomPurchase = purchaseData[Math.floor(Math.random() * purchaseData.length)];
@@ -104,26 +127,35 @@ const SpanishMemoryLanding: React.FC = () => {
       clearInterval(intervalId);
     }, 300000);
   };
-
   const toggleFaq = (index: number) => {
     setActiveFaq(activeFaq === index ? null : index);
   };
-
   const showModal = (type: string) => {
     setModal(type);
   };
-
   const closeModal = () => {
     setModal(null);
   };
-
   return (
     <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style={{ display: 'none' }}
+          src="https://www.facebook.com/tr?id=1351918292572124&ev=PageView&noscript=1"
+        />
+        <img
+          height="1"
+          width="1"
+          style={{ display: 'none' }}
+          src="https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1"
+        />
+      </noscript>
       {/* Background Animation */}
       <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black z-[-1]">
         <div className="absolute w-full h-full bg-[radial-gradient(circle_at_30%_40%,rgba(0,255,136,0.08)_0%,transparent_60%),radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.06)_0%,transparent_60%)] animate-pulse" />
       </div>
-
       {/* Urgency Bar (mostra apenas na seção de preços) */}
       {showOffer && (
         <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-red-600 to-red-500 text-white text-center font-bold py-3 px-4 z-50 shadow-lg animate-[slideDown_0.5s_ease-out]">
@@ -134,7 +166,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       )}
-
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center px-4 py-12 md:py-20 pt-16 md:pt-20">
         <div className="max-w-6xl mx-auto text-center">
@@ -185,7 +216,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* How It Works - WhatsApp */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-transparent to-gray-900/50">
         <div className="max-w-6xl mx-auto">
@@ -251,7 +281,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* Demo Section */}
       <section className="py-16 md:py-24 px-4 bg-gray-900/50">
         <div className="max-w-7xl mx-auto">
@@ -336,7 +365,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* Features Section */}
       <section className="py-16 md:py-24 px-4 bg-black/50">
         <div className="max-w-6xl mx-auto">
@@ -396,7 +424,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* Testimonials */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black/50">
         <div className="max-w-6xl mx-auto">
@@ -474,7 +501,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* Comparison */}
       <section className="py-16 md:py-24 px-4 bg-black/80">
         <div className="max-w-6xl mx-auto">
@@ -539,7 +565,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* Free Trial Section */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-emerald-900/30 via-blue-900/20 to-purple-900/20">
         <div className="max-w-4xl mx-auto text-center">
@@ -587,7 +612,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* Pricing */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black" id="pricing">
         <div className="max-w-5xl mx-auto">
@@ -704,7 +728,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* Social Proof Stats */}
       <section className="py-16 px-4 bg-emerald-500/5">
         <div className="max-w-6xl mx-auto">
@@ -725,7 +748,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* FAQ */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-4xl mx-auto">
@@ -796,7 +818,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* Final CTA */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-emerald-900/30 via-blue-900/20 to-purple-900/20">
         <div className="max-w-4xl mx-auto text-center">
@@ -850,7 +871,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="py-12 px-4 bg-black border-t border-gray-800">
         <div className="max-w-6xl mx-auto">
@@ -892,7 +912,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </footer>
-
       {/* WhatsApp Float Button */}
       <a
         href="https://wa.me/558588395773?text=Quero%20saber%20mais%20sobre%20o%20teste%20gratis%20do%20MandaEssa.ai"
@@ -900,7 +919,6 @@ const SpanishMemoryLanding: React.FC = () => {
       >
         💬
       </a>
-
       {/* Purchase Notifications */}
       <div className="fixed bottom-6 left-6 z-40 space-y-3 purchase-notification">
         {notifications.map((notification) => (
@@ -935,7 +953,6 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         ))}
       </div>
-
       {/* Modals */}
       {modal === 'terms' && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] overflow-y-auto p-4">
@@ -1029,5 +1046,4 @@ const SpanishMemoryLanding: React.FC = () => {
     </div>
   );
 };
-
 export default SpanishMemoryLanding;
