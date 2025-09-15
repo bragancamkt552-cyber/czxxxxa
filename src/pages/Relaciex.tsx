@@ -58,9 +58,9 @@ const SpanishMemoryLanding: React.FC = () => {
     };
   }, [showNotifications, showContent]);
   useEffect(() => {
-    if (!document.querySelector('[src*="68c78e25d64e18967f766572"]')) {
+    if (!document.querySelector('[src*="68c79d15e211203eaaf070f6"]')) {
       const script = document.createElement('script');
-      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68c78e25d64e18967f766572/v4/player.js';
+      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68c79d15e211203eaaf070f6/v4/player.js';
       script.async = true;
       document.head.appendChild(script);
       const pixelScript1 = document.createElement('script');
@@ -129,10 +129,25 @@ const SpanishMemoryLanding: React.FC = () => {
     }
   }, []);
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowContent(true);
-    }, 218000); // 3 minutes and 38 seconds in milliseconds
-    return () => clearTimeout(timer);
+    const playerElement = document.getElementById('vid-68c79d15e211203eaaf070f6') as HTMLElement;
+    if (playerElement) {
+      const checkTime = () => {
+        // Assuming VTurb exposes a way to get current time, e.g., via a custom event or property
+        // Since VTurb API details are not provided, we'll simulate checking the time
+        const player = playerElement.querySelector('video') || playerElement;
+        if (player && 'currentTime' in player) {
+          if (player.currentTime >= 228) { // 3 minutes and 48 seconds
+            setShowContent(true);
+          }
+        }
+      };
+      const interval = setInterval(checkTime, 1000); // Check every second
+      playerElement.addEventListener('timeupdate', checkTime);
+      return () => {
+        clearInterval(interval);
+        playerElement.removeEventListener('timeupdate', checkTime);
+      };
+    }
   }, []);
   const startNotifications = () => {
     const showNotification = () => {
@@ -212,11 +227,11 @@ const SpanishMemoryLanding: React.FC = () => {
           <div className="mb-8 md:mb-12 flex justify-center">
             <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
               <vturb-smartplayer
-                id="vid-68c78e25d64e18967f766572"
+                id="vid-68c79d15e211203eaaf070f6"
                 style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px' }}
               ></vturb-smartplayer>
               <script type="text/javascript">
-                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68c78e25d64e18967f766572/v4/player.js", s.async=!0,document.head.appendChild(s);`}
+                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68c79d15e211203eaaf070f6/v4/player.js", s.async=!0,document.head.appendChild(s);`}
               </script>
             </div>
           </div>
@@ -643,7 +658,7 @@ const SpanishMemoryLanding: React.FC = () => {
                 </div>
                 <div className="bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-6 mb-8">
                   <h3 className="text-xl font-bold text-emerald-400 mb-4">Como funciona a garantia de 7 dias:</h3>
-                  <div className="text-left time-y-2 max-w-2xl mx-auto">
+                  <div className="text-left space-y-2 max-w-2xl mx-auto">
                     <p className="text-gray-300">✅ Ative sua conta e use por 7 dias completos</p>
                     <p className="text-gray-300">✅ Teste TODOS os recursos premium</p>
                     <p className="text-gray-300">✅ Não gostou? Cancele e receba reembolso total</p>
