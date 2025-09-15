@@ -358,7 +358,7 @@ const SpanishMemoryLanding: React.FC = () => {
                 messages: [
                   {
                     type: 'user',
-                    text: 'Pedra Bonita é incrível! Você foi no nascer ou pôr do sol? Tenho uma teoria sobre qual momento é melhor... 😏',
+                    text: 'Pedra Bonita é incrível! Você foi no nascer ou pôr do sun? Tenho uma teoria sobre qual momento é melhor... 😏',
                   },
                   { type: 'other', text: 'Hahaha agora fiquei curiosa! Fui no pôr do sol... qual é sua teoria? 👀' },
                   { type: 'other', text: 'Você parece conhecer os melhores lugares...' },
@@ -638,7 +638,7 @@ const SpanishMemoryLanding: React.FC = () => {
               </div>
             </div>
             <a
-              href="#pricing"
+              href="https://pay.cakto.com.br/jvpeebs"
               className="inline-flex items-center gap-3 px-10 md:px-14 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
             >
               <span>🚀</span>
@@ -666,7 +666,7 @@ const SpanishMemoryLanding: React.FC = () => {
                   'Suporte via e-mail',
                   'Atualizações mensais'
                 ],
-                link: 'https://pay.kiwify.com.br/8FUUpEG',
+                link: 'https://pay.cakto.com.br/9f4xh7a_569564',
                 button: 'COMEÇAR COM GARANTIA',
                 popular: false
               },
@@ -682,7 +682,7 @@ const SpanishMemoryLanding: React.FC = () => {
                   'Templates exclusivos',
                   'Suporte prioritário 24/7'
                 ],
-                link: 'https://pay.kiwify.com.br/0pegT9S',
+                link: 'https://pay.cakto.com.br/jvpeebs',
                 button: 'COMEÇAR COM GARANTIA PRO',
                 popular: true
               },
@@ -698,7 +698,7 @@ const SpanishMemoryLanding: React.FC = () => {
                   'Consultoria 1-1 mensal',
                   'Grupo VIP exclusivo'
                 ],
-                link: 'https://pay.kiwify.com.br/TL2Ixa1',
+                link: 'https://pay.cakto.com.br/35vfe7x',
                 button: 'COMEÇAR COM GARANTIA PREMIUM',
                 popular: false
               }
@@ -884,7 +884,7 @@ const SpanishMemoryLanding: React.FC = () => {
             </div>
           </div>
           <a
-            href="https://pay.kiwify.com.br/0pegT9S"
+            href="https://pay.cakto.com.br/jvpeebs"
             className="inline-flex items-center gap-4 px-12 md:px-16 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl md:text-2xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-2 transition-all duration-300 mb-6"
           >
             <span className="animate-pulse">🚀</span>
