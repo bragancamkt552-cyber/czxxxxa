@@ -132,8 +132,6 @@ const SpanishMemoryLanding: React.FC = () => {
     const playerElement = document.getElementById('vid-68c79d15e211203eaaf070f6') as HTMLElement;
     if (playerElement) {
       const checkTime = () => {
-        // Assuming VTurb exposes a way to get current time, e.g., via a custom event or property
-        // Since VTurb API details are not provided, we'll simulate checking the time
         const player = playerElement.querySelector('video') || playerElement;
         if (player && 'currentTime' in player) {
           if (player.currentTime >= 228) { // 3 minutes and 48 seconds
@@ -206,6 +204,9 @@ const SpanishMemoryLanding: React.FC = () => {
           src="https://www.facebook.com/tr?id=1093258939518583&ev=PageView&noscript=1"
         />
       </noscript>
+      <div className="fixed top-2 left-2 z-50 bg-red-600 text-white text-sm font-semibold px-3 py-1 rounded-full shadow-lg animate-pulse">
+        Vídeo só de 4 minutos
+      </div>
       {/* Background Animation */}
       <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black z-[-1]">
         <div className="absolute w-full h-full bg-[radial-gradient(circle_at_30%_40%,rgba(0,255,136,0.08)_0%,transparent_60%),radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.06)_0%,transparent_60%)] animate-pulse" />
