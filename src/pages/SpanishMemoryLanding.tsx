@@ -57,9 +57,9 @@ const SpanishMemoryLanding: React.FC = () => {
     };
   }, [showNotifications]);
   useEffect(() => {
-    if (!document.querySelector('[src*="68c1f27dfc60e3d12b16bf13"]')) {
+    if (!document.querySelector('[src*="68c78e25d64e18967f766572"]')) {
       const script = document.createElement('script');
-      script.src = 'https://scripts.converteai.net/ec09afc3-b6c2-4de5-b556-85edb9ced296/players/68c1f27dfc60e3d12b16bf13/v4/player.js';
+      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68c78e25d64e18967f766572/v4/player.js';
       script.async = true;
       document.head.appendChild(script);
       const pixelScript1 = document.createElement('script');
@@ -168,6 +168,8 @@ const SpanishMemoryLanding: React.FC = () => {
   };
   return (
     <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
+      <title>mandaessa.ai</title>
+      <meta name="description" content="MandaEssa.ai - A Inteligência Artificial que analisa suas conversas e te diz exatamente o que responder para despertar interesse e marcar encontros reais." />
       <noscript>
         <img
           height="1"
@@ -213,9 +215,12 @@ const SpanishMemoryLanding: React.FC = () => {
           <div className="mb-8 md:mb-12 flex justify-center">
             <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
               <vturb-smartplayer
-                id="vid-68c1f27dfc60e3d12b16bf13"
-                style={{ display: 'block', margin: '0 auto', width: '100%', borderRadius: '12px' }}
+                id="vid-68c78e25d64e18967f766572"
+                style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px' }}
               ></vturb-smartplayer>
+              <script type="text/javascript">
+                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68c78e25d64e18967f766572/v4/player.js", s.async=!0,document.head.appendChild(s);`}
+              </script>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12 max-w-2xl mx-auto">
@@ -239,7 +244,7 @@ const SpanishMemoryLanding: React.FC = () => {
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
             <p className="text-sm text-gray-400 flex items-center justify-center gap-2 flex-wrap">
-              <span>✅</span> Teste GRÁTIS por 7 dias
+              <span>✅</span> 7 dias de garantia
               <span>•</span>
               <span>✅</span> Acesso imediato
             </p>
@@ -601,19 +606,19 @@ const SpanishMemoryLanding: React.FC = () => {
           <div className="bg-gray-800/60 backdrop-blur-sm p-8 md:p-12 rounded-3xl border-2 border-emerald-500 shadow-2xl shadow-emerald-500/20">
             <div className="text-5xl md:text-6xl mb-6 animate-bounce">🎁</div>
             <h2 className="text-3xl md:text-5xl font-black text-emerald-400 mb-6">
-              Teste GRÁTIS por 7 Dias
+              7 Dias de Garantia
             </h2>
             <p className="text-xl md:text-2xl font-bold mb-4">
-              Experimente TUDO sem pagar nada
+              Experimente TUDO com garantia de reembolso
             </p>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
               Use nossa IA por 7 dias completos e veja os resultados. Se não melhorar suas conversas e conseguir mais encontros,
-              você não paga nada e ainda recebe 100% do seu dinheiro de volta.
+              você recebe 100% do seu dinheiro de volta.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-8 mb-8">
               {[
-                { text: '7 DIAS', subtitle: 'Grátis' },
-                { text: '100%', subtitle: 'Garantia' },
+                { text: '7 DIAS', subtitle: 'Garantia' },
+                { text: '100%', subtitle: 'Reembolso' },
                 { text: '0', subtitle: 'Risco' },
                 { text: '24/7', subtitle: 'Suporte' }
               ].map((item, index) => (
@@ -624,11 +629,11 @@ const SpanishMemoryLanding: React.FC = () => {
               ))}
             </div>
             <div className="bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-6 mb-8">
-              <h3 className="text-xl font-bold text-emerald-400 mb-4">Como funciona o teste grátis:</h3>
+              <h3 className="text-xl font-bold text-emerald-400 mb-4">Como funciona a garantia de 7 dias:</h3>
               <div className="text-left space-y-2 max-w-2xl mx-auto">
                 <p className="text-gray-300">✅ Ative sua conta e use por 7 dias completos</p>
                 <p className="text-gray-300">✅ Teste TODOS os recursos premium</p>
-                <p className="text-gray-300">✅ Não gostou? Cancele e não pague nada</p>
+                <p className="text-gray-300">✅ Não gostou? Cancele e receba reembolso total</p>
                 <p className="text-gray-300">✅ Gostou? Continue com desconto especial</p>
               </div>
             </div>
@@ -637,7 +642,7 @@ const SpanishMemoryLanding: React.FC = () => {
               className="inline-flex items-center gap-3 px-10 md:px-14 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
             >
               <span>🚀</span>
-              COMEÇAR TESTE GRÁTIS
+              COMEÇAR AGORA
             </a>
           </div>
         </div>
@@ -662,7 +667,7 @@ const SpanishMemoryLanding: React.FC = () => {
                   'Atualizações mensais'
                 ],
                 link: 'https://pay.kiwify.com.br/8FUUpEG',
-                button: 'COMEÇAR TESTE GRÁTIS',
+                button: 'COMEÇAR COM GARANTIA',
                 popular: false
               },
               {
@@ -678,7 +683,7 @@ const SpanishMemoryLanding: React.FC = () => {
                   'Suporte prioritário 24/7'
                 ],
                 link: 'https://pay.kiwify.com.br/0pegT9S',
-                button: 'TESTE GRÁTIS PRO',
+                button: 'COMEÇAR COM GARANTIA PRO',
                 popular: true
               },
               {
@@ -694,7 +699,7 @@ const SpanishMemoryLanding: React.FC = () => {
                   'Grupo VIP exclusivo'
                 ],
                 link: 'https://pay.kiwify.com.br/TL2Ixa1',
-                button: 'TESTE PREMIUM GRÁTIS',
+                button: 'COMEÇAR COM GARANTIA PREMIUM',
                 popular: false
               }
             ].map((plan, index) => (
@@ -719,7 +724,7 @@ const SpanishMemoryLanding: React.FC = () => {
                     {plan.price}
                     <span className="text-base text-gray-400 font-normal">{plan.period}</span>
                   </div>
-                  <p className="text-sm text-emerald-400 font-semibold">7 dias grátis, depois {plan.price}/mês</p>
+                  <p className="text-sm text-emerald-400 font-semibold">7 dias de garantia, depois {plan.price}/mês</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, i) => (
@@ -740,7 +745,7 @@ const SpanishMemoryLanding: React.FC = () => {
                   {plan.button}
                 </a>
                 <p className="text-center text-xs text-gray-500 mt-3">
-                  Cancele a qualquer momento durante o teste
+                  Cancele a qualquer momento durante a garantia
                 </p>
               </div>
             ))}
@@ -748,7 +753,7 @@ const SpanishMemoryLanding: React.FC = () => {
           <div className="text-center">
             <div className="bg-emerald-500/10 border-2 border-emerald-400 rounded-2xl p-6 md:p-8 max-w-2xl mx-auto">
               <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-4">
-                💡 Por que oferecemos teste grátis?
+                💡 Por que oferecemos 7 dias de garantia?
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 Porque temos certeza que nossa IA vai transformar suas conversas.
@@ -787,8 +792,8 @@ const SpanishMemoryLanding: React.FC = () => {
           <div className="space-y-4">
             {[
               {
-                question: 'Como funciona o teste grátis de 7 dias?',
-                answer: 'Simples! Você se cadastra, escolhe seu plano e usa TODOS os recursos por 7 dias completos sem pagar nada. Se não gostar, cancele antes dos 7 dias e não será cobrado. Se continuar, o plano será ativado automaticamente com desconto especial.'
+                question: 'Como funciona a garantia de 7 dias?',
+                answer: 'Simples! Você se cadastra, escolhe seu plano e usa TODOS os recursos por 7 dias completos. Se não gostar, cancele antes dos 7 dias e receba reembolso total. Se continuar, o plano será ativado automaticamente com desconto especial.'
               },
               {
                 question: 'É realmente uma IA ou são pessoas respondendo?',
@@ -808,7 +813,7 @@ const SpanishMemoryLanding: React.FC = () => {
               },
               {
                 question: 'E se não funcionar para mim?',
-                answer: 'Durante os 7 dias de teste grátis, você pode cancelar sem pagar nada. Depois disso, temos 97% de satisfação - a maioria renova porque os resultados são reais. Mas você sempre pode cancelar quando quiser.'
+                answer: 'Durante os 7 dias de garantia, você pode cancelar e receber reembolso total. Depois disso, temos 97% de satisfação - a maioria renova porque os resultados são reais. Mas você sempre pode cancelar quando quiser.'
               },
               {
                 question: 'Quanto tempo para ver os primeiros resultados?',
@@ -820,7 +825,7 @@ const SpanishMemoryLanding: React.FC = () => {
               },
               {
                 question: 'Posso cancelar a qualquer momento?',
-                answer: 'Sim! Durante o teste grátis de 7 dias, cancele sem pagar nada. Depois, você pode cancelar a qualquer momento direto pelo suporte, sem burocracia ou taxas de cancelamento.'
+                answer: 'Sim! Durante os 7 dias de garantia, cancele sem pagar nada. Depois, você pode cancelar a qualquer momento direto pelo suporte, sem burocracia ou taxas de cancelamento.'
               }
             ].map((faq, index) => (
               <div
@@ -853,7 +858,7 @@ const SpanishMemoryLanding: React.FC = () => {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
             Pare de Perder Oportunidades<br />
-            <span className="text-emerald-400">Comece Seu Teste Grátis Hoje</span>
+            <span className="text-emerald-400">Comece Agora com Garantia</span>
           </h2>
           <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed">
             Junte-se a mais de 3.000 homens que transformaram suas vidas amorosas com nossa IA
@@ -861,7 +866,7 @@ const SpanishMemoryLanding: React.FC = () => {
           <div className="bg-emerald-500/10 border-2 border-emerald-400 rounded-3xl p-6 md:p-8 mb-10 backdrop-blur-sm">
             <div className="flex items-center justify-center gap-2 mb-4">
               <span className="animate-pulse text-xl">🎁</span>
-              <h3 className="text-xl md:text-2xl font-bold text-emerald-400">BÔNUS EXCLUSIVO NO TESTE GRÁTIS</h3>
+              <h3 className="text-xl md:text-2xl font-bold text-emerald-400">BÔNUS EXCLUSIVO NA GARANTIA</h3>
               <span className="animate-pulse text-xl">🎁</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
@@ -883,12 +888,12 @@ const SpanishMemoryLanding: React.FC = () => {
             className="inline-flex items-center gap-4 px-12 md:px-16 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl md:text-2xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-2 transition-all duration-300 mb-6"
           >
             <span className="animate-pulse">🚀</span>
-            COMEÇAR TESTE GRÁTIS AGORA
+            COMEÇAR AGORA
             <span>→</span>
           </a>
           <div className="flex items-center justify-center gap-4 text-sm text-gray-400 flex-wrap">
             <span className="flex items-center gap-1">
-              <span>🎁</span> 7 dias grátis
+              <span>🎁</span> 7 dias de garantia
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
@@ -927,8 +932,8 @@ const SpanishMemoryLanding: React.FC = () => {
               ética e respeitosa.
             </p>
             <p>
-              <strong>Teste Grátis:</strong> 7 dias de acesso completo sem custo. Cancele antes do término para não ser cobrado.
-              Após o teste, renovação automática conforme plano escolhido. Cancele a qualquer momento.
+              <strong>Garantia:</strong> 7 dias de acesso completo com garantia de reembolso. Cancele antes do término para receber reembolso total.
+              Após a garantia, renovação automática conforme plano escolhido. Cancele a qualquer momento.
             </p>
             <p className="text-gray-700">
               Este site não é afiliado ao Facebook, Instagram ou qualquer plataforma de namoro mencionada.
@@ -994,8 +999,8 @@ const SpanishMemoryLanding: React.FC = () => {
                 <p>O MandaEssa.ai é um serviço de IA que fornece sugestões de conversação para melhorar habilidades de comunicação em contextos românticos.</p>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white mb-2">3. Teste Grátis</h3>
-                <p>Oferecemos 7 dias de teste gratuito com acesso completo. Após o período, cobrança automática conforme plano escolhido. Cancele a qualquer momento.</p>
+                <h3 className="text-lg font-bold text-white mb-2">3. Garantia de 7 Dias</h3>
+                <p>Oferecemos 7 dias de acesso completo com garantia de reembolso. Cancele a qualquer momento.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">4. Uso Apropriado</h3>
