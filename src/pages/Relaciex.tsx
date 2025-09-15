@@ -205,7 +205,7 @@ const SpanishMemoryLanding: React.FC = () => {
         />
       </noscript>
       <div className="fixed top-2 left-2 z-50 bg-red-600 text-white text-sm font-semibold px-3 py-1 rounded-full shadow-lg animate-pulse">
-        Vídeo só de 4 minutos
+        Vídeo só de 3 minutos
       </div>
       {/* Background Animation */}
       <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black z-[-1]">
