@@ -167,7 +167,7 @@ const PiseBemLanding: React.FC = () => {
         document.head.removeChild(pixelScript2);
         document.head.removeChild(gtagScript);
         document.head.removeChild(gtagConfig);
-        document.head.appendChild(tiktokScript);  // Note: This seems like a typo in the original; should be remove
+        document.head.removeChild(tiktokScript);
       };
     }
   }, []);
@@ -260,7 +260,7 @@ const PiseBemLanding: React.FC = () => {
           <h1 className="text-[clamp(28px,6vw,64px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent overflow-visible whitespace-normal">
             Alivie a Dor da Fascite Plantar em Apenas 7 Dias
           </h1>
-          <p className="text-[clamp(16px,2.5vw,20px)] text-[#B0B0B0] mb-10 max-w-[600px] mx-auto">
+          <p className="text-[clamp(16px,2.5vw,20px)] text-gray-200 mb-10 max-w-[600px] mx-auto">
             Diga adeus aos analgésicos! Trate sua fascite plantar de forma <span className="text-[#00FF88] font-bold">natural</span> com nosso plano de 10 exercícios comprovados, sem efeitos colaterais.
           </p>
           <div className="mb-8 md:mb-12 flex justify-center">
@@ -282,19 +282,19 @@ const PiseBemLanding: React.FC = () => {
             ].map((stat, index) => (
               <div key={index} className="text-center p-4 bg-gray-800/50 rounded-xl backdrop-blur-sm border border-gray-700">
                 <div className="text-2xl md:text-4xl font-black text-emerald-400 mb-1">{stat.number}</div>
-                <div className="text-xs md:text-sm text-gray-400">{stat.label}</div>
+                <div className="text-xs md:text-sm text-gray-200">{stat.label}</div>
               </div>
             ))}
           </div>
           <div className="space-y-4">
             <a
-              href="#pricing"
+              href="https://pay.cakto.com.br/akb7bor_571886"
               className="inline-flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-lg md:text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300 group w-full max-w-md"
             >
               <span>QUERO ALÍVIO AGORA</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
-            <p className="text-sm text-gray-400 flex items-center justify-center gap-2 flex-wrap">
+            <p className="text-sm text-gray-200 flex items-center justify-center gap-2 flex-wrap">
               <span>✅</span> 7 dias de garantia
               <span>•</span>
               <span>✅</span> Acesso imediato
@@ -306,10 +306,10 @@ const PiseBemLanding: React.FC = () => {
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-transparent to-gray-900/50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-5xl font-black mb-4">
-              <span className="text-green-400">Simples e Eficaz</span>
+            <h2 className="text-3xl md:text-5xl font-black mb-4 text-white">
+              <span className="text-emerald-400">Simples e Eficaz</span>
             </h2>
-            <p className="text-lg md:text-xl text-[#B0B0B0] max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto">
               Alivie a dor da fascite plantar com nosso plano de 10 exercícios em apenas 7 dias
             </p>
           </div>
@@ -345,20 +345,20 @@ const PiseBemLanding: React.FC = () => {
                   {step.icon}
                 </div>
                 <h3 className="text-lg md:text-xl font-bold text-emerald-400 mb-2">{step.title}</h3>
-                <p className="text-sm md:text-base text-[#B0B0B0] leading-relaxed">{step.desc}</p>
+                <p className="text-sm md:text-base text-gray-200 leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
           <div className="mt-12 md:mt-16 text-center p-6 md:p-8 bg-gradient-to-r from-green-900/30 to-green-800/30 rounded-3xl border-2 border-green-400 backdrop-blur-sm">
-            <div className="text-2xl md:text-3xl font-bold text-green-400 mb-4 flex items-center justify-center gap-2">
+            <div className="text-2xl md:text-3xl font-bold text-emerald-400 mb-4 flex items-center justify-center gap-2">
               <span className="animate-bounce">💪</span>
               Zero Complicação!
             </div>
-            <p className="text-[#B0B0B0] mb-6 md:mb-8 text-lg">
+            <p className="text-gray-200 mb-6 md:mb-8 text-lg">
               Sem equipamentos caros ou consultas. Comece hoje mesmo!
             </p>
             <a
-              href="#pricing"
+              href="https://pay.cakto.com.br/akb7bor_571886"
               className="inline-flex items-center gap-3 px-8 md:px-12 py-4 bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-lg rounded-full shadow-2xl hover:-translate-y-1 transition-all"
             >
               <span>🚀</span>
@@ -370,42 +370,42 @@ const PiseBemLanding: React.FC = () => {
       {/* Problem and Solution */}
       <section className="py-16 md:py-24 px-4 bg-gray-900/50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
             Acabe com a Dor da Fascite Plantar
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div className="bg-gradient-to-b from-red-900/20 to-red-800/20 p-6 md:p-8 rounded-3xl border-2 border-red-500/30 backdrop-blur-sm">
-              <h3 className="text-xl md:text-2xl font-bold text-red-400 mb-6">O Problema</h3>
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-6">O Problema</h3>
               <div className="mb-6">
                 <img
-                  src="data:image/svg+xml,%3Csvg width='400' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23991B1B'/%3E%3Ctext x='50%25' y='40%25' font-family='Arial' font-size='16' fill='%23FCA5A5' text-anchor='middle'%3EDor no%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='16' fill='%23FCA5A5' text-anchor='middle'%3ECalcanhar%3C/text%3E%3C/svg%3E"
-                  alt="Ilustração da dor no calcanhar causada pela fascite plantar"
-                  className="w-full h-32 object-cover rounded-xl mb-4"
+                  src="/dr12.png"
+                  alt="Profissional em jaleco branco demonstrando expertise em saúde podal"
+                  className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
               </div>
-              <p className="text-[#B0B0B0] mb-4 leading-relaxed">Você já perdeu momentos importantes por causa da dor no calcanhar? A fascite plantar pode transformar cada passo em um sofrimento, limitando sua liberdade e qualidade de vida. Você sente:</p>
-              <ul className="space-y-3 text-[#B0B0B0]">
-                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Dor lancinante ao acordar ou após longos períodos sentado</li>
-                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Dificuldade para caminhar, correr ou até mesmo ficar em pé</li>
-                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Frustração com analgésicos que causam efeitos colaterais</li>
-                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Medo de tratamentos caros ou invasivos que não funcionam</li>
+              <p className="text-gray-200 mb-4 leading-relaxed">Você já perdeu momentos importantes por causa da dor no calcanhar? A fascite plantar pode transformar cada passo em um sofrimento, limitando sua liberdade e qualidade de vida. Você sente:</p>
+              <ul className="space-y-3 text-gray-200">
+                <li className="flex items-start gap-3"><span className="text-white font-bold">•</span> Dor lancinante ao acordar ou após longos períodos sentado</li>
+                <li className="flex items-start gap-3"><span className="text-white font-bold">•</span> Dificuldade para caminhar, correr ou até mesmo ficar em pé</li>
+                <li className="flex items-start gap-3"><span className="text-white font-bold">•</span> Frustração com analgésicos que causam efeitos colaterais</li>
+                <li className="flex items-start gap-3"><span className="text-white font-bold">•</span> Medo de tratamentos caros ou invasivos que não funcionam</li>
               </ul>
             </div>
             <div className="bg-gradient-to-b from-emerald-900/20 to-green-800/20 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
-              <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-6">A Solução</h3>
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-6">A Solução</h3>
               <div className="mb-6">
                 <img
-                  src="data:image/svg+xml,%3Csvg width='400' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='40%25' font-family='Arial' font-size='16' fill='%2334D399' text-anchor='middle'%3EExercícios%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='16' fill='%2334D399' text-anchor='middle'%3ENaturais%3C/text%3E%3C/svg%3E"
-                  alt="Ilustração de exercícios naturais para tratamento da fascite plantar"
-                  className="w-full h-32 object-cover rounded-xl mb-4"
+                  src="/exerc.png"
+                  alt="Pessoa realizando exercícios para fascite plantar em casa"
+                  className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
               </div>
-              <p className="text-[#B0B0B0] mb-4 leading-relaxed">Com o Pise Bem, você pode voltar a viver sem limitações! Nosso programa de 10 exercícios naturais, desenvolvido por especialistas, alivia a dor da fascite plantar sem medicamentos. Você terá:</p>
-              <ul className="space-y-3 text-[#B0B0B0]">
-                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Alívio natural em apenas 7 dias</li>
-                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Exercícios simples para fazer em casa</li>
-                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Sem efeitos colaterais ou medicamentos</li>
-                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Liberdade para caminhar e viver sem dor</li>
+              <p className="text-gray-200 mb-4 leading-relaxed">Com o Pise Bem, você pode voltar a viver sem limitações! Nosso programa de 10 exercícios naturais, desenvolvido por especialistas, alivia a dor da fascite plantar sem medicamentos. Você terá:</p>
+              <ul className="space-y-3 text-gray-200">
+                <li className="flex items-start gap-3"><span className="text-white font-bold">✓</span> Alívio natural em apenas 7 dias</li>
+                <li className="flex items-start gap-3"><span className="text-white font-bold">✓</span> Exercícios simples para fazer em casa</li>
+                <li className="flex items-start gap-3"><span className="text-white font-bold">✓</span> Sem efeitos colaterais ou medicamentos</li>
+                <li className="flex items-start gap-3"><span className="text-white font-bold">✓</span> Liberdade para caminhar e viver sem dor</li>
               </ul>
             </div>
           </div>
@@ -414,68 +414,68 @@ const PiseBemLanding: React.FC = () => {
       {/* Visual Proof Section */}
       <section className="py-16 md:py-24 px-4 bg-black/50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
             Veja os Resultados na Prática
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-            <div className="bg-gray-800/40 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
-              <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-4">Como Funcionam os Exercícios</h3>
-              <p className="text-[#B0B0B0] mb-6 leading-relaxed">Os 10 exercícios do Pise Bem foram cuidadosamente desenvolvidos por profissionais para aliviar a dor e fortalecer seus pés. Veja como é simples:</p>
+            <div className="bg-gradient-to-b from-gray-800/40 to-gray-900/40 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-4">Como Funcionam os Exercícios</h3>
+              <p className="text-gray-200 mb-6 leading-relaxed">Os 10 exercícios do Pise Bem foram cuidadosamente desenvolvidos por profissionais para aliviar a dor e fortalecer seus pés. Veja como é simples:</p>
               <img
-                src="data:image/svg+xml,%3Csvg width='400' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23374151'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%2310B981' text-anchor='middle'%3EPasso a passo dos%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%2310B981' text-anchor='middle'%3E10 exercícios%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='14' fill='%2310B981' text-anchor='middle'%3Epara fascite plantar%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%236B7280' text-anchor='middle'%3ESem equipamentos%3C/text%3E%3C/svg%3E"
-                alt="Ilustração de uma pessoa realizando exercícios simples para fascite plantar, como alongamento do arco do pé, em um ambiente doméstico"
-                className="w-full h-auto rounded-2xl shadow-lg mb-6"
+                src="/exerc.png"
+                alt="Pessoa realizando exercícios para fascite plantar em casa"
+                className="w-full h-auto rounded-2xl shadow-lg mb-6 max-w-md mx-auto"
               />
-              <p className="text-[#B0B0B0] text-sm italic">*Imagem ilustrativa: exercícios simples para alívio da fascite plantar.</p>
+              <p className="text-gray-200 text-sm italic">*Imagem ilustrativa: exercícios simples para alívio da fascite plantar.</p>
             </div>
-            <div className="bg-gray-800/40 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
-              <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-4">Redução da Dor: Antes e Depois</h3>
-              <p className="text-[#B0B0B0] mb-6 leading-relaxed">Nossos usuários relatam uma redução significativa da dor em apenas 7 dias. Veja o progresso que você pode esperar:</p>
+            <div className="bg-gradient-to-b from-gray-800/40 to-gray-900/40 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-4">Redução da Dor: Antes e Depois</h3>
+              <p className="text-gray-200 mb-6 leading-relaxed">Nossos usuários relatam uma redução significativa da dor em apenas 7 dias. Veja o progresso que você pode esperar:</p>
               <div className="bg-gray-700 p-6 rounded-xl mb-4">
                 <div className="flex justify-between items-end h-32">
                   <div className="flex flex-col items-center">
                     <div className="bg-red-500 w-12 h-24 rounded-t flex items-end justify-center text-white font-bold pb-2">8</div>
-                    <p className="text-sm mt-2 text-center text-[#B0B0B0]">Antes</p>
+                    <p className="text-sm mt-2 text-center text-gray-200">Antes</p>
                   </div>
                   <div className="flex flex-col items-center">
                     <div className="bg-emerald-500 w-12 h-6 rounded-t flex items-end justify-center text-white font-bold pb-1">2</div>
-                    <p className="text-sm mt-2 text-center text-[#B0B0B0]">Depois</p>
+                    <p className="text-sm mt-2 text-center text-gray-200">Depois</p>
                   </div>
                 </div>
                 <p className="text-center text-sm text-gray-200 mt-4">Nível de Dor (0-10)</p>
               </div>
-              <p className="text-[#B0B0B0] text-sm italic mt-4">*Gráfico ilustrativo: redução média da dor relatada por usuários.</p>
+              <p className="text-gray-200 text-sm italic mt-4">*Gráfico ilustrativo: redução média da dor relatada por usuários.</p>
             </div>
           </div>
           <div className="mt-12 text-center">
             <img
-              src="data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='100' cy='100' r='90' fill='%23374151'/%3E%3Ctext x='50%25' y='40%25' font-family='Arial' font-size='14' fill='%2310B981' text-anchor='middle'%3EEspecialista%3C/text%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='14' fill='%2310B981' text-anchor='middle'%3Eem Saúde%3C/text%3E%3Ctext x='50%25' y='70%25' font-family='Arial' font-size='14' fill='%2310B981' text-anchor='middle'%3EPodal%3C/text%3E%3C/svg%3E"
-              alt="Especialista em saúde podal que desenvolveu o programa Pise Bem"
+              src="/dr12.png"
+              alt="Profissional em jaleco branco demonstrando expertise em saúde podal"
               className="w-32 h-32 md:w-48 md:h-48 mx-auto rounded-full shadow-lg mb-4"
             />
-            <p className="text-[#B0B0B0] text-sm italic">Desenvolvido por especialistas em saúde podal para resultados reais.</p>
+            <p className="text-gray-200 text-sm italic">Desenvolvido por especialistas em saúde podal para resultados reais.</p>
           </div>
           {/* Before/After Images */}
           <div className="mt-16 text-center">
-            <h3 className="text-2xl font-bold text-emerald-400 mb-8">Resultados Visuais</h3>
+            <h3 className="text-2xl font-bold text-white mb-8">Resultados Visuais</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <div className="bg-gray-800/40 p-6 rounded-3xl border border-gray-700">
-                <h4 className="text-lg font-bold text-red-400 mb-4">Antes do Pise Bem</h4>
+                <h4 className="text-lg font-bold text-white mb-4">Antes do Pise Bem</h4>
                 <img
-                  src="data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23991B1B'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%23FCA5A5' text-anchor='middle'%3EDor intensa%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%23FCA5A5' text-anchor='middle'%3Eno calcanhar%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='12' fill='%23FCA5A5' text-anchor='middle'%3EDificuldade para%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%23FCA5A5' text-anchor='middle'%3Ecaminhar%3C/text%3E%3C/svg%3E"
+                  src="data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23991B1B'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%23FFFFFF' text-anchor='middle'%3EDor intensa%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%23FFFFFF' text-anchor='middle'%3Eno calcanhar%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3EDificuldade para%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3Ecaminhar%3C/text%3E%3C/svg%3E"
                   alt="Ilustração mostrando dor intensa no calcanhar antes do tratamento"
-                  className="w-full h-auto rounded-xl mb-4"
+                  className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
-                <p className="text-[#B0B0B0] text-sm">Dor limitante no dia a dia</p>
+                <p className="text-gray-200 text-sm">Dor limitante no dia a dia</p>
               </div>
               <div className="bg-gray-800/40 p-6 rounded-3xl border border-gray-700">
-                <h4 className="text-lg font-bold text-emerald-400 mb-4">Depois do Pise Bem</h4>
+                <h4 className="text-lg font-bold text-white mb-4">Depois do Pise Bem</h4>
                 <img
-                  src="data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%2334D399' text-anchor='middle'%3EAlívio da dor%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%2334D399' text-anchor='middle'%3Eem 7 dias%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='12' fill='%2334D399' text-anchor='middle'%3ELiberdade para%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%2334D399' text-anchor='middle'%3Ecaminhar%3C/text%3E%3C/svg%3E"
+                  src="data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%23FFFFFF' text-anchor='middle'%3EAlívio da dor%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%23FFFFFF' text-anchor='middle'%3Eem 7 dias%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3ELiberdade para%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3Ecaminhar%3C/text%3E%3C/svg%3E"
                   alt="Ilustração mostrando alívio da dor e liberdade para caminhar após o tratamento"
-                  className="w-full h-auto rounded-xl mb-4"
+                  className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
-                <p className="text-[#B0B0B0] text-sm">Volta à vida ativa e sem dor</p>
+                <p className="text-gray-200 text-sm">Volta à vida ativa e sem dor</p>
               </div>
             </div>
           </div>
@@ -484,7 +484,7 @@ const PiseBemLanding: React.FC = () => {
       {/* Benefits Section */}
       <section className="py-16 md:py-24 px-4 bg-black/50">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
             Por Que Escolher o Pise Bem?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -530,11 +530,11 @@ const PiseBemLanding: React.FC = () => {
                 key={index}
                 className="bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border border-gray-700 hover:border-emerald-500/50 hover:-translate-y-2 transition-all duration-300 group"
               >
-                <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r ${benefit.gradient} rounded-2xl text-2xl mb-4 group-hover:scale-110 transition-transform`}>
+                <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r ${benefit.gradient} rounded-2xl text-2xl mb-4 text-white group-hover:scale-110 transition-transform`}>
                   {benefit.icon}
                 </div>
-                <h3 className="text-xl font-bold text-emerald-400 mb-3">{benefit.title}</h3>
-                <p className="text-[#B0B0B0] leading-relaxed">{benefit.desc}</p>
+                <h3 className="text-xl font-bold text-white mb-3">{benefit.title}</h3>
+                <p className="text-gray-200 leading-relaxed">{benefit.desc}</p>
               </div>
             ))}
           </div>
@@ -543,7 +543,7 @@ const PiseBemLanding: React.FC = () => {
       {/* Testimonials */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black/50">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
             Depoimentos Reais
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -557,7 +557,7 @@ const PiseBemLanding: React.FC = () => {
                     <span key={i} className="text-yellow-400">⭐</span>
                   ))}
                 </div>
-                <blockquote className="text-[#B0B0B0] leading-relaxed mb-6 italic">
+                <blockquote className="text-gray-200 leading-relaxed mb-6 italic">
                   "{testimonial.text}"
                 </blockquote>
                 <div className="flex items-center gap-3">
@@ -567,8 +567,8 @@ const PiseBemLanding: React.FC = () => {
                     className="w-12 h-12 rounded-full"
                   />
                   <div>
-                    <div className="font-bold text-emerald-400">{testimonial.author}</div>
-                    <div className="text-sm text-[#B0B0B0]">{testimonial.location}</div>
+                    <div className="font-bold text-white">{testimonial.author}</div>
+                    <div className="text-sm text-gray-200">{testimonial.location}</div>
                   </div>
                 </div>
               </div>
@@ -581,18 +581,18 @@ const PiseBemLanding: React.FC = () => {
         <div className="max-w-4xl mx-auto text-center">
           <div className="bg-gray-800/60 backdrop-blur-sm p-8 md:p-12 rounded-3xl border-2 border-emerald-500 shadow-2xl shadow-emerald-500/20">
             <div className="text-5xl md:text-6xl mb-6 animate-bounce">🎁</div>
-            <h2 className="text-3xl md:text-5xl font-black text-emerald-400 mb-6">
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-6">
               7 Dias de Garantia
             </h2>
-            <p className="text-xl md:text-2xl font-bold mb-4">
+            <p className="text-xl md:text-2xl font-bold text-gray-200 mb-4">
               Experimente o Pise Bem sem risco
             </p>
-            <p className="text-lg text-[#B0B0B0] mb-8 leading-relaxed">
+            <p className="text-lg text-gray-200 mb-8 leading-relaxed">
               Use nosso programa por 7 dias completos. Se não sentir alívio, receba 100% do seu dinheiro de volta.
             </p>
             <div className="mb-8">
               <img
-                src="data:image/svg+xml,%3Csvg width='400' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23374151'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='16' fill='%2310B981' text-anchor='middle'%3E7 DIAS DE%3C/text%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%2310B981' text-anchor='middle'%3EGARANTIA%3C/text%3E%3Ctext x='50%25' y='70%25' font-family='Arial' font-size='14' fill='%236B7280' text-anchor='middle'%3E100%25 Reembolso%3C/text%3E%3C/svg%3E"
+                src="data:image/svg+xml,%3Csvg width='400' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23374151'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='16' fill='%23FFFFFF' text-anchor='middle'%3E7 DIAS DE%3C/text%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%23FFFFFF' text-anchor='middle'%3EGARANTIA%3C/text%3E%3Ctext x='50%25' y='70%25' font-family='Arial' font-size='14' fill='%23D1D5DB' text-anchor='middle'%3E100%25 Reembolso%3C/text%3E%3C/svg%3E"
                 alt="Selo de garantia de 7 dias com 100% de reembolso"
                 className="w-full max-w-md h-auto mx-auto rounded-2xl mb-6"
               />
@@ -605,13 +605,13 @@ const PiseBemLanding: React.FC = () => {
                 { text: '24/7', subtitle: 'Suporte' }
               ].map((item, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-2xl md:text-4xl font-black text-emerald-400 mb-1">{item.text}</div>
-                  <div className="text-gray-400 text-sm">{item.subtitle}</div>
+                  <div className="text-2xl md:text-4xl font-black text-white mb-1">{item.text}</div>
+                  <div className="text-gray-200 text-sm">{item.subtitle}</div>
                 </div>
               ))}
             </div>
             <a
-              href="https://pay.cakto.com.br/pisebem"
+              href="https://pay.cakto.com.br/akb7bor_571886"
               className="inline-flex items-center gap-3 px-10 md:px-14 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
             >
               <span>🚀</span>
@@ -623,7 +623,7 @@ const PiseBemLanding: React.FC = () => {
       {/* Pricing */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black" id="pricing">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
             Adquira o Pise Bem Hoje
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6 md:gap-8 mb-12">
@@ -634,19 +634,19 @@ const PiseBemLanding: React.FC = () => {
                 </span>
               </div>
               <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-emerald-400 mb-2">Pise Bem Vitalício</h3>
-                <div className="text-4xl md:text-5xl font-black mb-1">
+                <h3 className="text-2xl font-bold text-white mb-2">Pise Bem Vitalício</h3>
+                <div className="text-4xl md:text-5xl font-black mb-1 text-white">
                   <span className="line-through text-gray-400 text-2xl mr-2">R$97,00</span>
                   R$9,90
-                  <span className="text-base text-gray-400 font-normal">/vitalício</span>
+                  <span className="text-base text-gray-200 font-normal">/vitalício</span>
                 </div>
-                <p className="text-sm text-emerald-400 font-semibold">7 dias de garantia, pagamento único</p>
+                <p className="text-sm text-white font-semibold">7 dias de garantia, pagamento único</p>
               </div>
               <div className="mb-6">
                 <img
-                  src="data:image/svg+xml,%3Csvg width='400' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='16' fill='%2334D399' text-anchor='middle'%3EPISE BEM%3C/text%3E%3Ctext x='50%25' y='40%25' font-family='Arial' font-size='12' fill='%2334D399' text-anchor='middle'%3E10 Exercícios%3C/text%3E%3Ctext x='50%25' y='52%25' font-family='Arial' font-size='12' fill='%2334D399' text-anchor='middle'%3EPara Fascite Plantar%3C/text%3E%3Ctext x='50%25' y='68%25' font-family='Arial' font-size='10' fill='%236B7280' text-anchor='middle'%3EGuia Completo%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='10' fill='%236B7280' text-anchor='middle'%3EAlívio em 7 Dias%3C/text%3E%3C/svg%3E"
+                  src="data:image/svg+xml,%3Csvg width='400' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='16' fill='%23FFFFFF' text-anchor='middle'%3EPISE BEM%3C/text%3E%3Ctext x='50%25' y='40%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3E10 Exercícios%3C/text%3E%3Ctext x='50%25' y='52%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3EPara Fascite Plantar%3C/text%3E%3Ctext x='50%25' y='68%25' font-family='Arial' font-size='10' fill='%23D1D5DB' text-anchor='middle'%3EGuia Completo%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='10' fill='%23D1D5DB' text-anchor='middle'%3EAlívio em 7 Dias%3C/text%3E%3C/svg%3E"
                   alt="Visualização do produto Pise Bem - Guia completo com 10 exercícios para fascite plantar"
-                  className="w-full h-auto rounded-2xl shadow-lg"
+                  className="w-full h-auto rounded-2xl shadow-lg max-w-md mx-auto"
                 />
               </div>
               <ul className="space-y-3 mb-8">
@@ -660,28 +660,28 @@ const PiseBemLanding: React.FC = () => {
                   'Sem mensalidades ou taxas extras'
                 ].map((feature, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <span className="text-emerald-400 font-bold mt-1">✓</span>
-                    <span className="text-[#B0B0B0]">{feature}</span>
+                    <span className="text-white font-bold mt-1">✓</span>
+                    <span className="text-gray-200">{feature}</span>
                   </li>
                 ))}
               </ul>
               <a
-                href="https://pay.cakto.com.br/pisebem"
+                href="https://pay.cakto.com.br/akb7bor_571886"
                 className="block w-full text-center px-6 py-4 font-bold text-lg rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 text-black hover:shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
               >
                 COMPRE COM GARANTIA DE 7 DIAS
               </a>
-              <p className="text-center text-xs text-[#B0B0B0] mt-3">
+              <p className="text-center text-xs text-gray-200 mt-3">
                 Pagamento único de R$9,90 • Sem taxas adicionais • Acesso imediato
               </p>
             </div>
           </div>
           <div className="text-center">
             <div className="inline-flex items-center gap-4 px-6 py-3 bg-gray-800/40 rounded-2xl border border-gray-700">
-              <span className="text-green-400">🔒</span>
-              <span className="text-sm text-[#B0B0B0]">Pagamento 100% seguro</span>
-              <span className="text-green-400">💳</span>
-              <span className="text-sm text-[#B0B0B0]">PIX • Cartão • Boleto</span>
+              <span className="text-white">🔒</span>
+              <span className="text-sm text-gray-200">Pagamento 100% seguro</span>
+              <span className="text-white">💳</span>
+              <span className="text-sm text-gray-200">PIX • Cartão • Boleto</span>
             </div>
           </div>
         </div>
@@ -699,17 +699,17 @@ const PiseBemLanding: React.FC = () => {
               { number: '100%', label: 'Garantia' }
             ].map((stat, index) => (
               <div key={index} className="p-4">
-                <div className="text-3xl md:text-4xl font-black text-emerald-400 mb-2">{stat.number}</div>
-                <div className="text-sm text-[#B0B0B0]">{stat.label}</div>
+                <div className="text-3xl md:text-4xl font-black text-white mb-2">{stat.number}</div>
+                <div className="text-sm text-gray-200">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
       {/* FAQ */}
-      <section className="py-16 md:py-24 px-4">
+      <section className="py-16 md:py-24 px-4 bg-black/50">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
             Perguntas Frequentes
           </h2>
           <div className="space-y-4">
@@ -748,16 +748,14 @@ const PiseBemLanding: React.FC = () => {
                 className="bg-gray-800/40 backdrop-blur-sm rounded-2xl border border-gray-700 overflow-hidden hover:border-emerald-500/50 transition-all"
               >
                 <button
-                  className="w-full p-6 text-left font-bold text-lg flex justify-between items-center hover:bg-emerald-500/5 transition-all"
+                  className="w-full p-6 text-left font-bold text-lg flex justify-between items-center hover:bg-emerald-500/5 transition-all text-white"
                   onClick={() => toggleFaq(index)}
                 >
                   <span className="pr-4">{faq.question}</span>
                   <span className={`text-2xl transition-transform duration-300 flex-shrink-0 ${activeFaq === index ? 'rotate-45' : ''}`}>+</span>
                 </button>
                 <div className={`overflow-hidden transition-all duration-300 ${activeFaq === index ? 'max-h-96 pb-6' : 'max-h-0'}`}>
-                  <div className="px-6 text-[#B0B0B0] leading-relaxed">
-                    {faq.answer}
-                  </div>
+                  <div className="px-6 text-gray-200 leading-relaxed">{faq.answer}</div>
                 </div>
               </div>
             ))}
@@ -767,29 +765,29 @@ const PiseBemLanding: React.FC = () => {
       {/* Final CTA */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-emerald-900/30 via-blue-900/20 to-purple-900/20">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
+          <h2 className="text-4xl md:text-6xl font-black mb-6 leading-tight text-white">
             Caminhe Sem Dor Hoje Mesmo<br />
             <span className="text-emerald-400">Comece Agora com Garantia</span>
           </h2>
-          <p className="text-xl md:text-2xl text-[#B0B0B0] mb-10 leading-relaxed">
+          <p className="text-xl md:text-2xl text-gray-200 mb-10 leading-relaxed">
             Junte-se a milhares de pessoas que recuperaram a liberdade de movimento com o Pise Bem
           </p>
           <div className="mb-8">
             <img
-              src="data:image/svg+xml,%3Csvg width='500' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='20' fill='%2334D399' text-anchor='middle'%3EVOLTA À VIDA ATIVA%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='16' fill='%2334D399' text-anchor='middle'%3ESem dor, sem limitações%3C/text%3E%3Ctext x='50%25' y='65%25' font-family='Arial' font-size='14' fill='%236B7280' text-anchor='middle'%3EApenas R$9,90%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='14' fill='%236B7280' text-anchor='middle'%3EGarantia de 7 dias%3C/text%3E%3C/svg%3E"
+              src="data:image/svg+xml,%3Csvg width='500' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='20' fill='%23FFFFFF' text-anchor='middle'%3EVOLTA À VIDA ATIVA%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='16' fill='%23FFFFFF' text-anchor='middle'%3ESem dor, sem limitações%3C/text%3E%3Ctext x='50%25' y='65%25' font-family='Arial' font-size='14' fill='%23D1D5DB' text-anchor='middle'%3EApenas R$9,90%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='14' fill='%23D1D5DB' text-anchor='middle'%3EGarantia de 7 dias%3C/text%3E%3C/svg%3E"
               alt="Ilustração de pessoa caminhando livremente sem dor após usar o Pise Bem"
               className="w-full max-w-lg h-auto mx-auto rounded-2xl mb-8"
             />
           </div>
           <a
-            href="https://pay.cakto.com.br/pisebem"
+            href="https://pay.cakto.com.br/akb7bor_571886"
             className="inline-flex items-center gap-4 px-12 md:px-16 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl md:text-2xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-2 transition-all duration-300 mb-6"
           >
             <span className="animate-pulse">🚀</span>
             COMPRAR PISE BEM AGORA
             <span>→</span>
           </a>
-          <div className="flex items-center justify-center gap-4 text-sm text-[#B0B0B0] flex-wrap">
+          <div className="flex items-center justify-center gap-4 text-sm text-gray-200 flex-wrap">
             <span className="flex items-center gap-1">
               <span>🎁</span> 7 dias de garantia total
             </span>
@@ -805,7 +803,7 @@ const PiseBemLanding: React.FC = () => {
         </div>
       </section>
       {/* Footer */}
-      <footer className="py-12 px-4 bg-black border-t border-gray-800">
+      <section className="py-12 px-4 bg-black border-t border-gray-800">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-wrap justify-center gap-6 mb-8">
             {[
@@ -818,16 +816,16 @@ const PiseBemLanding: React.FC = () => {
                 key={index}
                 href={link.href || '#'}
                 onClick={link.onClick ? (e) => { e.preventDefault(); link.onClick(); } : undefined}
-                className="text-gray-400 hover:text-emerald-400 transition-colors text-sm"
+                className="text-gray-200 hover:text-emerald-400 transition-colors text-sm"
               >
                 {link.text}
               </a>
             ))}
           </div>
-          <p className="text-center text-gray-500 text-sm mb-8">
+          <p className="text-center text-gray-200 text-sm mb-8">
             © 2025 Pise Bem - Todos os direitos reservados
           </p>
-          <div className="text-center text-gray-600 text-xs leading-relaxed space-y-4 max-w-4xl mx-auto">
+          <div className="text-center text-gray-200 text-xs leading-relaxed space-y-4 max-w-4xl mx-auto">
             <p>
               <strong>Aviso Legal:</strong> Os resultados podem variar individualmente. O Pise Bem é um programa de exercícios para alívio da fascite plantar, desenvolvido com base em conhecimento especializado. Este produto não substitui acompanhamento médico. Consulte um profissional de saúde antes de iniciar qualquer programa de exercícios. O sucesso do programa depende da dedicação individual e fatores específicos de cada caso.
             </p>
@@ -839,9 +837,9 @@ const PiseBemLanding: React.FC = () => {
             </p>
           </div>
         </div>
-      </footer>
+      </section>
       {/* Purchase Notifications */}
-      <div className="fixed bottom-6 left-6 z-40 space-y-3 purchase-notification">
+      <div className="fixed bottom-6 left-6 z-40 space-y-3">
         {notifications.map((notification) => (
           <div
             key={notification.id}
@@ -861,7 +859,7 @@ const PiseBemLanding: React.FC = () => {
                 <p className="text-xs text-gray-600 mb-1">{notification.city}</p>
                 <p className="text-xs font-medium text-emerald-600">Ativou o plano {notification.plan}</p>
               </div>
-              <div className="text-xs text-gray-400">agora</div>
+              <div className="text-xs text-gray-600">agora</div>
             </div>
           </div>
         ))}
@@ -871,12 +869,12 @@ const PiseBemLanding: React.FC = () => {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] overflow-y-auto p-4">
           <div className="max-w-4xl mx-auto my-8 bg-gray-900 rounded-3xl border border-gray-700 shadow-2xl">
             <div className="flex justify-between items-center p-6 border-b border-gray-700">
-              <h2 className="text-2xl md:text-3xl font-bold text-emerald-400">Termos de Uso</h2>
-              <button className="text-gray-400 hover:text-white text-3xl" onClick={closeModal}>
+              <h2 className="text-2xl md:text-3xl font-bold text-white">Termos de Uso</h2>
+              <button className="text-gray-200 hover:text-white text-3xl" onClick={closeModal}>
                 ×
               </button>
             </div>
-            <div className="p-6 text-[#B0B0B0] leading-relaxed space-y-6">
+            <div className="p-6 text-gray-200 leading-relaxed space-y-6">
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">1. Aceitação dos Termos</h3>
                 <p>Ao adquirir o Pise Bem, você concorda com estes Termos de Uso. Se não concordar com algum termo, não utilize nossos serviços.</p>
@@ -909,12 +907,12 @@ const PiseBemLanding: React.FC = () => {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] overflow-y-auto p-4">
           <div className="max-w-4xl mx-auto my-8 bg-gray-900 rounded-3xl border border-gray-700 shadow-2xl">
             <div className="flex justify-between items-center p-6 border-b border-gray-700">
-              <h2 className="text-2xl md:text-3xl font-bold text-emerald-400">Política de Privacidade</h2>
-              <button className="text-gray-400 hover:text-white text-3xl" onClick={closeModal}>
+              <h2 className="text-2xl md:text-3xl font-bold text-white">Política de Privacidade</h2>
+              <button className="text-gray-200 hover:text-white text-3xl" onClick={closeModal}>
                 ×
               </button>
             </div>
-            <div className="p-6 text-[#B0B0B0] leading-relaxed space-y-6">
+            <div className="p-6 text-gray-200 leading-relaxed space-y-6">
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">1. Coleta de Dados</h3>
                 <p>Coletamos apenas dados necessários para processar sua compra e fornecer suporte adequado, como nome, e-mail e informações de pagamento. Não coletamos dados sensíveis desnecessários.</p>
