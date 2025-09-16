@@ -226,7 +226,7 @@ const PiseBemLanding: React.FC = () => {
             SOLUÇÃO NATURAL 2025
           </div>
           <h1 className="text-[clamp(28px,6vw,64px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent overflow-visible whitespace-normal">
-            Livre da Dor da Fascite Plantar em 7 Dias
+            Alivie Dor da Fascite Plantar em 7 Dias
           </h1>
           <p className="text-[clamp(16px,2.5vw,20px)] text-[#B0B0B0] mb-10 max-w-[600px] mx-auto">
             Diga adeus aos analgésicos! Trate sua fascite plantar de forma <span className="text-[#00FF88] font-bold">natural</span> com nosso plano de 10 exercícios comprovados, sem efeitos colaterais.
