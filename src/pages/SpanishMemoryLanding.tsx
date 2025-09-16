@@ -9,6 +9,15 @@ interface PurchaseNotification {
   show: boolean;
 }
 
+interface Testimonial {
+  text: string;
+  author: string;
+  location: string;
+  initials: string;
+  rating: number;
+  image: string;
+}
+
 const PiseBemLanding: React.FC = () => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [modal, setModal] = useState<string | null>(null);
@@ -28,6 +37,33 @@ const PiseBemLanding: React.FC = () => {
     { name: 'Miguel C.', city: 'Fortaleza', plan: 'Vitalício' },
     { name: 'Sofia M.', city: 'Recife', plan: 'Vitalício' },
     { name: 'Lucas D.', city: 'Florianópolis', plan: 'Vitalício' },
+  ];
+
+  const testimonials: Testimonial[] = [
+    {
+      text: 'Depois de meses sofrendo com fascite, o Pise Bem me salvou! Em 5 dias a dor diminuiu muito.',
+      author: 'Ana C.',
+      location: 'São Paulo • 35 anos',
+      initials: 'AC',
+      rating: 5,
+      image: "data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='35' fill='%2310B981'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E"
+    },
+    {
+      text: 'Eu achava que precisaria de cirurgia, mas esses exercícios mudaram tudo. Caminho sem dor agora!',
+      author: 'Roberto M.',
+      location: 'Rio de Janeiro • 42 anos',
+      initials: 'RM',
+      rating: 5,
+      image: "data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='35' fill='%2306B6D4'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3ERM%3C/text%3E%3C/svg%3E"
+    },
+    {
+      text: 'Fácil de seguir e realmente funciona. Não preciso mais de analgésicos!',
+      author: 'Fernanda S.',
+      location: 'Belo Horizonte • 29 anos',
+      initials: 'FS',
+      rating: 5,
+      image: "data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='35' fill='%23EC4899'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EFS%3C/text%3E%3C/svg%3E"
+    },
   ];
 
   useEffect(() => {
@@ -363,7 +399,8 @@ const PiseBemLanding: React.FC = () => {
               </ul>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
       {/* Visual Proof Section */}
       <section className="py-16 md:py-24 px-4 bg-black/50">
         <div className="max-w-7xl mx-auto">
@@ -384,48 +421,19 @@ const PiseBemLanding: React.FC = () => {
             <div className="bg-gradient-to-b from-gray-800/40 to-gray-900/40 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
               <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-4">Redução da Dor: Antes e Depois</h3>
               <p className="text-gray-300 mb-6 leading-relaxed">Nossos usuários relatam uma redução significativa da dor em apenas 7 dias. Veja o progresso que você pode esperar:</p>
-              ```chartjs
-              {
-                "type": "bar",
-                "data": {
-                  "labels": ["Antes", "Depois de 7 Dias"],
-                  "datasets": [{
-                    "label": "Nível de Dor",
-                    "data": [8, 2],
-                    "backgroundColor": ["#EF4444", "#10B981"],
-                    "borderColor": ["#B91C1C", "#047857"],
-                    "borderWidth": 1
-                  }]
-                },
-                "options": {
-                  "scales": {
-                    "y": {
-                      "beginAtZero": true,
-                      "max": 10,
-                      "title": {
-                        "display": true,
-                        "text": "Nível de Dor (0-10)"
-                      }
-                    },
-                    "x": {
-                      "title": {
-                        "display": true,
-                        "text": "Período"
-                      }
-                    }
-                  },
-                  "plugins": {
-                    "legend": {
-                      "display": false
-                    },
-                    "title": {
-                      "display": true,
-                      "text": "Redução Média da Dor"
-                    }
-                  }
-                }
-              }
-              ```
+              <div className="bg-gray-700 p-6 rounded-xl mb-4">
+                <div className="flex justify-between items-end h-32">
+                  <div className="flex flex-col items-center">
+                    <div className="bg-red-500 w-12 h-24 rounded-t flex items-end justify-center text-white font-bold pb-2">8</div>
+                    <p className="text-sm mt-2 text-center">Antes</p>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <div className="bg-emerald-500 w-12 h-6 rounded-t flex items-end justify-center text-white font-bold pb-1">2</div>
+                    <p className="text-sm mt-2 text-center">Depois</p>
+                  </div>
+                </div>
+                <p className="text-center text-sm text-gray-400 mt-4">Nível de Dor (0-10)</p>
+              </div>
               <p className="text-gray-300 text-sm italic mt-4">*Gráfico ilustrativo: redução média da dor relatada por usuários.</p>
             </div>
           </div>
@@ -436,6 +444,30 @@ const PiseBemLanding: React.FC = () => {
               className="w-32 h-32 md:w-48 md:h-48 mx-auto rounded-full shadow-lg mb-4"
             />
             <p className="text-gray-300 text-sm italic">Desenvolvido por especialistas em saúde podal para resultados reais.</p>
+          </div>
+          {/* Before/After Images */}
+          <div className="mt-16 text-center">
+            <h3 className="text-2xl font-bold text-emerald-400 mb-8">Resultados Visuais</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div className="bg-gray-800/40 p-6 rounded-3xl border border-gray-700">
+                <h4 className="text-lg font-bold text-red-400 mb-4">Antes do Pise Bem</h4>
+                <img
+                  src="data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23991B1B'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%23FCA5A5' text-anchor='middle'%3EDor intensa%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%23FCA5A5' text-anchor='middle'%3Eno calcanhar%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='12' fill='%23FCA5A5' text-anchor='middle'%3EDificuldade para%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%23FCA5A5' text-anchor='middle'%3Ecaminhar%3C/text%3E%3C/svg%3E"
+                  alt="Ilustração mostrando dor intensa no calcanhar antes do tratamento"
+                  className="w-full h-auto rounded-xl mb-4"
+                />
+                <p className="text-gray-400 text-sm">Dor limitante no dia a dia</p>
+              </div>
+              <div className="bg-gray-800/40 p-6 rounded-3xl border border-gray-700">
+                <h4 className="text-lg font-bold text-emerald-400 mb-4">Depois do Pise Bem</h4>
+                <img
+                  src="data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%2334D399' text-anchor='middle'%3EAlívio da dor%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%2334D399' text-anchor='middle'%3Eem 7 dias%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='12' fill='%2334D399' text-anchor='middle'%3ELiberdade para%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%2334D399' text-anchor='middle'%3Ecaminhar%3C/text%3E%3C/svg%3E"
+                  alt="Ilustração mostrando alívio da dor e liberdade para caminhar após o tratamento"
+                  className="w-full h-auto rounded-xl mb-4"
+                />
+                <p className="text-gray-400 text-sm">Volta à vida ativa e sem dor</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -505,29 +537,7 @@ const PiseBemLanding: React.FC = () => {
             Depoimentos Reais
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              {
-                text: 'Depois de meses sofrendo com fascite, o Pise Bem me salvou! Em 5 dias a dor diminuiu muito.',
-                author: 'Ana C.',
-                location: 'São Paulo • 35 anos',
-                initials: 'AC',
-                rating: 5
-              },
-              {
-                text: 'Eu achava que precisaria de cirurgia, mas esses exercícios mudaram tudo. Caminho sem dor agora!',
-                author: 'Roberto M.',
-                location: 'Rio de Janeiro • 42 anos',
-                initials: 'RM',
-                rating: 5
-              },
-              {
-                text: 'Fácil de seguir e realmente funciona. Não preciso mais de analgésicos!',
-                author: 'Fernanda S.',
-                location: 'Belo Horizonte • 29 anos',
-                initials: 'FS',
-                rating: 5
-              },
-            ].map((testimonial, index) => (
+            {testimonials.map((testimonial, index) => (
               <div
                 key={index}
                 className="bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border border-gray-700 hover:border-emerald-500/50 transition-all duration-300"
@@ -541,9 +551,11 @@ const PiseBemLanding: React.FC = () => {
                   "{testimonial.text}"
                 </blockquote>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center font-bold text-black text-sm">
-                    {testimonial.initials}
-                  </div>
+                  <img
+                    src={testimonial.image}
+                    alt={`Foto de perfil de ${testimonial.author}`}
+                    className="w-12 h-12 rounded-full"
+                  />
                   <div>
                     <div className="font-bold text-emerald-400">{testimonial.author}</div>
                     <div className="text-sm text-gray-500">{testimonial.location}</div>
@@ -551,6 +563,30 @@ const PiseBemLanding: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+          {/* Before/After Images */}
+          <div className="mt-16 text-center">
+            <h3 className="text-2xl font-bold text-emerald-400 mb-8">Resultados Visuais</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div className="bg-gray-800/40 p-6 rounded-3xl border border-gray-700">
+                <h4 className="text-lg font-bold text-red-400 mb-4">Antes do Pise Bem</h4>
+                <img
+                  src="data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23991B1B'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%23FCA5A5' text-anchor='middle'%3EDor intensa%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%23FCA5A5' text-anchor='middle'%3Eno calcanhar%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='12' fill='%23FCA5A5' text-anchor='middle'%3EDificuldade para%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%23FCA5A5' text-anchor='middle'%3Ecaminhar%3C/text%3E%3C/svg%3E"
+                  alt="Ilustração mostrando dor intensa no calcanhar antes do tratamento"
+                  className="w-full h-auto rounded-xl mb-4"
+                />
+                <p className="text-gray-400 text-sm">Dor limitante no dia a dia</p>
+              </div>
+              <div className="bg-gray-800/40 p-6 rounded-3xl border border-gray-700">
+                <h4 className="text-lg font-bold text-emerald-400 mb-4">Depois do Pise Bem</h4>
+                <img
+                  src="data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%2334D399' text-anchor='middle'%3EAlívio da dor%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%2334D399' text-anchor='middle'%3Eem 7 dias%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='12' fill='%2334D399' text-anchor='middle'%3ELiberdade para%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%2334D399' text-anchor='middle'%3Ecaminhar%3C/text%3E%3C/svg%3E"
+                  alt="Ilustração mostrando alívio da dor e liberdade para caminhar após o tratamento"
+                  className="w-full h-auto rounded-xl mb-4"
+                />
+                <p className="text-gray-400 text-sm">Volta à vida ativa e sem dor</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -568,6 +604,13 @@ const PiseBemLanding: React.FC = () => {
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
               Use nosso programa por 7 dias completos. Se não sentir alívio, receba 100% do seu dinheiro de volta.
             </p>
+            <div className="mb-8">
+              <img
+                src="data:image/svg+xml,%3Csvg width='400' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23374151'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='16' fill='%2310B981' text-anchor='middle'%3E7 DIAS DE%3C/text%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%2310B981' text-anchor='middle'%3EGARANTIA%3C/text%3E%3Ctext x='50%25' y='70%25' font-family='Arial' font-size='14' fill='%236B7280' text-anchor='middle'%3E100%25 Reembolso%3C/text%3E%3C/svg%3E"
+                alt="Selo de garantia de 7 dias com 100% de reembolso"
+                className="w-full max-w-md h-auto mx-auto rounded-2xl mb-6"
+              />
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-8 mb-8">
               {[
                 { text: '7 DIAS', subtitle: 'Garantia' },
@@ -586,7 +629,7 @@ const PiseBemLanding: React.FC = () => {
               className="inline-flex items-center gap-3 px-10 md:px-14 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
             >
               <span>🚀</span>
-              COMPRE AGORA
+              COMPRE AGORA COM GARANTIA
             </a>
           </div>
         </div>
@@ -607,18 +650,28 @@ const PiseBemLanding: React.FC = () => {
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold text-emerald-400 mb-2">Pise Bem Vitalício</h3>
                 <div className="text-4xl md:text-5xl font-black mb-1">
+                  <span className="line-through text-gray-500 text-2xl mr-2">R$97,00</span>
                   R$9,90
                   <span className="text-base text-gray-400 font-normal">/vitalício</span>
                 </div>
                 <p className="text-sm text-emerald-400 font-semibold">7 dias de garantia, pagamento único</p>
               </div>
+              <div className="mb-6">
+                <img
+                  src="data:image/svg+xml,%3Csvg width='400' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='16' fill='%2334D399' text-anchor='middle'%3EPISE BEM%3C/text%3E%3Ctext x='50%25' y='40%25' font-family='Arial' font-size='12' fill='%2334D399' text-anchor='middle'%3E10 Exercícios%3C/text%3E%3Ctext x='50%25' y='52%25' font-family='Arial' font-size='12' fill='%2334D399' text-anchor='middle'%3EPara Fascite Plantar%3C/text%3E%3Ctext x='50%25' y='68%25' font-family='Arial' font-size='10' fill='%236B7280' text-anchor='middle'%3EGuia Completo%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='10' fill='%236B7280' text-anchor='middle'%3EAlívio em 7 Dias%3C/text%3E%3C/svg%3E"
+                  alt="Visualização do produto Pise Bem - Guia completo com 10 exercícios para fascite plantar"
+                  className="w-full h-auto rounded-2xl shadow-lg"
+                />
+              </div>
               <ul className="space-y-3 mb-8">
                 {[
-                  '10 exercícios comprovados',
-                  'Plano de 7 dias para alívio rápido',
-                  'Acesso vitalício ao programa',
-                  'Suporte prioritário 24/7',
-                  'Garantia de reembolso de 7 dias'
+                  '10 exercícios comprovados para fascite plantar',
+                  'Plano de 7 dias para alívio rápido da dor',
+                  'Acesso vitalício ao programa completo',
+                  'Instruções detalhadas passo a passo',
+                  'Suporte prioritário via WhatsApp 24/7',
+                  'Garantia incondicional de 7 dias',
+                  'Sem mensalidades ou taxas extras'
                 ].map((feature, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="text-emerald-400 font-bold mt-1">✓</span>
@@ -630,11 +683,19 @@ const PiseBemLanding: React.FC = () => {
                 href="https://pay.cakto.com.br/pisebem"
                 className="block w-full text-center px-6 py-4 font-bold text-lg rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 text-black hover:shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
               >
-                COMPRE COM GARANTIA
+                COMPRE COM GARANTIA DE 7 DIAS
               </a>
               <p className="text-center text-xs text-gray-500 mt-3">
-                Pagamento único, sem taxas adicionais
+                Pagamento único de R$9,90 • Sem taxas adicionais • Acesso imediato
               </p>
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="inline-flex items-center gap-4 px-6 py-3 bg-gray-800/40 rounded-2xl border border-gray-700">
+              <span className="text-green-400">🔒</span>
+              <span className="text-sm text-gray-300">Pagamento 100% seguro</span>
+              <span className="text-green-400">💳</span>
+              <span className="text-sm text-gray-300">PIX • Cartão • Boleto</span>
             </div>
           </div>
         </div>
@@ -669,23 +730,31 @@ const PiseBemLanding: React.FC = () => {
             {[
               {
                 question: 'Como funciona a garantia de 7 dias?',
-                answer: 'Você adquire o Pise Bem e tem 7 dias para testar o programa. Se não sentir alívio, pode solicitar reembolso total.'
+                answer: 'Você adquire o Pise Bem e tem 7 dias completos para testar o programa. Se não sentir alívio significativo da dor, pode solicitar reembolso total de 100% do valor pago, sem burocracia.'
               },
               {
-                question: 'Preciso de equipamentos para os exercícios?',
-                answer: 'Não! Os 10 exercícios são simples e podem ser feitos em casa, sem necessidade de equipamentos especiais.'
+                question: 'Preciso de equipamentos especiais para os exercícios?',
+                answer: 'Não! Os 10 exercícios do Pise Bem são simples e podem ser feitos em casa, sem necessidade de equipamentos especiais ou academia. Você precisa apenas de alguns minutos por dia.'
               },
               {
-                question: 'O programa é seguro para todos?',
-                answer: 'Sim, o Pise Bem foi desenvolvido por especialistas e é seguro para a maioria das pessoas. Consulte um médico se tiver condições específicas.'
+                question: 'O programa é seguro para todas as idades?',
+                answer: 'Sim, o Pise Bem foi desenvolvido por especialistas em saúde podal e é seguro para a maioria das pessoas. Os exercícios são de baixo impacto. Sempre recomendamos consultar um médico se você tiver condições de saúde específicas.'
               },
               {
-                question: 'Quanto tempo leva para ver resultados?',
-                answer: 'A maioria dos usuários sente alívio em 7 dias seguindo o plano de exercícios.'
+                question: 'Quanto tempo leva para sentir os resultados?',
+                answer: 'A maioria dos nossos usuários relata alívio significativo da dor em apenas 7 dias seguindo o plano de exercícios. Alguns sentem melhora já nos primeiros dias de prática.'
               },
               {
-                question: 'O pagamento é realmente vitalício?',
-                answer: 'Sim! Por apenas R$9,90, você tem acesso ilimitado ao programa, sem mensalidades.'
+                question: 'O acesso é realmente vitalício por R$9,90?',
+                answer: 'Sim! Por apenas R$9,90, você tem acesso ilimitado e vitalício ao programa completo. Não há mensalidades, taxas extras ou custos ocultos. É um pagamento único.'
+              },
+              {
+                question: 'Como recebo o material após a compra?',
+                answer: 'Após a confirmação do pagamento, você recebe acesso imediato ao programa completo via e-mail. Todo o material fica disponível em uma área exclusiva online.'
+              },
+              {
+                question: 'Funciona para casos severos de fascite plantar?',
+                answer: 'O Pise Bem foi desenvolvido para ajudar pessoas com diferentes níveis de fascite plantar. Muitos usuários com casos mais severos relataram melhora significativa. Para casos muito graves, recomendamos acompanhamento médico paralelo.'
               }
             ].map((faq, index) => (
               <div
@@ -719,21 +788,32 @@ const PiseBemLanding: React.FC = () => {
           <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed">
             Junte-se a milhares de pessoas que recuperaram a liberdade de movimento com o Pise Bem
           </p>
+          <div className="mb-8">
+            <img
+              src="data:image/svg+xml,%3Csvg width='500' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='20' fill='%2334D399' text-anchor='middle'%3EVOLTA À VIDA ATIVA%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='16' fill='%2334D399' text-anchor='middle'%3ESem dor, sem limitações%3C/text%3E%3Ctext x='50%25' y='65%25' font-family='Arial' font-size='14' fill='%236B7280' text-anchor='middle'%3EApenas R$9,90%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='14' fill='%236B7280' text-anchor='middle'%3EGarantia de 7 dias%3C/text%3E%3C/svg%3E"
+              alt="Ilustração de pessoa caminhando livremente sem dor após usar o Pise Bem"
+              className="w-full max-w-lg h-auto mx-auto rounded-2xl mb-8"
+            />
+          </div>
           <a
             href="https://pay.cakto.com.br/pisebem"
             className="inline-flex items-center gap-4 px-12 md:px-16 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl md:text-2xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-2 transition-all duration-300 mb-6"
           >
             <span className="animate-pulse">🚀</span>
-            COMPRE AGORA
+            COMPRAR PISE BEM AGORA
             <span>→</span>
           </a>
           <div className="flex items-center justify-center gap-4 text-sm text-gray-400 flex-wrap">
             <span className="flex items-center gap-1">
-              <span>🎁</span> 7 dias de garantia
+              <span>🎁</span> 7 dias de garantia total
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <span>🔒</span> Pagamento único
+              <span>🔒</span> Pagamento único R$9,90
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              <span>⚡</span> Acesso imediato
             </span>
           </div>
         </div>
@@ -745,7 +825,8 @@ const PiseBemLanding: React.FC = () => {
             {[
               { text: 'Termos de Uso', onClick: () => showModal('terms') },
               { text: 'Política de Privacidade', onClick: () => showModal('privacy') },
-              { text: 'Suporte', href: 'mailto:suporte@pisebem.com' }
+              { text: 'Suporte', href: 'mailto:suporte@pisebem.com' },
+              { text: 'Contato', href: 'https://wa.me/5511999999999' }
             ].map((link, index) => (
               <a
                 key={index}
@@ -762,10 +843,13 @@ const PiseBemLanding: React.FC = () => {
           </p>
           <div className="text-center text-gray-600 text-xs leading-relaxed space-y-4 max-w-4xl mx-auto">
             <p>
-              <strong>Aviso Legal:</strong> Os resultados podem variar individualmente. O Pise Bem é um programa de exercícios para alívio da fascite plantar, desenvolvido por especialistas. Consulte um médico antes de iniciar qualquer programa de exercícios. O sucesso depende de fatores individuais.
+              <strong>Aviso Legal:</strong> Os resultados podem variar individualmente. O Pise Bem é um programa de exercícios para alívio da fascite plantar, desenvolvido com base em conhecimento especializado. Este produto não substitui acompanhamento médico. Consulte um profissional de saúde antes de iniciar qualquer programa de exercícios. O sucesso do programa depende da dedicação individual e fatores específicos de cada caso.
             </p>
             <p>
-              <strong>Garantia:</strong> 7 dias de acesso completo com garantia de reembolso. Cancele antes do término para receber reembolso total. Pagamento único de R$9,90, sem taxas adicionais.
+              <strong>Garantia:</strong> Oferecemos 7 dias de acesso completo com garantia incondicional de reembolso. Se não ficar satisfeito, solicite reembolso total dentro do prazo. Pagamento único de R$9,90, sem mensalidades ou taxas adicionais.
+            </p>
+            <p>
+              <strong>Suporte:</strong> Nossa equipe está disponível para esclarecer dúvidas e oferecer suporte técnico. Entre em contato através dos canais oficiais listados acima.
             </p>
           </div>
         </div>
@@ -809,23 +893,27 @@ const PiseBemLanding: React.FC = () => {
             <div className="p-6 text-gray-300 leading-relaxed space-y-6">
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">1. Aceitação dos Termos</h3>
-                <p>Ao adquirir o Pise Bem, você concorda com estes Termos de Uso. Se não concordar, não utilize nossos serviços.</p>
+                <p>Ao adquirir o Pise Bem, você concorda com estes Termos de Uso. Se não concordar com algum termo, não utilize nossos serviços.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">2. Descrição do Serviço</h3>
-                <p>O Pise Bem é um programa de exercícios para alívio da fascite plantar, baseado em métodos naturais e sem medicamentos.</p>
+                <p>O Pise Bem é um programa educacional de exercícios para alívio da fascite plantar, baseado em métodos naturais. Não constitui aconselhamento médico e não substitui consulta com profissionais de saúde.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">3. Garantia de 7 Dias</h3>
-                <p>Oferecemos 7 dias de acesso completo com garantia de reembolso. Cancele a qualquer momento durante esse período.</p>
+                <p>Oferecemos 7 dias de acesso completo com garantia de reembolso. Para solicitar, entre em contato através dos canais oficiais dentro do prazo estabelecido.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">4. Uso Apropriado</h3>
-                <p>Você concorda em usar o programa de forma responsável. Consulte um médico antes de iniciar os exercícios.</p>
+                <p>Você concorda em usar o programa de forma responsável. Recomendamos fortemente consultar um médico antes de iniciar qualquer programa de exercícios, especialmente se tiver condições de saúde preexistentes.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">5. Limitação de Responsabilidade</h3>
-                <p>O Pise Bem não se responsabiliza por resultados específicos. O sucesso depende de fatores individuais.</p>
+                <p>O Pise Bem não garante resultados específicos. Os resultados podem variar entre indivíduos. Não nos responsabilizamos por lesões decorrentes do uso inadequado dos exercícios.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">6. Propriedade Intelectual</h3>
+                <p>Todo o conteúdo do programa é protegido por direitos autorais. É proibida a reprodução, distribuição ou uso comercial sem autorização expressa.</p>
               </div>
             </div>
           </div>
@@ -843,24 +931,28 @@ const PiseBemLanding: React.FC = () => {
             <div className="p-6 text-gray-300 leading-relaxed space-y-6">
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">1. Coleta de Dados</h3>
-                <p>Coletamos apenas dados necessários para processar sua compra e fornecer suporte, como nome e e-mail.</p>
+                <p>Coletamos apenas dados necessários para processar sua compra e fornecer suporte adequado, como nome, e-mail e informações de pagamento. Não coletamos dados sensíveis desnecessários.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">2. Uso dos Dados</h3>
-                <p>Os dados são usados para gerenciar sua conta e melhorar nossos serviços. Não compartilhamos seus dados com terceiros.</p>
+                <p>Os dados são utilizados exclusivamente para gerenciar sua conta, processar pagamentos, fornecer suporte e melhorar nossos serviços. Não compartilhamos, vendemos ou alugamos seus dados para terceiros.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">3. Segurança</h3>
-                <p>Utilizamos criptografia e medidas de segurança robustas para proteger seus dados.</p>
+                <p>Utilizamos criptografia SSL e medidas de segurança robustas para proteger seus dados pessoais e financeiros contra acesso não autorizado.</p>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white mb-2">4. Seus Direitos</h3>
-                <p>Você pode acessar, corrigir ou solicitar a exclusão de seus dados a qualquer momento.</p>
+                <h3 className="text-lg font-bold text-white mb-2">4. Seus Direitos (LGPD)</h3>
+                <p>Conforme a Lei Geral de Proteção de Dados, você pode acessar, corrigir, atualizar ou solicitar a exclusão de seus dados a qualquer momento através dos nossos canais de contato.</p>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white mb-2">5. Contato</h3>
+                <h3 className="text-lg font-bold text-white mb-2">5. Cookies</h3>
+                <p>Utilizamos cookies essenciais para o funcionamento do site e analytics para melhorar sua experiência. Você pode gerenciar cookies através das configurações do seu navegador.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white mb-2">6. Contato</h3>
                 <p>
-                  Para dúvidas, entre em contato via{' '}
+                  Para dúvidas sobre privacidade ou exercer seus direitos, entre em contato via{' '}
                   <a href="mailto:suporte@pisebem.com" className="text-emerald-400 hover:underline">
                     suporte@pisebem.com
                   </a>
