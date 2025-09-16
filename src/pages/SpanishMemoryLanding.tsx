@@ -363,8 +363,7 @@ const PiseBemLanding: React.FC = () => {
               </ul>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
       {/* Visual Proof Section */}
       <section className="py-16 md:py-24 px-4 bg-black/50">
         <div className="max-w-7xl mx-auto">
@@ -377,7 +376,7 @@ const PiseBemLanding: React.FC = () => {
               <p className="text-gray-300 mb-6 leading-relaxed">Os 10 exercícios do Pise Bem foram cuidadosamente desenvolvidos por profissionais para aliviar a dor e fortalecer seus pés. Veja como é simples:</p>
               <img
                 src="/images/exercise-demo.jpg"
-                alt="Ilustração de exercícios para fascite plantar"
+                alt="Ilustração de uma pessoa realizando exercícios simples para fascite plantar, como alongamento do arco do pé, em um ambiente doméstico"
                 className="w-full h-auto rounded-2xl shadow-lg mb-6"
               />
               <p className="text-gray-300 text-sm italic">*Imagem ilustrativa: exercícios simples para alívio da fascite plantar.</p>
@@ -385,18 +384,55 @@ const PiseBemLanding: React.FC = () => {
             <div className="bg-gradient-to-b from-gray-800/40 to-gray-900/40 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
               <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-4">Redução da Dor: Antes e Depois</h3>
               <p className="text-gray-300 mb-6 leading-relaxed">Nossos usuários relatam uma redução significativa da dor em apenas 7 dias. Veja o progresso que você pode esperar:</p>
-              <img
-                src="/images/pain-reduction-chart.jpg"
-                alt="Gráfico de redução de dor antes e depois"
-                className="w-full h-auto rounded-2xl shadow-lg mb-6"
-              />
-              <p className="text-gray-300 text-sm italic">*Gráfico ilustrativo: redução média da dor relatada por usuários.</p>
+              ```chartjs
+              {
+                "type": "bar",
+                "data": {
+                  "labels": ["Antes", "Depois de 7 Dias"],
+                  "datasets": [{
+                    "label": "Nível de Dor",
+                    "data": [8, 2],
+                    "backgroundColor": ["#EF4444", "#10B981"],
+                    "borderColor": ["#B91C1C", "#047857"],
+                    "borderWidth": 1
+                  }]
+                },
+                "options": {
+                  "scales": {
+                    "y": {
+                      "beginAtZero": true,
+                      "max": 10,
+                      "title": {
+                        "display": true,
+                        "text": "Nível de Dor (0-10)"
+                      }
+                    },
+                    "x": {
+                      "title": {
+                        "display": true,
+                        "text": "Período"
+                      }
+                    }
+                  },
+                  "plugins": {
+                    "legend": {
+                      "display": false
+                    },
+                    "title": {
+                      "display": true,
+                      "text": "Redução Média da Dor"
+                    }
+                  }
+                }
+              }
+              ```
+              <p className="text-gray-300 text-sm italic mt-4">*Gráfico ilustrativo: redução média da dor relatada por usuários.</p>
             </div>
           </div>
           <div className="mt-12 text-center">
             <img
               src="/images/specialist.jpg"
-              alt="Profissional em jaleco demonstrando confiança"
+              alt="Profissional em jaleco branco em um ambiente profissional, demonstrando confiança e expertise em saúde podal"
               className="w-32 h-32 md:w-48 md:h-48 mx-auto rounded-full shadow-lg mb-4"
             />
             <p className="text-gray-300 text-sm italic">Desenvolvido por especialistas em saúde podal para resultados reais.</p>
