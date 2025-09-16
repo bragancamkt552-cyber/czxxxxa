@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../index.css';
+
 interface PurchaseNotification {
   id: number;
   name: string;
@@ -7,31 +8,35 @@ interface PurchaseNotification {
   plan: string;
   show: boolean;
 }
-const SpanishMemoryLanding: React.FC = () => {
+
+const PiseBemLanding: React.FC = () => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [modal, setModal] = useState<string | null>(null);
   const [spots, setSpots] = useState(37);
   const [showOffer, setShowOffer] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<PurchaseNotification[]>([]);
+
   const purchaseData = [
-    { name: 'Rafael C.', city: 'São Paulo', plan: 'Pro' },
-    { name: 'Lucas M.', city: 'Rio de Janeiro', plan: 'Premium' },
-    { name: 'Pedro S.', city: 'Curitiba', plan: 'Pro' },
-    { name: 'André F.', city: 'Porto Alegre', plan: 'Básico' },
-    { name: 'Gabriel B.', city: 'Brasília', plan: 'Pro' },
-    { name: 'Thiago H.', city: 'Belo Horizonte', plan: 'Premium' },
-    { name: 'João P.', city: 'Salvador', plan: 'Pro' },
-    { name: 'Carlos R.', city: 'Fortaleza', plan: 'Básico' },
-    { name: 'Bruno L.', city: 'Recife', plan: 'Pro' },
-    { name: 'Diego M.', city: 'Florianópolis', plan: 'Premium' },
+    { name: 'Maria S.', city: 'São Paulo', plan: 'Vitalício' },
+    { name: 'Ana P.', city: 'Rio de Janeiro', plan: 'Vitalício' },
+    { name: 'João R.', city: 'Curitiba', plan: 'Vitalício' },
+    { name: 'Carlos F.', city: 'Porto Alegre', plan: 'Vitalício' },
+    { name: 'Paula B.', city: 'Brasília', plan: 'Vitalício' },
+    { name: 'Roberto H.', city: 'Belo Horizonte', plan: 'Vitalício' },
+    { name: 'Fernanda L.', city: 'Salvador', plan: 'Vitalício' },
+    { name: 'Miguel C.', city: 'Fortaleza', plan: 'Vitalício' },
+    { name: 'Sofia M.', city: 'Recife', plan: 'Vitalício' },
+    { name: 'Lucas D.', city: 'Florianópolis', plan: 'Vitalício' },
   ];
+
   useEffect(() => {
     const interval = setInterval(() => {
       setSpots((prev) => (prev > 15 ? prev - 1 : prev));
-    }, 10000); // Diminui a cada 10 segundos
+    }, 10000);
     return () => clearInterval(interval);
   }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -56,12 +61,14 @@ const SpanishMemoryLanding: React.FC = () => {
       }
     };
   }, [showNotifications]);
+
   useEffect(() => {
-    if (!document.querySelector('[src*="68c78e25d64e18967f766572"]')) {
+    if (!document.querySelector('[src*="68c9c1e44a41dc9133548d30"]')) {
       const script = document.createElement('script');
-      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68c78e25d64e18967f766572/v4/player.js';
+      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68c9c1e44a41dc9133548d30/v4/player.js';
       script.async = true;
       document.head.appendChild(script);
+
       const pixelScript1 = document.createElement('script');
       pixelScript1.innerHTML = `
         !function(f,b,e,v,n,t,s)
@@ -76,6 +83,7 @@ const SpanishMemoryLanding: React.FC = () => {
         fbq('track', 'PageView');
       `;
       document.head.appendChild(pixelScript1);
+
       const pixelScript2 = document.createElement('script');
       pixelScript2.innerHTML = `
         !function(f,b,e,v,n,t,s)
@@ -90,10 +98,12 @@ const SpanishMemoryLanding: React.FC = () => {
         fbq('track', 'PageView');
       `;
       document.head.appendChild(pixelScript2);
+
       const gtagScript = document.createElement('script');
       gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=AW-11028750083';
       gtagScript.async = true;
       document.head.appendChild(gtagScript);
+
       const gtagConfig = document.createElement('script');
       gtagConfig.innerHTML = `
         window.dataLayer = window.dataLayer || [];
@@ -102,6 +112,7 @@ const SpanishMemoryLanding: React.FC = () => {
         gtag('config', 'AW-11028750083');
       `;
       document.head.appendChild(gtagConfig);
+
       const tiktokScript = document.createElement('script');
       tiktokScript.innerHTML = `
         !function (w, d, t) {
@@ -117,6 +128,7 @@ const SpanishMemoryLanding: React.FC = () => {
         }(window, document, 'ttq');
       `;
       document.head.appendChild(tiktokScript);
+
       return () => {
         document.head.removeChild(script);
         document.head.removeChild(pixelScript1);
@@ -127,6 +139,7 @@ const SpanishMemoryLanding: React.FC = () => {
       };
     }
   }, []);
+
   const startNotifications = () => {
     const showNotification = () => {
       const randomPurchase = purchaseData[Math.floor(Math.random() * purchaseData.length)];
@@ -157,19 +170,26 @@ const SpanishMemoryLanding: React.FC = () => {
       clearInterval(intervalId);
     }, 300000);
   };
+
   const toggleFaq = (index: number) => {
     setActiveFaq(activeFaq === index ? null : index);
   };
+
   const showModal = (type: string) => {
     setModal(type);
   };
+
   const closeModal = () => {
     setModal(null);
   };
+
   return (
     <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
-      <title>mandaessa.ai</title>
-      <meta name="description" content="MandaEssa.ai - A Inteligência Artificial que analisa suas conversas e te diz exatamente o que responder para despertar interesse e marcar encontros reais." />
+      <title>Pise Bem</title>
+      <meta
+        name="description"
+        content="Pise Bem - A solução natural para aliviar a dor da fascite plantar em 7 dias com 10 exercícios comprovados, sem medicamentos ou efeitos colaterais."
+      />
       <noscript>
         <img
           height="1"
@@ -188,12 +208,12 @@ const SpanishMemoryLanding: React.FC = () => {
       <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black z-[-1]">
         <div className="absolute w-full h-full bg-[radial-gradient(circle_at_30%_40%,rgba(0,255,136,0.08)_0%,transparent_60%),radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.06)_0%,transparent_60%)] animate-pulse" />
       </div>
-      {/* Urgency Bar (mostra apenas na seção de preços) */}
+      {/* Urgency Bar */}
       {showOffer && (
         <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-red-600 to-red-500 text-white text-center font-bold py-3 px-4 z-50 shadow-lg animate-[slideDown_0.5s_ease-out]">
           <div className="flex items-center justify-center gap-2 text-sm md:text-base">
             <span className="animate-pulse">⚡</span>
-            <span>OFERTA LIMITADA: 50% OFF • Restam apenas <span className="bg-white text-red-600 px-2 py-1 rounded-full font-black">{spots}</span> vagas</span>
+            <span>OFERTA LIMITADA: R$9,90 VITALÍCIO • Restam apenas <span className="bg-white text-red-600 px-2 py-1 rounded-full font-black">{spots}</span> vagas</span>
             <span className="animate-pulse">⚡</span>
           </div>
         </div>
@@ -203,31 +223,30 @@ const SpanishMemoryLanding: React.FC = () => {
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full font-semibold text-black mb-6 md:mb-8 text-sm md:text-base shadow-lg">
             <span className="animate-bounce">🔥</span>
-            NOVA TECNOLOGIA IA 2025
+            SOLUÇÃO NATURAL 2025
           </div>
           <h1 className="text-[clamp(28px,6vw,64px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent overflow-visible whitespace-normal">
-            Não sabe o que falar pra conquistá-la? A ia fala por você...
+            Livre da Dor da Fascite Plantar em 7 Dias
           </h1>
           <p className="text-[clamp(16px,2.5vw,20px)] text-[#B0B0B0] mb-10 max-w-[600px] mx-auto">
-            A <span className="text-[#00FF88] font-bold">Inteligência Artificial</span> que analisa suas conversas e te diz{' '}
-            <span className="text-[#00FF88] font-bold">exatamente</span> o que responder para despertar interesse e marcar encontros reais
+            Diga adeus aos analgésicos! Trate sua fascite plantar de forma <span className="text-[#00FF88] font-bold">natural</span> com nosso plano de 10 exercícios comprovados, sem efeitos colaterais.
           </p>
           <div className="mb-8 md:mb-12 flex justify-center">
             <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
               <vturb-smartplayer
-                id="vid-68c78e25d64e18967f766572"
+                id="vid-68c9c1e44a41dc9133548d30"
                 style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px' }}
               ></vturb-smartplayer>
               <script type="text/javascript">
-                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68c78e25d64e18967f766572/v4/player.js", s.async=!0,document.head.appendChild(s);`}
+                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68c9c1e44a41dc9133548d30/v4/player.js", s.async=!0,document.head.appendChild(s);`}
               </script>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12 max-w-2xl mx-auto">
             {[
-              { number: '94%', label: 'Taxa de Resposta' },
-              { number: '5.2x', label: 'Mais Encontros' },
-              { number: '3.124', label: 'Usuários Ativos' }
+              { number: '95%', label: 'Taxa de Sucesso' },
+              { number: '7 Dias', label: 'Alívio Rápido' },
+              { number: '4.8⭐', label: 'Avaliação Média' }
             ].map((stat, index) => (
               <div key={index} className="text-center p-4 bg-gray-800/50 rounded-xl backdrop-blur-sm border border-gray-700">
                 <div className="text-2xl md:text-4xl font-black text-emerald-400 mb-1">{stat.number}</div>
@@ -240,7 +259,7 @@ const SpanishMemoryLanding: React.FC = () => {
               href="#pricing"
               className="inline-flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-lg md:text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300 group w-full max-w-md"
             >
-              <span>QUERO RESULTADOS AGORA</span>
+              <span>QUERO ALÍVIO AGORA</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
             <p className="text-sm text-gray-400 flex items-center justify-center gap-2 flex-wrap">
@@ -256,36 +275,36 @@ const SpanishMemoryLanding: React.FC = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-5xl font-black mb-4">
-              <span className="text-green-400">Simples e Rápido</span>
+              <span className="text-green-400">Simples e Eficaz</span>
             </h2>
             <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-              Sem apps complicados. Tudo funciona diretamente
+              Alivie a dor da fascite plantar com nosso plano de 10 exercícios em apenas 7 dias
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               {
-                icon: '📱',
-                title: '1. Adicione',
-                desc: 'Adicione seu plano e comece a usar',
+                icon: '📋',
+                title: '1. Adquira o Plano',
+                desc: 'Compre o Pise Bem e receba acesso imediato',
                 color: 'from-blue-400 to-blue-500'
               },
               {
-                icon: '📸',
-                title: '2. Envie o Print',
-                desc: 'Tire print da conversa e envie para análise da IA',
+                icon: '🏋️',
+                title: '2. Siga os Exercícios',
+                desc: 'Realize os 10 exercícios diários em casa',
                 color: 'from-purple-400 to-purple-500'
               },
               {
-                icon: '⚡',
-                title: '3. IA Analisa (30s)',
-                desc: 'Receba 3 opções de resposta personalizadas',
+                icon: '⏱️',
+                title: '3. 7 Dias de Ação',
+                desc: 'Siga o plano por 7 dias para alívio rápido',
                 color: 'from-yellow-400 to-orange-400'
               },
               {
-                icon: '🔥',
-                title: '4. Copie e Conquiste',
-                desc: 'Escolha a melhor resposta e veja os resultados',
+                icon: '🚶',
+                title: '4. Caminhe Sem Dor',
+                desc: 'Volte a caminhar com conforto e liberdade',
                 color: 'from-red-400 to-pink-400'
               },
             ].map((step, index) => (
@@ -300,160 +319,106 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
           <div className="mt-12 md:mt-16 text-center p-6 md:p-8 bg-gradient-to-r from-green-900/30 to-green-800/30 rounded-3xl border-2 border-green-400 backdrop-blur-sm">
             <div className="text-2xl md:text-3xl font-bold text-green-400 mb-4 flex items-center justify-center gap-2">
-              <span className="animate-bounce">💬</span>
+              <span className="animate-bounce">💪</span>
               Zero Complicação!
             </div>
             <p className="text-gray-300 mb-6 md:mb-8 text-lg">
-              Sem downloads, sem logins. É só começar a conquistar!
+              Sem equipamentos caros ou consultas. Comece hoje mesmo!
             </p>
             <a
               href="#pricing"
               className="inline-flex items-center gap-3 px-8 md:px-12 py-4 bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-lg rounded-full shadow-2xl hover:-translate-y-1 transition-all"
             >
               <span>🚀</span>
-              ATIVAR AGORA
+              COMPRE AGORA
             </a>
           </div>
         </div>
       </section>
-      {/* Demo Section */}
+      {/* Problem and Solution */}
       <section className="py-16 md:py-24 px-4 bg-gray-900/50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
-            Veja a Transformação na Prática
+            Acabe com a Dor da Fascite Plantar
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              {
-                step: '😰',
-                title: 'ANTES: Conversa Travada',
-                messages: [
-                  { type: 'other', text: 'Oi! Vi que você também curte trilhas 😊' },
-                  { type: 'user', text: 'Oi! Sim, adoro! E você...' },
-                  { type: 'other', text: 'Fiz a trilha da Pedra Bonita semana passada! 🏔️' },
-                  { type: 'center', text: '🤔 "E agora? O que responder?"', className: 'text-gray-400 italic' },
-                ],
-                bgColor: 'from-red-900/20 to-red-800/20',
-                borderColor: 'border-red-500/30'
-              },
-              {
-                step: '🤖',
-                title: 'NOSSA IA ANALISANDO',
-                messages: [
-                  {
-                    type: 'ai',
-                    html: '<div class="bg-emerald-500/20 p-4 rounded-lg border border-emerald-400/30"><strong class="text-emerald-400">💡 IA Detectou:</strong><br/>• Interesse genuíno dela<br/>• Oportunidade de conexão<br/>• Momento ideal para criar mistério</div>',
-                  },
-                  {
-                    type: 'ai',
-                    html: '<div class="bg-blue-500/20 p-4 rounded-lg border border-blue-400/30"><strong class="text-blue-400">✨ Resposta Sugerida:</strong><br/>"Pedra Bonita é incrível! Você foi no nascer ou pôr do sol? Tenho uma teoria sobre qual momento é melhor... 😏"</div>',
-                  },
-                ],
-                bgColor: 'from-emerald-900/20 to-blue-900/20',
-                borderColor: 'border-emerald-500/50'
-              },
-              {
-                step: '🔥',
-                title: 'DEPOIS: Resultado Imediato',
-                messages: [
-                  {
-                    type: 'user',
-                    text: 'Pedra Bonita é incrível! Você foi no nascer ou pôr do sun? Tenho uma teoria sobre qual momento é melhor... 😏',
-                  },
-                  { type: 'other', text: 'Hahaha agora fiquei curiosa! Fui no pôr do sol... qual é sua teoria? 👀' },
-                  { type: 'other', text: 'Você parece conhecer os melhores lugares...' },
-                  { type: 'center', text: '✅ Conversa fluindo perfeitamente!', className: 'text-emerald-400 font-bold' },
-                ],
-                bgColor: 'from-emerald-900/20 to-green-800/20',
-                borderColor: 'border-emerald-500/50'
-              },
-            ].map((demo, index) => (
-              <div
-                key={index}
-                className={`bg-gradient-to-b ${demo.bgColor} p-6 md:p-8 rounded-3xl border-2 ${demo.borderColor} backdrop-blur-sm hover:-translate-y-2 transition-all duration-300 shadow-2xl`}
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="text-3xl">{demo.step}</span>
-                  <h3 className="text-lg md:text-xl font-bold">{demo.title}</h3>
-                </div>
-                <div className="bg-black/40 rounded-2xl p-4 md:p-6 min-h-[280px] space-y-3">
-                  {demo.messages.map((msg, i) => (
-                    <div key={i} className={`${msg.type === 'user' ? 'text-right' : msg.type === 'center' ? 'text-center' : ''}`}>
-                      {msg.html ? (
-                        <div dangerouslySetInnerHTML={{ __html: msg.html }} />
-                      ) : (
-                        <div className={`inline-block px-4 py-3 rounded-2xl max-w-[85%] text-sm md:text-base ${
-                          msg.type === 'user'
-                            ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-semibold'
-                            : msg.type === 'other'
-                            ? 'bg-gray-700/80 text-white'
-                            : msg.className || ''
-                        }`}>
-                          {msg.text}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            <div className="bg-gradient-to-b from-red-900/20 to-red-800/20 p-6 md:p-8 rounded-3xl border-2 border-red-500/30 backdrop-blur-sm">
+              <h3 className="text-xl md:text-2xl font-bold text-red-400 mb-6">O Problema</h3>
+              <p className="text-gray-300 mb-4">Você sente:</p>
+              <ul className="space-y-3 text-gray-300">
+                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Dor intensa no calcanhar ao acordar</li>
+                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Dificuldade para caminhar ou praticar esportes</li>
+                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Dependência de analgésicos com efeitos colaterais</li>
+                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Frustração com tratamentos que não funcionam</li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-b from-emerald-900/20 to-green-800/20 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
+              <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-6">A Solução</h3>
+              <p className="text-gray-300 mb-4">Com o Pise Bem, você terá:</p>
+              <ul className="space-y-3 text-gray-300">
+                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Alívio natural em 7 dias</li>
+                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> 10 exercícios simples e eficazes</li>
+                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Sem medicamentos ou efeitos colaterais</li>
+                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Liberdade para caminhar sem dor</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
-      {/* Features Section */}
+      {/* Benefits Section */}
       <section className="py-16 md:py-24 px-4 bg-black/50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
-            Recursos Que Garantem Resultados
+            Por Que Escolher o Pise Bem?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[
               {
-                icon: '🎯',
-                title: 'Análise de Perfil IA',
-                desc: 'Analisa a bio dela e cria a primeira mensagem perfeita baseada em interesses mútuos',
-                gradient: 'from-purple-500 to-pink-500'
-              },
-              {
-                icon: '💬',
-                title: 'Ressuscita Conversas',
-                desc: 'Transforma matches mortos em conversas ativas com mensagens irresistíveis',
-                gradient: 'from-blue-500 to-cyan-500'
-              },
-              {
-                icon: '🔥',
-                title: 'Escalada Inteligente',
-                desc: 'Aumenta a tensão romântica naturalmente, sem soar desesperado ou invasivo',
-                gradient: 'from-orange-500 to-red-500'
-              },
-              {
-                icon: '📊',
-                title: 'Detector de Interesse',
-                desc: 'Identifica se ela está realmente interessada ou apenas sendo educada',
+                icon: '🌿',
+                title: 'Solução 100% Natural',
+                desc: 'Trate sua fascite plantar sem analgésicos ou procedimentos invasivos',
                 gradient: 'from-green-500 to-emerald-500'
               },
               {
-                icon: '⏰',
-                title: 'Timing Perfeito',
-                desc: 'Te avisa o momento exato para pedir o número ou chamar para sair',
+                icon: '⏱️',
+                title: 'Resultados em 7 Dias',
+                desc: 'Sinta alívio rápido com nosso plano de exercícios comprovado',
+                gradient: 'from-blue-500 to-cyan-500'
+              },
+              {
+                icon: '🏠',
+                title: 'Fácil de Fazer em Casa',
+                desc: 'Exercícios simples que não requerem equipamentos caros',
+                gradient: 'from-purple-500 to-pink-500'
+              },
+              {
+                icon: '💪',
+                title: 'Fortalecimento Duradouro',
+                desc: 'Previna a dor futura com fortalecimento do pé e tornozelo',
+                gradient: 'from-orange-500 to-red-500'
+              },
+              {
+                icon: '🔒',
+                title: 'Seguro e Comprovado',
+                desc: 'Método desenvolvido por especialistas em saúde podal',
                 gradient: 'from-yellow-500 to-orange-500'
               },
               {
-                icon: '🎭',
-                title: 'Personalidade Única',
-                desc: 'Mantém seu estilo autêntico enquanto otimiza para máximos resultados',
+                icon: '💸',
+                title: 'Acessível e Vitalício',
+                desc: 'Apenas R$9,90 para acesso ilimitado ao programa',
                 gradient: 'from-indigo-500 to-purple-500'
               },
-            ].map((feature, index) => (
+            ].map((benefit, index) => (
               <div
                 key={index}
                 className="bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border border-gray-700 hover:border-emerald-500/50 hover:-translate-y-2 transition-all duration-300 group"
               >
-                <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r ${feature.gradient} rounded-2xl text-2xl mb-4 group-hover:scale-110 transition-transform`}>
-                  {feature.icon}
+                <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r ${benefit.gradient} rounded-2xl text-2xl mb-4 group-hover:scale-110 transition-transform`}>
+                  {benefit.icon}
                 </div>
-                <h3 className="text-xl font-bold text-emerald-400 mb-3">{feature.title}</h3>
-                <p className="text-gray-400 leading-relaxed">{feature.desc}</p>
+                <h3 className="text-xl font-bold text-emerald-400 mb-3">{benefit.title}</h3>
+                <p className="text-gray-400 leading-relaxed">{benefit.desc}</p>
               </div>
             ))}
           </div>
@@ -463,50 +428,29 @@ const SpanishMemoryLanding: React.FC = () => {
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black/50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
-            Resultados Comprovados
+            Depoimentos Reais
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[
               {
-                text: 'As sugestões da IA são incríveis! Minhas conversas fluem naturalmente agora e tenho muito mais encontros marcados.',
-                author: 'Rafael C.',
-                location: 'São Paulo • 28 anos',
-                initials: 'RC',
+                text: 'Depois de meses sofrendo com fascite, o Pise Bem me salvou! Em 5 dias a dor diminuiu muito.',
+                author: 'Ana C.',
+                location: 'São Paulo • 35 anos',
+                initials: 'AC',
                 rating: 5
               },
               {
-                text: 'Sou introvertido e sempre travava. Com a IA, consigo me expressar melhor e as garotas respondem muito mais.',
-                author: 'Lucas M.',
-                location: 'Rio de Janeiro • 24 anos',
-                initials: 'LM',
+                text: 'Eu achava que precisaria de cirurgia, mas esses exercícios mudaram tudo. Caminho sem dor agora!',
+                author: 'Roberto M.',
+                location: 'Rio de Janeiro • 42 anos',
+                initials: 'RM',
                 rating: 5
               },
               {
-                text: 'O detector de interesse mudou minha vida! Paro de perder tempo e foco nas que realmente querem me conhecer.',
-                author: 'Thiago H.',
-                location: 'Belo Horizonte • 31 anos',
-                initials: 'TH',
-                rating: 5
-              },
-              {
-                text: 'Tinha matches parados há meses. A IA me ajudou a reativar várias conversas e já saí com 3 delas!',
-                author: 'Pedro S.',
-                location: 'Curitiba • 26 anos',
-                initials: 'PS',
-                rating: 5
-              },
-              {
-                text: 'Estava cético, mas funciona mesmo. A IA entende o contexto e sugere respostas que fazem total sentido.',
-                author: 'André F.',
-                location: 'Porto Alegre • 29 anos',
-                initials: 'AF',
-                rating: 5
-              },
-              {
-                text: 'É como ter um wingman expert 24/7. As dicas são práticas e me ajudam a manter conversas interessantes.',
-                author: 'Gabriel B.',
-                location: 'Brasília • 27 anos',
-                initials: 'GB',
+                text: 'Fácil de seguir e realmente funciona. Não preciso mais de analgésicos!',
+                author: 'Fernanda S.',
+                location: 'Belo Horizonte • 29 anos',
+                initials: 'FS',
                 rating: 5
               },
             ].map((testimonial, index) => (
@@ -536,71 +480,7 @@ const SpanishMemoryLanding: React.FC = () => {
           </div>
         </div>
       </section>
-      {/* Comparison */}
-      <section className="py-16 md:py-24 px-4 bg-black/80">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
-            Por Que Somos Diferentes
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              {
-                title: '❌ Outros Métodos',
-                items: [
-                  'Teoria genérica que não funciona',
-                  'Demora semanas para ver resultado',
-                  'Custa R$2000+ em média',
-                  'Te deixa na dúvida na hora H',
-                  'Métodos ultrapassados'
-                ],
-                bgColor: 'from-red-900/30 to-red-800/20',
-                borderColor: 'border-red-500/30'
-              },
-              {
-                title: '✅ MandaEssa.ai',
-                items: [
-                  'IA analisa SUA conversa específica',
-                  'Resposta em 30 segundos',
-                  'A partir de R$39,90/mês',
-                  'Sugestões em tempo real',
-                  'Tecnologia de ponta'
-                ],
-                bgColor: 'from-emerald-900/30 to-emerald-800/20',
-                borderColor: 'border-emerald-500',
-                highlight: true
-              },
-              {
-                title: '❌ Templates Prontos',
-                items: [
-                  'Todo mundo usa os mesmos',
-                  'Não se adapta ao contexto',
-                  'Parece robótico e fake',
-                  'Elas percebem que é copy/paste',
-                  'Zero personalização'
-                ],
-                bgColor: 'from-red-900/30 to-red-800/20',
-                borderColor: 'border-red-500/30'
-              }
-            ].map((comp, index) => (
-              <div
-                key={index}
-                className={`bg-gradient-to-b ${comp.bgColor} p-6 md:p-8 rounded-3xl border-2 ${comp.borderColor} backdrop-blur-sm ${comp.highlight ? 'scale-105 shadow-2xl shadow-emerald-500/20' : ''}`}
-              >
-                <h3 className="text-xl md:text-2xl font-bold mb-6 text-center">{comp.title}</h3>
-                <ul className="space-y-3">
-                  {comp.items.map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-gray-300">
-                      <span className="text-lg flex-shrink-0">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* Free Trial Section */}
+      {/* Guarantee Section */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-emerald-900/30 via-blue-900/20 to-purple-900/20">
         <div className="max-w-4xl mx-auto text-center">
           <div className="bg-gray-800/60 backdrop-blur-sm p-8 md:p-12 rounded-3xl border-2 border-emerald-500 shadow-2xl shadow-emerald-500/20">
@@ -609,11 +489,10 @@ const SpanishMemoryLanding: React.FC = () => {
               7 Dias de Garantia
             </h2>
             <p className="text-xl md:text-2xl font-bold mb-4">
-              Experimente TUDO com garantia de reembolso
+              Experimente o Pise Bem sem risco
             </p>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-              Use nossa IA por 7 dias completos e veja os resultados. Se não melhorar suas conversas e conseguir mais encontros,
-              você recebe 100% do seu dinheiro de volta.
+              Use nosso programa por 7 dias completos. Se não sentir alívio, receba 100% do seu dinheiro de volta.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-8 mb-8">
               {[
@@ -628,21 +507,12 @@ const SpanishMemoryLanding: React.FC = () => {
                 </div>
               ))}
             </div>
-            <div className="bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-6 mb-8">
-              <h3 className="text-xl font-bold text-emerald-400 mb-4">Como funciona a garantia de 7 dias:</h3>
-              <div className="text-left space-y-2 max-w-2xl mx-auto">
-                <p className="text-gray-300">✅ Ative sua conta e use por 7 dias completos</p>
-                <p className="text-gray-300">✅ Teste TODOS os recursos premium</p>
-                <p className="text-gray-300">✅ Não gostou? Cancele e receba reembolso total</p>
-                <p className="text-gray-300">✅ Gostou? Continue com desconto especial</p>
-              </div>
-            </div>
             <a
-              href="https://pay.cakto.com.br/jvpeebs"
+              href="https://pay.cakto.com.br/pisebem"
               className="inline-flex items-center gap-3 px-10 md:px-14 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
             >
               <span>🚀</span>
-              COMEÇAR AGORA
+              COMPRE AGORA
             </a>
           </div>
         </div>
@@ -651,113 +521,45 @@ const SpanishMemoryLanding: React.FC = () => {
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black" id="pricing">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
-            Escolha Seu Plano
+            Adquira o Pise Bem Hoje
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12">
-            {[
-              {
-                name: 'Básico',
-                price: 'R$ 39,90',
-                period: '/mês',
-                features: [
-                  '20 análises por mês',
-                  'Sugestões básicas de resposta',
-                  'Detector de interesse',
-                  'Suporte via e-mail',
-                  'Atualizações mensais'
-                ],
-                link: 'https://pay.cakto.com.br/9f4xh7a_569564',
-                button: 'COMEÇAR COM GARANTIA',
-                popular: false
-              },
-              {
-                name: 'Pro',
-                price: 'R$ 97',
-                period: '/mês',
-                features: [
-                  '50 análises por mês',
-                  'Modo Escalada ativado',
-                  'Ressuscitador de matches',
-                  'Análise de perfil avançada',
-                  'Templates exclusivos',
-                  'Suporte prioritário 24/7'
-                ],
-                link: 'https://pay.cakto.com.br/jvpeebs',
-                button: 'COMEÇAR COM GARANTIA PRO',
-                popular: true
-              },
-              {
-                name: 'Premium',
-                price: 'R$ 247',
-                period: '/mês',
-                features: [
-                  'Análises ILIMITADAS',
-                  'Todos os recursos Pro',
-                  'IA personalizada pro seu perfil',
-                  'Modo Expert ativado',
-                  'Consultoria 1-1 mensal',
-                  'Grupo VIP exclusivo'
-                ],
-                link: 'https://pay.cakto.com.br/35vfe7x',
-                button: 'COMEÇAR COM GARANTIA PREMIUM',
-                popular: false
-              }
-            ].map((plan, index) => (
-              <div
-                key={index}
-                className={`relative bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border-2 transition-all duration-300 ${
-                  plan.popular
-                    ? 'border-emerald-500 scale-105 shadow-2xl shadow-emerald-500/20'
-                    : 'border-gray-700 hover:border-emerald-500/50'
-                }`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-black px-4 py-1 rounded-full text-sm font-bold">
-                      MAIS ESCOLHIDO
-                    </span>
-                  </div>
-                )}
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-emerald-400 mb-2">{plan.name}</h3>
-                  <div className="text-4xl md:text-5xl font-black mb-1">
-                    {plan.price}
-                    <span className="text-base text-gray-400 font-normal">{plan.period}</span>
-                  </div>
-                  <p className="text-sm text-emerald-400 font-semibold">7 dias de garantia, depois {plan.price}/mês</p>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="text-emerald-400 font-bold mt-1">✓</span>
-                      <span className="text-gray-300">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href={plan.link}
-                  className={`block w-full text-center px-6 py-4 font-bold text-lg rounded-full transition-all duration-300 ${
-                    plan.popular
-                      ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 text-black hover:shadow-2xl hover:shadow-emerald-400/25'
-                      : 'bg-gradient-to-r from-gray-700 to-gray-600 text-white hover:from-emerald-400 hover:to-emerald-500 hover:text-black'
-                  } hover:-translate-y-1`}
-                >
-                  {plan.button}
-                </a>
-                <p className="text-center text-xs text-gray-500 mt-3">
-                  Cancele a qualquer momento durante a garantia
-                </p>
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-6 md:gap-8 mb-12">
+            <div className="relative bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border-2 border-emerald-500 scale-105 shadow-2xl shadow-emerald-500/20">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <span className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-black px-4 py-1 rounded-full text-sm font-bold">
+                  OFERTA EXCLUSIVA
+                </span>
               </div>
-            ))}
-          </div>
-          <div className="text-center">
-            <div className="bg-emerald-500/10 border-2 border-emerald-400 rounded-2xl p-6 md:p-8 max-w-2xl mx-auto">
-              <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-4">
-                💡 Por que oferecemos 7 dias de garantia?
-              </h3>
-              <p className="text-gray-300 leading-relaxed">
-                Porque temos certeza que nossa IA vai transformar suas conversas.
-                Em 7 dias você vai ver a diferença e não vai querer cancelar!
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-emerald-400 mb-2">Pise Bem Vitalício</h3>
+                <div className="text-4xl md:text-5xl font-black mb-1">
+                  R$9,90
+                  <span className="text-base text-gray-400 font-normal">/vitalício</span>
+                </div>
+                <p className="text-sm text-emerald-400 font-semibold">7 dias de garantia, pagamento único</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {[
+                  '10 exercícios comprovados',
+                  'Plano de 7 dias para alívio rápido',
+                  'Acesso vitalício ao programa',
+                  'Suporte prioritário 24/7',
+                  'Garantia de reembolso de 7 dias'
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="text-emerald-400 font-bold mt-1">✓</span>
+                    <span className="text-gray-300">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="https://pay.cakto.com.br/pisebem"
+                className="block w-full text-center px-6 py-4 font-bold text-lg rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 text-black hover:shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
+              >
+                COMPRE COM GARANTIA
+              </a>
+              <p className="text-center text-xs text-gray-500 mt-3">
+                Pagamento único, sem taxas adicionais
               </p>
             </div>
           </div>
@@ -768,12 +570,12 @@ const SpanishMemoryLanding: React.FC = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 text-center">
             {[
-              { number: '3.124', label: 'Usuários Ativos' },
-              { number: '52.847', label: 'Conversas Salvas' },
-              { number: '94%', label: 'Taxa de Sucesso' },
-              { number: '4.9⭐', label: 'Avaliação Média' },
-              { number: '24/7', label: 'Disponível' },
-              { number: '30s', label: 'Tempo Resposta' }
+              { number: '5.247', label: 'Usuários Satisfeitos' },
+              { number: '95%', label: 'Taxa de Sucesso' },
+              { number: '4.8⭐', label: 'Avaliação Média' },
+              { number: '7 Dias', label: 'Alívio Rápido' },
+              { number: '24/7', label: 'Suporte' },
+              { number: '100%', label: 'Garantia' }
             ].map((stat, index) => (
               <div key={index} className="p-4">
                 <div className="text-3xl md:text-4xl font-black text-emerald-400 mb-2">{stat.number}</div>
@@ -793,39 +595,23 @@ const SpanishMemoryLanding: React.FC = () => {
             {[
               {
                 question: 'Como funciona a garantia de 7 dias?',
-                answer: 'Simples! Você se cadastra, escolhe seu plano e usa TODOS os recursos por 7 dias completos. Se não gostar, cancele antes dos 7 dias e receba reembolso total. Se continuar, o plano será ativado automaticamente com desconto especial.'
+                answer: 'Você adquire o Pise Bem e tem 7 dias para testar o programa. Se não sentir alívio, pode solicitar reembolso total.'
               },
               {
-                question: 'É realmente uma IA ou são pessoas respondendo?',
-                answer: '100% Inteligência Artificial avançada, treinada com milhões de conversas bem-sucedidas. Funciona 24/7 instantaneamente, analisando contexto, tom e timing para criar respostas personalizadas em segundos.'
+                question: 'Preciso de equipamentos para os exercícios?',
+                answer: 'Não! Os 10 exercícios são simples e podem ser feitos em casa, sem necessidade de equipamentos especiais.'
               },
               {
-                question: 'Como funciona o processo completo?',
-                answer: 'Você tira print da conversa no app de namoro, envia para nosso sistema e em menos de 30 segundos recebe várias sugestões de resposta com explicação detalhada do porquê funcionam.'
+                question: 'O programa é seguro para todos?',
+                answer: 'Sim, o Pise Bem foi desenvolvido por especialistas e é seguro para a maioria das pessoas. Consulte um médico se tiver condições específicas.'
               },
               {
-                question: 'Funciona para todas as plataformas?',
-                answer: 'Sim! Nossa IA analisa conversas de qualquer plataforma: Tinder, Bumble, Happn, Instagram, Telegram. Se é conversa com interesse romântico, nossa IA te ajuda a conquistar.'
+                question: 'Quanto tempo leva para ver resultados?',
+                answer: 'A maioria dos usuários sente alívio em 7 dias seguindo o plano de exercícios.'
               },
               {
-                question: 'Vou parecer falso usando as respostas sugeridas?',
-                answer: 'Não! A IA aprende seu estilo natural de conversa e adapta as sugestões para soar autêntico. Você também pode personalizar antes de enviar. É como ter um amigo expert te orientando.'
-              },
-              {
-                question: 'E se não funcionar para mim?',
-                answer: 'Durante os 7 dias de garantia, você pode cancelar e receber reembolso total. Depois disso, temos 97% de satisfação - a maioria renova porque os resultados são reais. Mas você sempre pode cancelar quando quiser.'
-              },
-              {
-                question: 'Quanto tempo para ver os primeiros resultados?',
-                answer: 'Na primeira conversa você já nota a diferença! A maioria relata melhora significativa no primeiro dia. Com uma semana de uso, você estará dominando completamente as conversas.'
-              },
-              {
-                question: 'Preciso instalar algum aplicativo?',
-                answer: 'Não! Funciona 100% online. Você ativa sua conta e já pode começar a enviar prints para receber sugestões inteligentes.'
-              },
-              {
-                question: 'Posso cancelar a qualquer momento?',
-                answer: 'Sim! Durante os 7 dias de garantia, cancele sem pagar nada. Depois, você pode cancelar a qualquer momento direto pelo suporte, sem burocracia ou taxas de cancelamento.'
+                question: 'O pagamento é realmente vitalício?',
+                answer: 'Sim! Por apenas R$9,90, você tem acesso ilimitado ao programa, sem mensalidades.'
               }
             ].map((faq, index) => (
               <div
@@ -837,13 +623,9 @@ const SpanishMemoryLanding: React.FC = () => {
                   onClick={() => toggleFaq(index)}
                 >
                   <span className="pr-4">{faq.question}</span>
-                  <span className={`text-2xl transition-transform duration-300 flex-shrink-0 ${
-                    activeFaq === index ? 'rotate-45' : ''
-                  }`}>+</span>
+                  <span className={`text-2xl transition-transform duration-300 flex-shrink-0 ${activeFaq === index ? 'rotate-45' : ''}`}>+</span>
                 </button>
-                <div className={`overflow-hidden transition-all duration-300 ${
-                  activeFaq === index ? 'max-h-96 pb-6' : 'max-h-0'
-                }`}>
+                <div className={`overflow-hidden transition-all duration-300 ${activeFaq === index ? 'max-h-96 pb-6' : 'max-h-0'}`}>
                   <div className="px-6 text-gray-300 leading-relaxed">
                     {faq.answer}
                   </div>
@@ -857,38 +639,18 @@ const SpanishMemoryLanding: React.FC = () => {
       <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-emerald-900/30 via-blue-900/20 to-purple-900/20">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
-            Pare de Perder Oportunidades<br />
+            Caminhe Sem Dor Hoje Mesmo<br />
             <span className="text-emerald-400">Comece Agora com Garantia</span>
           </h2>
           <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed">
-            Junte-se a mais de 3.000 homens que transformaram suas vidas amorosas com nossa IA
+            Junte-se a milhares de pessoas que recuperaram a liberdade de movimento com o Pise Bem
           </p>
-          <div className="bg-emerald-500/10 border-2 border-emerald-400 rounded-3xl p-6 md:p-8 mb-10 backdrop-blur-sm">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <span className="animate-pulse text-xl">🎁</span>
-              <h3 className="text-xl md:text-2xl font-bold text-emerald-400">BÔNUS EXCLUSIVO NA GARANTIA</h3>
-              <span className="animate-pulse text-xl">🎁</span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
-              {[
-                '✅ E-book "100 Aberturas Irresistíveis"',
-                '✅ Acesso ao Grupo VIP Telegram',
-                '✅ Suporte prioritário 24/7',
-                '✅ Análises ilimitadas durante o teste'
-              ].map((bonus, index) => (
-                <div key={index} className="flex items-center gap-2 text-gray-200">
-                  <span className="text-emerald-400 font-bold">✓</span>
-                  <span>{bonus}</span>
-                </div>
-              ))}
-            </div>
-          </div>
           <a
-            href="https://pay.cakto.com.br/jvpeebs"
+            href="https://pay.cakto.com.br/pisebem"
             className="inline-flex items-center gap-4 px-12 md:px-16 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl md:text-2xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-2 transition-all duration-300 mb-6"
           >
             <span className="animate-pulse">🚀</span>
-            COMEÇAR AGORA
+            COMPRE AGORA
             <span>→</span>
           </a>
           <div className="flex items-center justify-center gap-4 text-sm text-gray-400 flex-wrap">
@@ -897,7 +659,7 @@ const SpanishMemoryLanding: React.FC = () => {
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <span>🔒</span> Cancele quando quiser
+              <span>🔒</span> Pagamento único
             </span>
           </div>
         </div>
@@ -909,7 +671,7 @@ const SpanishMemoryLanding: React.FC = () => {
             {[
               { text: 'Termos de Uso', onClick: () => showModal('terms') },
               { text: 'Política de Privacidade', onClick: () => showModal('privacy') },
-              { text: 'Suporte', href: 'mailto:suporte@mandaessa.ai' }
+              { text: 'Suporte', href: 'mailto:suporte@pisebem.com' }
             ].map((link, index) => (
               <a
                 key={index}
@@ -922,22 +684,14 @@ const SpanishMemoryLanding: React.FC = () => {
             ))}
           </div>
           <p className="text-center text-gray-500 text-sm mb-8">
-            © 2025 MandaEssa.ai - Todos os direitos reservados
+            © 2025 Pise Bem - Todos os direitos reservados
           </p>
           <div className="text-center text-gray-600 text-xs leading-relaxed space-y-4 max-w-4xl mx-auto">
             <p>
-              <strong>Aviso Legal:</strong> Os resultados podem variar individualmente. O MandaEssa.ai é uma ferramenta
-              de assistência para comunicação que oferece sugestões baseadas em IA para melhorar habilidades de conversação.
-              O sucesso depende de diversos fatores incluindo seu perfil, fotos e compatibilidade. Use sempre de forma
-              ética e respeitosa.
+              <strong>Aviso Legal:</strong> Os resultados podem variar individualmente. O Pise Bem é um programa de exercícios para alívio da fascite plantar, desenvolvido por especialistas. Consulte um médico antes de iniciar qualquer programa de exercícios. O sucesso depende de fatores individuais.
             </p>
             <p>
-              <strong>Garantia:</strong> 7 dias de acesso completo com garantia de reembolso. Cancele antes do término para receber reembolso total.
-              Após a garantia, renovação automática conforme plano escolhido. Cancele a qualquer momento.
-            </p>
-            <p className="text-gray-700">
-              Este site não é afiliado ao Facebook, Instagram ou qualquer plataforma de namoro mencionada.
-              Todas as marcas pertencem aos seus respectivos proprietários.
+              <strong>Garantia:</strong> 7 dias de acesso completo com garantia de reembolso. Cancele antes do término para receber reembolso total. Pagamento único de R$9,90, sem taxas adicionais.
             </p>
           </div>
         </div>
@@ -948,9 +702,7 @@ const SpanishMemoryLanding: React.FC = () => {
           <div
             key={notification.id}
             className={`bg-white text-gray-900 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-2xl border-l-4 border-emerald-500 max-w-xs transform transition-all duration-500 ${
-              notification.show
-                ? 'translate-x-0 opacity-100'
-                : '-translate-x-full opacity-0'
+              notification.show ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
             }`}
           >
             <div className="flex items-start gap-2 md:gap-3">
@@ -962,16 +714,10 @@ const SpanishMemoryLanding: React.FC = () => {
                   <span className="text-green-600 text-xs md:text-sm">●</span>
                   <span className="font-semibold text-xs md:text-sm">{notification.name}</span>
                 </div>
-                <p className="text-xs text-gray-600 mb-1">
-                  {notification.city}
-                </p>
-                <p className="text-xs font-medium text-emerald-600">
-                  Ativou o plano {notification.plan}
-                </p>
+                <p className="text-xs text-gray-600 mb-1">{notification.city}</p>
+                <p className="text-xs font-medium text-emerald-600">Ativou o plano {notification.plan}</p>
               </div>
-              <div className="text-xs text-gray-400">
-                agora
-              </div>
+              <div className="text-xs text-gray-400">agora</div>
             </div>
           </div>
         ))}
@@ -982,43 +728,30 @@ const SpanishMemoryLanding: React.FC = () => {
           <div className="max-w-4xl mx-auto my-8 bg-gray-900 rounded-3xl border border-gray-700 shadow-2xl">
             <div className="flex justify-between items-center p-6 border-b border-gray-700">
               <h2 className="text-2xl md:text-3xl font-bold text-emerald-400">Termos de Uso</h2>
-              <button
-                className="text-gray-400 hover:text-white text-3xl"
-                onClick={closeModal}
-              >
+              <button className="text-gray-400 hover:text-white text-3xl" onClick={closeModal}>
                 ×
               </button>
             </div>
             <div className="p-6 text-gray-300 leading-relaxed space-y-6">
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">1. Aceitação dos Termos</h3>
-                <p>Ao utilizar o MandaEssa.ai, você concorda com estes Termos de Uso. Se não concordar, não utilize nossos serviços.</p>
+                <p>Ao adquirir o Pise Bem, você concorda com estes Termos de Uso. Se não concordar, não utilize nossos serviços.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">2. Descrição do Serviço</h3>
-                <p>O MandaEssa.ai é um serviço de IA que fornece sugestões de conversação para melhorar habilidades de comunicação em contextos românticos.</p>
+                <p>O Pise Bem é um programa de exercícios para alívio da fascite plantar, baseado em métodos naturais e sem medicamentos.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">3. Garantia de 7 Dias</h3>
-                <p>Oferecemos 7 dias de acesso completo com garantia de reembolso. Cancele a qualquer momento.</p>
+                <p>Oferecemos 7 dias de acesso completo com garantia de reembolso. Cancele a qualquer momento durante esse período.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">4. Uso Apropriado</h3>
-                <p>Você concorda em usar o serviço de forma ética e respeitosa. É proibido usar para:</p>
-                <ul className="list-disc pl-6 mt-2 space-y-1">
-                  <li>Assédio ou comportamento inadequado</li>
-                  <li>Enganar ou manipular outras pessoas</li>
-                  <li>Violar leis locais ou direitos de terceiros</li>
-                  <li>Compartilhar conteúdo ofensivo ou ilegal</li>
-                </ul>
+                <p>Você concorda em usar o programa de forma responsável. Consulte um médico antes de iniciar os exercícios.</p>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white mb-2">5. Privacidade e Dados</h3>
-                <p>Respeitamos sua privacidade. Não armazenamos conversas pessoais. Prints enviados são processados e deletados automaticamente.</p>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-white mb-2">6. Limitação de Responsabilidade</h3>
-                <p>O MandaEssa.ai não se responsabiliza por resultados específicos ou pelo uso indevido do serviço. O sucesso depende de fatores individuais.</p>
+                <h3 className="text-lg font-bold text-white mb-2">5. Limitação de Responsabilidade</h3>
+                <p>O Pise Bem não se responsabiliza por resultados específicos. O sucesso depende de fatores individuais.</p>
               </div>
             </div>
           </div>
@@ -1029,36 +762,33 @@ const SpanishMemoryLanding: React.FC = () => {
           <div className="max-w-4xl mx-auto my-8 bg-gray-900 rounded-3xl border border-gray-700 shadow-2xl">
             <div className="flex justify-between items-center p-6 border-b border-gray-700">
               <h2 className="text-2xl md:text-3xl font-bold text-emerald-400">Política de Privacidade</h2>
-              <button
-                className="text-gray-400 hover:text-white text-3xl"
-                onClick={closeModal}
-              >
+              <button className="text-gray-400 hover:text-white text-3xl" onClick={closeModal}>
                 ×
               </button>
             </div>
             <div className="p-6 text-gray-300 leading-relaxed space-y-6">
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">1. Coleta de Dados</h3>
-                <p>Coletamos apenas dados necessários para fornecer o serviço, como prints de conversas enviados pelo usuário, que são processados e deletados automaticamente.</p>
+                <p>Coletamos apenas dados necessários para processar sua compra e fornecer suporte, como nome e e-mail.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">2. Uso dos Dados</h3>
-                <p>Os dados são usados exclusivamente para gerar sugestões de respostas e melhorar o serviço. Não compartilhamos seus dados com terceiros.</p>
+                <p>Os dados são usados para gerenciar sua conta e melhorar nossos serviços. Não compartilhamos seus dados com terceiros.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">3. Segurança</h3>
-                <p>Empregamos medidas de segurança robustas para proteger seus dados durante o processamento. Todas as interações são criptografadas.</p>
+                <p>Utilizamos criptografia e medidas de segurança robustas para proteger seus dados.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">4. Seus Direitos</h3>
-                <p>Você tem o direito de acessar, corrigir ou solicitar a exclusão de seus dados a qualquer momento.</p>
+                <p>Você pode acessar, corrigir ou solicitar a exclusão de seus dados a qualquer momento.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">5. Contato</h3>
                 <p>
-                  Para dúvidas sobre privacidade, entre em contato via{' '}
-                  <a href="mailto:suporte@mandaessa.ai" className="text-emerald-400 hover:underline">
-                    suporte@mandaessa.ai
+                  Para dúvidas, entre em contato via{' '}
+                  <a href="mailto:suporte@pisebem.com" className="text-emerald-400 hover:underline">
+                    suporte@pisebem.com
                   </a>
                 </p>
               </div>
@@ -1069,4 +799,5 @@ const SpanishMemoryLanding: React.FC = () => {
     </div>
   );
 };
-export default SpanishMemoryLanding;
+
+export default PiseBemLanding;
