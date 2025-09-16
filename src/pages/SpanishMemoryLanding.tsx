@@ -378,7 +378,7 @@ const PiseBemLanding: React.FC = () => {
               <h3 className="text-xl md:text-2xl font-bold text-white mb-6">O Problema</h3>
               <div className="mb-6">
                 <img
-                  src="/dr12.png"
+                  src="/ChatGPT Image Sep 16, 2025, 07_44_18 PM (1).png"
                   alt="Profissional em jaleco branco demonstrando expertise em saúde podal"
                   className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
@@ -395,7 +395,7 @@ const PiseBemLanding: React.FC = () => {
               <h3 className="text-xl md:text-2xl font-bold text-white mb-6">A Solução</h3>
               <div className="mb-6">
                 <img
-                  src="/exerc.png"
+                  src="/dlekk.png"
                   alt="Pessoa realizando exercícios para fascite plantar em casa"
                   className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
