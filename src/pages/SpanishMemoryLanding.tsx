@@ -188,7 +188,7 @@ const PiseBemLanding: React.FC = () => {
       <title>Pise Bem</title>
       <meta
         name="description"
-        content="Pise Bem - A solução natural para aliviar a dor da fascite plantar em 7 dias com 10 exercícios comprovados, sem medicamentos ou efeitos colaterais."
+        content="Pise Bem: Alivie a fascite plantar em 7 dias com 10 exercícios naturais. Sem medicamentos, com garantia de 7 dias. Apenas R$9,90 vitalício."
       />
       <noscript>
         <img
@@ -344,24 +344,62 @@ const PiseBemLanding: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div className="bg-gradient-to-b from-red-900/20 to-red-800/20 p-6 md:p-8 rounded-3xl border-2 border-red-500/30 backdrop-blur-sm">
               <h3 className="text-xl md:text-2xl font-bold text-red-400 mb-6">O Problema</h3>
-              <p className="text-gray-300 mb-4">Você sente:</p>
+              <p className="text-gray-300 mb-4 leading-relaxed">Você já perdeu momentos importantes por causa da dor no calcanhar? A fascite plantar pode transformar cada passo em um sofrimento, limitando sua liberdade e qualidade de vida. Você sente:</p>
               <ul className="space-y-3 text-gray-300">
-                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Dor intensa no calcanhar ao acordar</li>
-                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Dificuldade para caminhar ou praticar esportes</li>
-                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Dependência de analgésicos com efeitos colaterais</li>
-                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Frustração com tratamentos que não funcionam</li>
+                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Dor lancinante ao acordar ou após longos períodos sentado</li>
+                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Dificuldade para caminhar, correr ou até mesmo ficar em pé</li>
+                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Frustração com analgésicos que causam efeitos colaterais</li>
+                <li className="flex items-start gap-3"><span className="text-red-400 font-bold">•</span> Medo de tratamentos caros ou invasivos que não funcionam</li>
               </ul>
             </div>
             <div className="bg-gradient-to-b from-emerald-900/20 to-green-800/20 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
               <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-6">A Solução</h3>
-              <p className="text-gray-300 mb-4">Com o Pise Bem, você terá:</p>
+              <p className="text-gray-300 mb-4 leading-relaxed">Com o Pise Bem, você pode voltar a viver sem limitações! Nosso programa de 10 exercícios naturais, desenvolvido por especialistas, alivia a dor da fascite plantar sem medicamentos. Você terá:</p>
               <ul className="space-y-3 text-gray-300">
-                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Alívio natural em 7 dias</li>
-                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> 10 exercícios simples e eficazes</li>
-                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Sem medicamentos ou efeitos colaterais</li>
-                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Liberdade para caminhar sem dor</li>
+                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Alívio natural em apenas 7 dias</li>
+                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Exercícios simples para fazer em casa</li>
+                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Sem efeitos colaterais ou medicamentos</li>
+                <li className="flex items-start gap-3"><span className="text-emerald-400 font-bold">✓</span> Liberdade para caminhar e viver sem dor</li>
               </ul>
             </div>
+          </div>
+        </div>
+      </section>
+      {/* Visual Proof Section */}
+      <section className="py-16 md:py-24 px-4 bg-black/50">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16">
+            Veja os Resultados na Prática
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            <div className="bg-gradient-to-b from-gray-800/40 to-gray-900/40 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
+              <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-4">Como Funcionam os Exercícios</h3>
+              <p className="text-gray-300 mb-6 leading-relaxed">Os 10 exercícios do Pise Bem foram cuidadosamente desenvolvidos por profissionais para aliviar a dor e fortalecer seus pés. Veja como é simples:</p>
+              <img
+                src="/images/exercise-demo.jpg"
+                alt="Ilustração de exercícios para fascite plantar"
+                className="w-full h-auto rounded-2xl shadow-lg mb-6"
+              />
+              <p className="text-gray-300 text-sm italic">*Imagem ilustrativa: exercícios simples para alívio da fascite plantar.</p>
+            </div>
+            <div className="bg-gradient-to-b from-gray-800/40 to-gray-900/40 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
+              <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-4">Redução da Dor: Antes e Depois</h3>
+              <p className="text-gray-300 mb-6 leading-relaxed">Nossos usuários relatam uma redução significativa da dor em apenas 7 dias. Veja o progresso que você pode esperar:</p>
+              <img
+                src="/images/pain-reduction-chart.jpg"
+                alt="Gráfico de redução de dor antes e depois"
+                className="w-full h-auto rounded-2xl shadow-lg mb-6"
+              />
+              <p className="text-gray-300 text-sm italic">*Gráfico ilustrativo: redução média da dor relatada por usuários.</p>
+            </div>
+          </div>
+          <div className="mt-12 text-center">
+            <img
+              src="/images/specialist.jpg"
+              alt="Profissional em jaleco demonstrando confiança"
+              className="w-32 h-32 md:w-48 md:h-48 mx-auto rounded-full shadow-lg mb-4"
+            />
+            <p className="text-gray-300 text-sm italic">Desenvolvido por especialistas em saúde podal para resultados reais.</p>
           </div>
         </div>
       </section>
