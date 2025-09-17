@@ -94,6 +94,84 @@ const SecaFacilLanding: React.FC = () => {
     };
   }, [showNotifications]);
 
+  useEffect(() => {
+    if (!document.querySelector('[src*="68cae14e9f5b422b2ea94507"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68cae14e9f5b422b2ea94507/v4/player.js';
+      script.async = true;
+      document.head.appendChild(script);
+
+      const pixelScript1 = document.createElement('script');
+      pixelScript1.innerHTML = `
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1351918292572124');
+        fbq('track', 'PageView');
+      `;
+      document.head.appendChild(pixelScript1);
+
+      const pixelScript2 = document.createElement('script');
+      pixelScript2.innerHTML = `
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1093258939518583');
+        fbq('track', 'PageView');
+      `;
+      document.head.appendChild(pixelScript2);
+
+      const gtagScript = document.createElement('script');
+      gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=AW-11028750083';
+      gtagScript.async = true;
+      document.head.appendChild(gtagScript);
+
+      const gtagConfig = document.createElement('script');
+      gtagConfig.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-11028750083');
+      `;
+      document.head.appendChild(gtagConfig);
+
+      const tiktokScript = document.createElement('script');
+      tiktokScript.innerHTML = `
+        !function (w, d, t) {
+          w.TiktokAnalyticsObject=t;
+          var ttq=w[t]=w[t]||[];
+          ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"];
+          ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};
+          for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);
+          ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};
+          ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+          ttq.load('D31H6Q3C77UD68QFDC00');
+          ttq.page();
+        }(window, document, 'ttq');
+      `;
+      document.head.appendChild(tiktokScript);
+
+      return () => {
+        document.head.removeChild(script);
+        document.head.removeChild(pixelScript1);
+        document.head.removeChild(pixelScript2);
+        document.head.removeChild(gtagScript);
+        document.head.removeChild(gtagConfig);
+        document.head.removeChild(tiktokScript);
+      };
+    }
+  }, []);
+
   const startNotifications = () => {
     const showNotification = () => {
       const randomPurchase = purchaseData[Math.floor(Math.random() * purchaseData.length)];
@@ -187,11 +265,13 @@ const SecaFacilLanding: React.FC = () => {
           </p>
           <div className="mb-8 md:mb-12 flex justify-center">
             <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
-              <img
-                src="data:image/svg+xml,%3Csvg width='400' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='16' fill='%2334D399' text-anchor='middle'%3EPreparação do%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='16' fill='%2334D399' text-anchor='middle'%3EGel Natural%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='14' fill='%2334D399' text-anchor='middle'%3Epara Suor%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%236B7280' text-anchor='middle'%3EAlívio em 7 Dias%3C/text%3E%3C/svg%3E"
-                alt="Ilustração da preparação do Gel Natural de Alívio para Suor em casa"
-                className="w-full h-auto rounded-2xl shadow-lg"
-              />
+              <vturb-smartplayer
+                id="vid-68cae14e9f5b422b2ea94507"
+                style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px' }}
+              ></vturb-smartplayer>
+              <script type="text/javascript">
+                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68cae14e9f5b422b2ea94507/v4/player.js", s.async=!0,document.head.appendChild(s);`}
+              </script>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12 max-w-2xl mx-auto">
