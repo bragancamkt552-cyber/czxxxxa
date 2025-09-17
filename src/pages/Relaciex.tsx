@@ -378,7 +378,7 @@ const SecaFacilLanding: React.FC = () => {
               <h3 className="text-xl md:text-2xl font-bold text-white mb-6">O Problema</h3>
               <div className="mb-6">
                 <img
-                  src="/dr12.png"
+                  src="crssew.png"
                   alt="Profissional demonstrando expertise em controle de suor excessivo"
                   className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
@@ -395,7 +395,7 @@ const SecaFacilLanding: React.FC = () => {
               <h3 className="text-xl md:text-2xl font-bold text-white mb-6">A Solução</h3>
               <div className="mb-6">
                 <img
-                  src="/exerc.png"
+                  src="/xxzzzz.png"
                   alt="Pessoa preparando o Gel Natural de Alívio para Suor em casa"
                   className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
@@ -422,7 +422,7 @@ const SecaFacilLanding: React.FC = () => {
               <h3 className="text-xl md:text-2xl font-bold text-white mb-4">Como Funciona o Gel</h3>
               <p className="text-gray-200 mb-6 leading-relaxed">O Gel Natural de Alívio para Suor do Seca Fácil foi desenvolvido por especialistas para reduzir o suor e refrescar sua pele. Veja como é simples prepará-lo:</p>
               <img
-                src="/exerc.png"
+                src="/dccxzxs.png"
                 alt="Pessoa preparando o Gel Natural de Alívio para Suor em casa"
                 className="w-full h-auto rounded-2xl shadow-lg mb-6 max-w-md mx-auto"
               />
