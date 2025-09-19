@@ -20,41 +20,41 @@ interface Testimonial {
 const SecaFacilLanding: React.FC = () => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [modal, setModal] = useState<string | null>(null);
-  const [spots, setSpots] = useState(37);
+  const [spots, setSpots] = useState(43);
   const [showOffer, setShowOffer] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<PurchaseNotification[]>([]);
 
   const purchaseData = [
-    { name: 'María S.', city: 'Ciudad de México', plan: 'Fórmula Completa' },
-    { name: 'Ana P.', city: 'Guadalajara', plan: 'Fórmula Completa' },
-    { name: 'Juan R.', city: 'Monterrey', plan: 'Fórmula Completa' },
-    { name: 'Carlos F.', city: 'Puebla', plan: 'Fórmula Completa' },
-    { name: 'Paula B.', city: 'Querétaro', plan: 'Fórmula Completa' },
-    { name: 'Roberto H.', city: 'León', plan: 'Fórmula Completa' },
-    { name: 'Fernanda L.', city: 'Mérida', plan: 'Fórmula Completa' },
+    { name: 'María L.', city: 'Ciudad de México', plan: 'Fórmula Completa' },
+    { name: 'Juan R.', city: 'Guadalajara', plan: 'Fórmula Completa' },
+    { name: 'Sofía M.', city: 'Monterrey', plan: 'Fórmula Completa' },
+    { name: 'Pedro S.', city: 'Puebla', plan: 'Fórmula Completa' },
+    { name: 'Ana B.', city: 'Querétaro', plan: 'Fórmula Completa' },
+    { name: 'Carlos H.', city: 'León', plan: 'Fórmula Completa' },
+    { name: 'Laura F.', city: 'Mérida', plan: 'Fórmula Completa' },
     { name: 'Miguel C.', city: 'Tijuana', plan: 'Fórmula Completa' },
-    { name: 'Sofía M.', city: 'Cancún', plan: 'Fórmula Completa' },
-    { name: 'Lucas D.', city: 'San Luis Potosí', plan: 'Fórmula Completa' },
+    { name: 'Camila D.', city: 'Cancún', plan: 'Fórmula Completa' },
+    { name: 'Daniel P.', city: 'San Luis Potosí', plan: 'Fórmula Completa' },
   ];
 
   const testimonials: Testimonial[] = [
     {
-      text: '¡Por fin encontré algo que jala! En pocos días ya noté una diferencia cañona en el sudor de manos y pies.',
+      text: '¡Por fin encontré algo que sí jala! En pocos días ya noté una diferencia cañona en el sudor de manos y pies.',
       author: 'Ana C.',
       location: 'Ciudad de México • 28 años',
       rating: 5,
       image: "data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='35' fill='%2310B981'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EAC%3C/text%3E%3C/svg%3E"
     },
     {
-      text: 'Ya no paso vergüenzas en juntas. ¡Mi autoestima regresó al cien!',
+      text: 'Ya no paso vergüenzas en juntas. ¡Mi autoestima está por los cielos otra vez!',
       author: 'Roberto M.',
       location: 'Guadalajara • 35 años',
       rating: 5,
       image: "data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='35' fill='%2306B6D4'/%3E%3Ctext x='50%25' y='55%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3ERM%3C/text%3E%3C/svg%3E"
     },
     {
-      text: 'Súper fácil de preparar en casa. ¡Ingredientes sencillos, pero el resultado está chido!',
+      text: 'Súper fácil de hacer en casa. ¡Ingredientes sencillos pero el resultado es chido!',
       author: 'Fernanda S.',
       location: 'Monterrey • 31 años',
       rating: 5,
@@ -64,8 +64,8 @@ const SecaFacilLanding: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSpots((prev) => (prev > 15 ? prev - 1 : prev));
-    }, 10000);
+      setSpots((prev) => (prev > 20 ? prev - 1 : prev));
+    }, 12000);
     return () => clearInterval(interval);
   }, []);
 
@@ -95,9 +95,9 @@ const SecaFacilLanding: React.FC = () => {
   }, [showNotifications]);
 
   useEffect(() => {
-    if (!document.querySelector('[src*="68cae14e9f5b422b2ea94507"]')) {
+    if (!document.querySelector('[src*="68cd8d81dd75e01312c5748f"]')) {
       const script = document.createElement('script');
-      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68cae14e9f5b422b2ea94507/v4/player.js';
+      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68cd8d81dd75e01312c5748f/v4/player.js';
       script.async = true;
       document.head.appendChild(script);
 
@@ -217,10 +217,10 @@ const SecaFacilLanding: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
-      <title>Seca Fácil</title>
+      <title>Seco Fácil</title>
       <meta
         name="description"
-        content="Seca Fácil: Alivia el sudor excesivo en 7 días con un gel natural casero. Sin químicos, con garantía de 7 días. Solo 92,00 MXN de por vida."
+        content="Seco Fácil: Alivia el sudor excesivo en 7 días con un gel natural casero. Sin químicos, con garantía de 7 días. Solo $92,00 MXN de por vida."
       />
       <noscript>
         <img
@@ -245,7 +245,7 @@ const SecaFacilLanding: React.FC = () => {
         <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-red-600 to-red-500 text-white text-center font-bold py-3 px-4 z-50 shadow-lg animate-[slideDown_0.5s_ease-out]">
           <div className="flex items-center justify-center gap-2 text-sm md:text-base">
             <span className="animate-pulse">⚡</span>
-            <span>¡OFERTA LIMITADA: 92,00 MXN DE POR VIDA! • Solo quedan <span className="bg-white text-red-600 px-2 py-1 rounded-full font-black">{spots}</span> lugares</span>
+            <span>¡OFERTA LIMITADA: $92,00 MXN DE POR VIDA! • Solo quedan <span className="bg-white text-red-600 px-2 py-1 rounded-full font-black">{spots}</span> lugares</span>
             <span className="animate-pulse">⚡</span>
           </div>
         </div>
@@ -261,16 +261,16 @@ const SecaFacilLanding: React.FC = () => {
             Alivia el Sudor Excesivo en Solo 7 Días
           </h1>
           <p className="text-[clamp(16px,2.5vw,20px)] text-gray-200 mb-10 max-w-[600px] mx-auto">
-            La solución natural para quienes sufren de sudor excesivo. Nuestro <span className="text-[#00FF88] font-bold">Gel Natural de Alivio para Sudor</span> reduce la hiperhidrosis sin químicos pesados, ¡y te devuelve la confianza!
+            La solución natural para quienes sufren de sudor excesivo. Nuestro <span className="text-[#00FF88] font-bold">Gel Natural de Alivio para Sudor</span> reduce la hiperhidrosis sin químicos agresivos, devolviéndote la confianza.
           </p>
           <div className="mb-8 md:mb-12 flex justify-center">
             <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
               <vturb-smartplayer
-                id="vid-68cae14e9f5b422b2ea94507"
-                style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px' }}
+                id="vid-68cd8d81dd75e01312c5748f"
+                style={{ display: 'block', margin: '0 auto', width: '100%' }}
               ></vturb-smartplayer>
               <script type="text/javascript">
-                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68cae14e9f5b422b2ea94507/v4/player.js", s.async=!0,document.head.appendChild(s);`}
+                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68cd8d81dd75e01312c5748f/v4/player.js", s.async=!0,document.head.appendChild(s);`}
               </script>
             </div>
           </div>
@@ -291,7 +291,7 @@ const SecaFacilLanding: React.FC = () => {
               href="https://pay.cakto.com.br/a8o524u_572837"
               className="inline-flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-lg md:text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300 group w-full max-w-md"
             >
-              <span>¡QUIERO ALIVIO YA!</span>
+              <span>¡QUIERO ALIVIO AHORA!</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
             <p className="text-sm text-gray-200 flex items-center justify-center gap-2 flex-wrap">
@@ -318,25 +318,25 @@ const SecaFacilLanding: React.FC = () => {
               {
                 icon: '📋',
                 title: '1. Compra el Plan',
-                desc: 'Adquiere Seca Fácil y obtén acceso inmediato',
+                desc: 'Adquiere Seco Fácil y obtén acceso inmediato',
                 color: 'from-blue-400 to-blue-500'
               },
               {
                 icon: '🧪',
                 title: '2. Prepara el Gel',
-                desc: 'Haz el gel natural en casa con ingredientes sencillos',
+                desc: 'Haz el gel natural en casa con ingredientes simples',
                 color: 'from-purple-400 to-purple-500'
               },
               {
                 icon: '⏱️',
                 title: '3. 7 Días de Acción',
-                desc: 'Aplica el gel diario por 7 días para alivio rápido',
+                desc: 'Aplica el gel diariamente por 7 días para alivio rápido',
                 color: 'from-yellow-400 to-orange-400'
               },
               {
                 icon: '😊',
                 title: '4. Vive con Confianza',
-                desc: 'Vuelve a vivir sin el oso del sudor excesivo',
+                desc: 'Vuelve a vivir sin el vergüenza del sudor excesivo',
                 color: 'from-red-400 to-pink-400'
               },
             ].map((step, index) => (
@@ -355,7 +355,7 @@ const SecaFacilLanding: React.FC = () => {
               ¡Sin Complicaciones!
             </div>
             <p className="text-gray-200 mb-6 md:mb-8 text-lg">
-              ¡Prepara tu propio Gel Natural de Alivio para Sudor en casa! Con ingredientes sencillos, creas una solución refrescante y efectiva, perfecta para combatir el sudor excesivo de forma natural.
+              ¡Haz tu propio Gel Natural de Alivio para Sudor en casa! Con ingredientes sencillos, creas una solución refrescante y eficaz, perfecta para combatir el sudor excesivo de forma natural.
             </p>
             <a
               href="https://pay.cakto.com.br/a8o524u_572837"
@@ -371,7 +371,7 @@ const SecaFacilLanding: React.FC = () => {
       <section className="py-16 md:py-24 px-4 bg-gray-900/50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
-            Acaba con el Sudor Excesivo
+            Termina con el Sudor Excesivo
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div className="bg-gradient-to-b from-red-900/20 to-red-800/20 p-6 md:p-8 rounded-3xl border-2 border-red-500/30 backdrop-blur-sm">
@@ -383,11 +383,11 @@ const SecaFacilLanding: React.FC = () => {
                   className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
               </div>
-              <p className="text-gray-200 mb-4 leading-relaxed">¿Alguna vez evitaste dar la mano por el sudor? ¿O usaste ropa oscura para esconder manchas? La hiperhidrosis puede hacer que cada momento sea un oso, limitando tu confianza y calidad de vida. Sientes:</p>
+              <p className="text-gray-200 mb-4 leading-relaxed">¿Alguna vez evitaste dar la mano por el sudor? ¿O usaste ropa oscura para esconder manchas? La hiperhidrosis puede convertir cada momento en una vergüenza, limitando tu confianza y calidad de vida. Sientes:</p>
               <ul className="space-y-3 text-gray-200">
                 <li className="flex items-start gap-3"><span className="text-white font-bold">•</span> Sudor incontrolable en manos, pies o axilas</li>
                 <li className="flex items-start gap-3"><span className="text-white font-bold">•</span> Vergüenza en situaciones sociales o laborales</li>
-                <li className="flex items-start gap-3"><span className="text-white font-bold">•</span> Frustración con productos que irritan la piel o no jalan</li>
+                <li className="flex items-start gap-3"><span className="text-white font-bold">•</span> Frustración con productos que irritan la piel o no funcionan</li>
                 <li className="flex items-start gap-3"><span className="text-white font-bold">•</span> Miedo a tratamientos caros o invasivos que no resuelven</li>
               </ul>
             </div>
@@ -400,12 +400,12 @@ const SecaFacilLanding: React.FC = () => {
                   className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
               </div>
-              <p className="text-gray-200 mb-4 leading-relaxed">¡Con Seca Fácil, puedes recuperar tu confianza! Nuestro <span className="font-bold">Gel Natural de Alivio para Sudor</span>, hecho con ingredientes naturales como aloe vera y aceites esenciales, reduce el sudor excesivo sin químicos. Tendrás:</p>
+              <p className="text-gray-200 mb-4 leading-relaxed">¡Con Seco Fácil, puedes recuperar tu confianza! Nuestro <span className="font-bold">Gel Natural de Alivio para Sudor</span>, hecho con ingredientes naturales como aloe vera y aceites esenciales, reduce el sudor excesivo sin químicos. Tendrás:</p>
               <ul className="space-y-3 text-gray-200">
                 <li className="flex items-start gap-3"><span className="text-white font-bold">✓</span> Alivio natural en solo 7 días</li>
                 <li className="flex items-start gap-3"><span className="text-white font-bold">✓</span> Gel sencillo para preparar en casa</li>
-                <li className="flex items-start gap-3"><span className="text-white font-bold">✓</span> Sin efectos secundarios ni químicos pesados</li>
-                <li className="flex items-start gap-3"><span className="text-white font-bold">✓</span> Libertad para vivir sin oso</li>
+                <li className="flex items-start gap-3"><span className="text-white font-bold">✓</span> Sin efectos secundarios ni químicos agresivos</li>
+                <li className="flex items-start gap-3"><span className="text-white font-bold">✓</span> Libertad para vivir sin vergüenza</li>
               </ul>
             </div>
           </div>
@@ -420,17 +420,17 @@ const SecaFacilLanding: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div className="bg-gradient-to-b from-gray-800/40 to-gray-900/40 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
               <h3 className="text-xl md:text-2xl font-bold text-white mb-4">Cómo Funciona el Gel</h3>
-              <p className="text-gray-200 mb-6 leading-relaxed">El Gel Natural de Alivio para Sudor de Seca Fácil fue diseñado por expertos para reducir el sudor y refrescar tu piel. Mira qué fácil es prepararlo:</p>
+              <p className="text-gray-200 mb-6 leading-relaxed">El Gel Natural de Alivio para Sudor de Seco Fácil fue desarrollado por expertos para reducir el sudor y refrescar tu piel. Mira qué fácil es prepararlo:</p>
               <img
                 src="/exerc.png"
                 alt="Persona preparando el Gel Natural de Alivio para Sudor en casa"
                 className="w-full h-auto rounded-2xl shadow-lg mb-6 max-w-md mx-auto"
               />
-              <p className="text-gray-200 text-sm italic">*Imagen ilustrativa: gel sencillo para aliviar el sudor excesivo.</p>
+              <p className="text-gray-200 text-sm italic">*Imagen ilustrativa: gel sencillo para alivio del sudor excesivo.</p>
             </div>
             <div className="bg-gradient-to-b from-gray-800/40 to-gray-900/40 p-6 md:p-8 rounded-3xl border-2 border-emerald-500/50 backdrop-blur-sm">
               <h3 className="text-xl md:text-2xl font-bold text-white mb-4">Reducción del Sudor: Antes y Después</h3>
-              <p className="text-gray-200 mb-6 leading-relaxed">Nuestros usuarios reportan una reducción cañona del sudor en solo 7 días. Mira el progreso que puedes esperar:</p>
+              <p className="text-gray-200 mb-6 leading-relaxed">Nuestros usuarios reportan una reducción significativa del sudor en solo 7 días. Mira el progreso que puedes esperar:</p>
               <div className="bg-gray-700 p-6 rounded-xl mb-4">
                 <div className="flex justify-between items-end h-32">
                   <div className="flex flex-col items-center">
@@ -453,14 +453,14 @@ const SecaFacilLanding: React.FC = () => {
               alt="Profesional demostrando experiencia en control de sudor excesivo"
               className="w-32 h-32 md:w-48 md:h-48 mx-auto rounded-full shadow-lg mb-4"
             />
-            <p className="text-gray-200 text-sm italic">Desarrollado por expertos para resultados chidos.</p>
+            <p className="text-gray-200 text-sm italic">Desarrollado por expertos para resultados reales.</p>
           </div>
           {/* Before/After Images */}
           <div className="mt-16 text-center">
             <h3 className="text-2xl font-bold text-white mb-8">Resultados Visuales</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <div className="bg-gray-800/40 p-6 rounded-3xl border border-gray-700">
-                <h4 className="text-lg font-bold text-white mb-4">Antes de Seca Fácil</h4>
+                <h4 className="text-lg font-bold text-white mb-4">Antes de Seco Fácil</h4>
                 <img
                   src="data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23991B1B'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%23FFFFFF' text-anchor='middle'%3ESudor excesivo%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%23FFFFFF' text-anchor='middle'%3Een todo el cuerpo%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3EVergüenza%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3Esocial%3C/text%3E%3C/svg%3E"
                   alt="Ilustración mostrando sudor excesivo antes del tratamiento"
@@ -469,10 +469,10 @@ const SecaFacilLanding: React.FC = () => {
                 <p className="text-gray-200 text-sm">Sudor que limita el día a día</p>
               </div>
               <div className="bg-gray-800/40 p-6 rounded-3xl border border-gray-700">
-                <h4 className="text-lg font-bold text-white mb-4">Después de Seca Fácil</h4>
+                <h4 className="text-lg font-bold text-white mb-4">Después de Seco Fácil</h4>
                 <img
                   src="data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='30%25' font-family='Arial' font-size='14' fill='%23FFFFFF' text-anchor='middle'%3EAlivio del sudor%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='14' fill='%23FFFFFF' text-anchor='middle'%3Een 7 días%3C/text%3E%3Ctext x='50%25' y='60%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3EConfianza para%3C/text%3E%3Ctext x='50%25' y='75%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3Evivir%3C/text%3E%3C/svg%3E"
-                  alt="Ilustración mostrando alivio del sudor y confianza para vivir tras el tratamiento"
+                  alt="Ilustración mostrando alivio del sudor y confianza para vivir después del tratamiento"
                   className="w-full h-auto rounded-xl mb-4 max-w-md mx-auto"
                 />
                 <p className="text-gray-200 text-sm">Regreso a una vida confiada y sin sudor</p>
@@ -485,7 +485,7 @@ const SecaFacilLanding: React.FC = () => {
       <section className="py-16 md:py-24 px-4 bg-black/50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
-            ¿Por Qué Elegir Seca Fácil?
+            ¿Por Qué Elegir Seco Fácil?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[
@@ -504,7 +504,7 @@ const SecaFacilLanding: React.FC = () => {
               {
                 icon: '🏠',
                 title: 'Fácil de Preparar en Casa',
-                desc: 'Gel sencillo que no necesita ingredientes caros',
+                desc: 'Gel sencillo que no requiere ingredientes caros',
                 gradient: 'from-purple-500 to-pink-500'
               },
               {
@@ -516,13 +516,13 @@ const SecaFacilLanding: React.FC = () => {
               {
                 icon: '🔒',
                 title: 'Seguro y Comprobado',
-                desc: 'Método creado por expertos en control de sudor',
+                desc: 'Método desarrollado por expertos en control de sudor',
                 gradient: 'from-yellow-500 to-orange-500'
               },
               {
                 icon: '💸',
                 title: 'Accesible y de por Vida',
-                desc: 'Solo 92,00 MXN para acceso ilimitado al programa',
+                desc: 'Solo $92,00 MXN para acceso ilimitado al programa',
                 gradient: 'from-indigo-500 to-purple-500'
               },
             ].map((benefit, index) => (
@@ -585,10 +585,10 @@ const SecaFacilLanding: React.FC = () => {
               Garantía de 7 Días
             </h2>
             <p className="text-xl md:text-2xl font-bold text-gray-200 mb-4">
-              Prueba Seca Fácil sin riesgo
+              Prueba Seco Fácil sin riesgo
             </p>
             <p className="text-lg text-gray-200 mb-8 leading-relaxed">
-              Usa nuestro programa durante 7 días completos. Si no sientes alivio, te devolvemos el 100% de tu lana.
+              Usa nuestra fórmula por 7 días completos. Si no sientes alivio, te devolvemos el 100% de tu dinero.
             </p>
             <div className="mb-8">
               <img
@@ -624,7 +624,7 @@ const SecaFacilLanding: React.FC = () => {
       <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black" id="pricing">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
-            Adquiere Seca Fácil Hoy
+            Adquiere Seco Fácil Hoy
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6 md:gap-8 mb-12">
             <div className="relative bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border-2 border-emerald-500 scale-105 shadow-2xl shadow-emerald-500/20">
@@ -634,18 +634,18 @@ const SecaFacilLanding: React.FC = () => {
                 </span>
               </div>
               <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-white mb-2">Seca Fácil de por Vida</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">Seco Fácil de por Vida</h3>
                 <div className="text-4xl md:text-5xl font-black mb-1 text-white">
-                  <span className="line-through text-gray-400 text-2xl mr-2">297,00 MXN</span>
-                  92,00 MXN
+                  <span className="line-through text-gray-400 text-2xl mr-2">$299,00 MXN</span>
+                  $92,00 MXN
                   <span className="text-base text-gray-200 font-normal">/de por vida</span>
                 </div>
                 <p className="text-sm text-white font-semibold">Garantía de 7 días, pago único</p>
               </div>
               <div className="mb-6">
                 <img
-                  src="data:image/svg+xml,%3Csvg width='400' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='16' fill='%23FFFFFF' text-anchor='middle'%3ESECA FÁCIL%3C/text%3E%3Ctext x='50%25' y='40%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3EGel Natural%3C/text%3E%3Ctext x='50%25' y='52%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3EPara Sudor Excesivo%3C/text%3E%3Ctext x='50%25' y='68%25' font-family='Arial' font-size='10' fill='%23D1D5DB' text-anchor='middle'%3EFórmula Completa%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='10' fill='%23D1D5DB' text-anchor='middle'%3EAlivio en 7 Días%3C/text%3E%3C/svg%3E"
-                  alt="Vista previa del producto Seca Fácil - Fórmula completa con gel natural para sudor excesivo"
+                  src="data:image/svg+xml,%3Csvg width='400' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='16' fill='%23FFFFFF' text-anchor='middle'%3ESECO FÁCIL%3C/text%3E%3Ctext x='50%25' y='40%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3EGel Natural%3C/text%3E%3Ctext x='50%25' y='52%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3EPara Sudor Excesivo%3C/text%3E%3Ctext x='50%25' y='68%25' font-family='Arial' font-size='10' fill='%23D1D5DB' text-anchor='middle'%3EFórmula Completa%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='10' fill='%23D1D5DB' text-anchor='middle'%3EAlivio en 7 Días%3C/text%3E%3C/svg%3E"
+                  alt="Visualización del producto Seco Fácil - Fórmula completa con gel natural para sudor excesivo"
                   className="w-full h-auto rounded-2xl shadow-lg max-w-md mx-auto"
                 />
               </div>
@@ -657,7 +657,7 @@ const SecaFacilLanding: React.FC = () => {
                   'Instrucciones detalladas para preparar el gel',
                   'Soporte prioritario vía WhatsApp 24/7',
                   'Garantía incondicional de 7 días',
-                  'Sin mensualidades ni costos extras'
+                  'Sin mensualidades ni costos extra'
                 ].map((feature, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="text-white font-bold mt-1">✓</span>
@@ -672,7 +672,7 @@ const SecaFacilLanding: React.FC = () => {
                 ¡COMPRA CON GARANTÍA DE 7 DÍAS!
               </a>
               <p className="text-center text-xs text-gray-200 mt-3">
-                Pago único de 92,00 MXN • Sin costos adicionales • Acceso inmediato
+                Pago único de $92,00 MXN • Sin costos adicionales • Acceso inmediato
               </p>
             </div>
           </div>
@@ -715,32 +715,32 @@ const SecaFacilLanding: React.FC = () => {
           <div className="space-y-4">
             {[
               {
-                question: '¿Cómo jala la garantía de 7 días?',
-                answer: 'Compras Seca Fácil y tienes 7 días completos para probar el programa. Si no sientes un alivio chido, puedes pedir el reembolso total del 100% de tu lana, sin broncas.'
+                question: '¿Cómo funciona la garantía de 7 días?',
+                answer: 'Adquieres Seco Fácil y tienes 7 días completos para probar la fórmula. Si no sientes un alivio significativo del sudor, puedes pedir el reembolso total del 100% de tu dinero, sin complicaciones.'
               },
               {
                 question: '¿Necesito ingredientes especiales para el gel?',
-                answer: '¡Nel! El Gel Natural de Alivio para Sudor de Seca Fácil se hace con ingredientes sencillos, como aloe vera y aceites esenciales, que encuentras fácil. No necesitas nada caro ni difícil de hallar.'
+                answer: '¡No! El Gel Natural de Alivio para Sudor de Seco Fácil se prepara con ingredientes sencillos, como aloe vera y aceites esenciales, que encuentras fácilmente. No necesitas nada caro o difícil de conseguir.'
               },
               {
                 question: '¿El gel es seguro para todas las edades?',
-                answer: 'Sí, Seca Fácil fue creado por expertos y es seguro para la mayoría de la banda. El gel es natural y de bajo riesgo. Siempre te recomendamos checar con un doc si tienes alguna condición especial.'
+                answer: 'Sí, Seco Fácil fue desarrollado por expertos y es seguro para la mayoría de la gente. El gel es natural y de bajo riesgo. Te recomendamos checar con un doctor si tienes condiciones especiales.'
               },
               {
                 question: '¿Cuánto tiempo tarda en verse resultados?',
-                answer: 'La mayoría de nuestros usuarios reporta un alivio choncho en solo 7 días aplicando el gel. Algunos sienten mejora desde los primeros días.'
+                answer: 'La mayoría de nuestros usuarios reporta un alivio significativo del sudor en solo 7 días aplicando el gel. Algunos sienten mejora desde los primeros días.'
               },
               {
-                question: '¿El acceso es de verdad de por vida por 92,00 MXN?',
-                answer: '¡Órale! Por solo 92,00 MXN, tienes acceso ilimitado y de por vida a la fórmula completa. Sin mensualidades, costos extra ni trampas. Es un pago único.'
+                question: '¿El acceso es de verdad de por vida por $92,00 MXN?',
+                answer: '¡Órale! Por solo $92,00 MXN, tienes acceso ilimitado y de por vida a la fórmula completa. Sin mensualidades, costos extra ni trampas. Es un pago único.'
               },
               {
                 question: '¿Cómo recibo el material después de la compra?',
                 answer: 'Tras confirmar tu pago, recibes acceso inmediato a la fórmula completa por correo electrónico. Todo el material está disponible en una plataforma en línea exclusiva.'
               },
               {
-                question: '¿Jala para casos graves de hiperhidrosis?',
-                answer: 'Seca Fácil está diseñado para ayudar a la banda con diferentes niveles de sudor excesivo. Muchos con casos pesados han reportado mejoras chidas. Para casos muy cañones, te recomendamos un chequeo médico a la par.'
+                question: '¿Funciona para casos graves de hiperhidrosis?',
+                answer: 'Seco Fácil está diseñado para ayudar a personas con diferentes niveles de sudor excesivo. Muchos con casos graves han reportado mejoras chidas. Para casos muy cañones, recomendamos un chequeo médico a la par.'
               }
             ].map((faq, index) => (
               <div
@@ -770,12 +770,12 @@ const SecaFacilLanding: React.FC = () => {
             <span className="text-emerald-400">¡Empieza Ahora con Garantía!</span>
           </h2>
           <p className="text-xl md:text-2xl text-gray-200 mb-10 leading-relaxed">
-            Únete a miles de personas que recuperaron la confianza con Seca Fácil
+            Únete a miles de personas que recuperaron la confianza con Seco Fácil
           </p>
           <div className="mb-8">
             <img
-              src="data:image/svg+xml,%3Csvg width='500' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='20' fill='%23FFFFFF' text-anchor='middle'%3EVUELVE A LA VIDA CONFIADA%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='16' fill='%23FFFFFF' text-anchor='middle'%3ESin sudor, sin vergüenza%3C/text%3E%3Ctext x='50%25' y='65%25' font-family='Arial' font-size='14' fill='%23D1D5DB' text-anchor='middle'%3ESolo 92,00 MXN%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='14' fill='%23D1D5DB' text-anchor='middle'%3EGarantía de 7 días%3C/text%3E%3C/svg%3E"
-              alt="Ilustración de persona viviendo sin sudor excesivo tras usar Seca Fácil"
+              src="data:image/svg+xml,%3Csvg width='500' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='20' fill='%23FFFFFF' text-anchor='middle'%3EVUELVE A LA VIDA CONFIADA%3C/text%3E%3Ctext x='50%25' y='45%25' font-family='Arial' font-size='16' fill='%23FFFFFF' text-anchor='middle'%3ESin sudor, sin vergüenza%3C/text%3E%3Ctext x='50%25' y='65%25' font-family='Arial' font-size='14' fill='%23D1D5DB' text-anchor='middle'%3ESolo $92,00 MXN%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='14' fill='%23D1D5DB' text-anchor='middle'%3EGarantía de 7 días%3C/text%3E%3C/svg%3E"
+              alt="Ilustración de persona viviendo sin sudor excesivo después de usar Seco Fácil"
               className="w-full max-w-lg h-auto mx-auto rounded-2xl mb-8"
             />
           </div>
@@ -784,7 +784,7 @@ const SecaFacilLanding: React.FC = () => {
             className="inline-flex items-center gap-4 px-12 md:px-16 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl md:text-2xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-2 transition-all duration-300 mb-6"
           >
             <span className="animate-pulse">🚀</span>
-            ¡COMPRAR SECA FÁCIL AHORA!
+            ¡COMPRAR SECO FÁCIL AHORA!
             <span>→</span>
           </a>
           <div className="flex items-center justify-center gap-4 text-sm text-gray-200 flex-wrap">
@@ -793,7 +793,7 @@ const SecaFacilLanding: React.FC = () => {
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <span>🔒</span> Pago único de 92,00 MXN
+              <span>🔒</span> Pago único de $92,00 MXN
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
@@ -809,8 +809,8 @@ const SecaFacilLanding: React.FC = () => {
             {[
               { text: 'Términos de Uso', onClick: () => showModal('terms') },
               { text: 'Política de Privacidad', onClick: () => showModal('privacy') },
-              { text: 'Soporte', href: 'mailto:soporte@secafacil.com' },
-              { text: 'Contacto', href: 'https://wa.me/5511999999999' }
+              { text: 'Soporte', href: 'mailto:soporte@seco-facil.com' },
+              { text: 'Contacto', href: 'https://wa.me/52YOURNUMBER' }
             ].map((link, index) => (
               <a
                 key={index}
@@ -823,17 +823,17 @@ const SecaFacilLanding: React.FC = () => {
             ))}
           </div>
           <p className="text-center text-gray-200 text-sm mb-8">
-            © 2025 Seca Fácil - Todos los derechos reservados
+            © 2025 Seco Fácil - Todos los derechos reservados
           </p>
           <div className="text-center text-gray-200 text-xs leading-relaxed space-y-4 max-w-4xl mx-auto">
             <p>
-              <strong>Aviso Legal:</strong> Los resultados pueden variar de persona a persona. Seca Fácil es un programa de soluciones naturales para aliviar el sudor excesivo, desarrollado con base en conocimientos especializados. Este producto no sustituye la consulta médica. Consulta a un profesional de la salud antes de iniciar cualquier programa. El éxito del programa depende de la dedicación individual y de factores específicos de cada caso.
+              <strong>Aviso Legal:</strong> Los resultados pueden variar individualmente. Seco Fácil es un programa de soluciones naturales para aliviar el sudor excesivo, desarrollado con base en conocimiento especializado. Este producto no sustituye el acompañamiento médico. Consulta a un profesional de la salud antes de iniciar cualquier programa. El éxito del programa depende de la dedicación individual y de factores específicos de cada caso.
             </p>
             <p>
-              <strong>Garantía:</strong> Ofrecemos 7 días de acceso completo con garantía incondicional de reembolso. Si no estás satisfecho, solicita un reembolso total dentro del plazo. Pago único de 92,00 MXN, sin mensualidades ni costos adicionales.
+              <strong>Garantía:</strong> Ofrecemos 7 días de acceso completo con garantía incondicional de reembolso. Si no estás satisfecho, solicita reembolso total dentro del plazo. Pago único de $92,00 MXN, sin mensualidades ni costos adicionales.
             </p>
             <p>
-              <strong>Soporte:</strong> Nuestro equipo está disponible para resolver dudas y ofrecer soporte técnico. Contáctanos a través de los canales oficiales mencionados arriba.
+              <strong>Soporte:</strong> Nuestro equipo está disponible para aclarar dudas y ofrecer soporte técnico. Contáctanos a través de los canales oficiales listados arriba.
             </p>
           </div>
         </div>
@@ -877,11 +877,11 @@ const SecaFacilLanding: React.FC = () => {
             <div className="p-6 text-gray-200 leading-relaxed space-y-6">
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">1. Aceptación de los Términos</h3>
-                <p>Al adquirir Seca Fácil, aceptas estos Términos de Uso. Si no estás de acuerdo con algún término, no utilices nuestros servicios.</p>
+                <p>Al adquirir Seco Fácil, aceptas estos Términos de Uso. Si no estás de acuerdo con algún término, no utilices nuestros servicios.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">2. Descripción del Servicio</h3>
-                <p>Seca Fácil es un programa educativo de soluciones naturales para aliviar el sudor excesivo, basado en métodos naturales. No constituye asesoramiento médico ni sustituye la consulta con profesionales de la salud.</p>
+                <p>Seco Fácil es un programa educativo de soluciones naturales para aliviar el sudor excesivo, basado en métodos naturales. No constituye asesoramiento médico ni sustituye la consulta con profesionales de la salud.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">3. Garantía de 7 Días</h3>
@@ -893,7 +893,7 @@ const SecaFacilLanding: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">5. Limitación de Responsabilidad</h3>
-                <p>Seca Fácil no garantiza resultados específicos. Los resultados pueden variar entre individuos. No nos responsabilizamos por reacciones derivadas del uso indebido del gel.</p>
+                <p>Seco Fácil no garantiza resultados específicos. Los resultados pueden variar entre individuos. No nos responsabilizamos por reacciones derivadas del uso indebido del gel.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">6. Propiedad Intelectual</h3>
@@ -937,8 +937,8 @@ const SecaFacilLanding: React.FC = () => {
                 <h3 className="text-lg font-bold text-white mb-2">6. Contacto</h3>
                 <p>
                   Para dudas sobre privacidad o ejercer tus derechos, contáctanos vía{' '}
-                  <a href="mailto:soporte@secafacil.com" className="text-emerald-400 hover:underline">
-                    soporte@secafacil.com
+                  <a href="mailto:soporte@seco-facil.com" className="text-emerald-400 hover:underline">
+                    soporte@seco-facil.com
                   </a>
                 </p>
               </div>
