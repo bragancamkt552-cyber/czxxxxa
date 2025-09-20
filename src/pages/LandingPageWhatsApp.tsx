@@ -288,7 +288,7 @@ const SecaFacilLanding: React.FC = () => {
           </div>
           <div className="space-y-4">
             <a
-              href="https://pay.cakto.com.br/a8o524u_572837"
+              href="https://pay.hotmart.com/T99329125R"
               className="inline-flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-lg md:text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300 group w-full max-w-md"
             >
               <span>¡QUIERO ALIVIO AHORA!</span>
@@ -358,7 +358,7 @@ const SecaFacilLanding: React.FC = () => {
               ¡Haz tu propio Gel Natural de Alivio para Sudor en casa! Con ingredientes sencillos, creas una solución refrescante y eficaz, perfecta para combatir el sudor excesivo de forma natural.
             </p>
             <a
-              href="https://pay.cakto.com.br/a8o524u_572837"
+              href="https://pay.hotmart.com/T99329125R"
               className="inline-flex items-center gap-3 px-8 md:px-12 py-4 bg-gradient-to-r from-green-400 to-green-500 text-black font-bold text-lg rounded-full shadow-2xl hover:-translate-y-1 transition-all"
             >
               <span>🚀</span>
@@ -611,7 +611,7 @@ const SecaFacilLanding: React.FC = () => {
               ))}
             </div>
             <a
-              href="https://pay.cakto.com.br/a8o524u_572837"
+              href="https://pay.hotmart.com/T99329125R"
               className="inline-flex items-center gap-3 px-10 md:px-14 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
             >
               <span>🚀</span>
@@ -666,7 +666,7 @@ const SecaFacilLanding: React.FC = () => {
                 ))}
               </ul>
               <a
-                href="https://pay.cakto.com.br/a8o524u_572837"
+                href="https://pay.hotmart.com/T99329125R"
                 className="block w-full text-center px-6 py-4 font-bold text-lg rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 text-black hover:shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
               >
                 ¡COMPRA CON GARANTÍA DE 7 DÍAS!
@@ -780,7 +780,7 @@ const SecaFacilLanding: React.FC = () => {
             />
           </div>
           <a
-            href="https://pay.cakto.com.br/a8o524u_572837"
+            href="https://pay.hotmart.com/T99329125R"
             className="inline-flex items-center gap-4 px-12 md:px-16 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl md:text-2xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-2 transition-all duration-300 mb-6"
           >
             <span className="animate-pulse">🚀</span>
