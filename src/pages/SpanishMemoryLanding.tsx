@@ -451,7 +451,6 @@ const PiseBienLanding: React.FC = () => {
               { text: 'Términos de Uso', onClick: () => showModal('terms') },
               { text: 'Política de Privacidad', onClick: () => showModal('privacy') },
               { text: 'Soporte', href: 'mailto:soporte@pisebien.com' },
-              { text: 'Contacto', href: 'https://wa.me/52YOURNUMBER' }
             ].map((link, index) => (
               <a
                 key={index}
@@ -469,9 +468,6 @@ const PiseBienLanding: React.FC = () => {
           <div className="text-center text-gray-200 text-xs leading-relaxed space-y-4 max-w-4xl mx-auto">
             <p>
               <strong>Aviso Legal:</strong> Los resultados pueden variar individualmente. Pise Bien es un programa de soluciones naturales para aliviar el dolor de la fascitis plantar, desarrollado con base en conocimiento especializado. Este producto no sustituye el acompañamiento médico. Consulta a un profesional de la salud antes de iniciar cualquier programa. El éxito del programa depende de la dedicación individual y de factores específicos de cada caso.
-            </p>
-            <p>
-              <strong>Garantía:</strong> Ofrecemos 60 días de acceso completo con garantía incondicional de reembolso. Si no estás satisfecho, solicita reembolso total dentro del plazo. Pago único de $90,00 MXN, sin mensualidades ni costos adicionales.
             </p>
             <p>
               <strong>Soporte:</strong> Nuestro equipo está disponible para aclarar dudas y ofrecer soporte técnico. Contáctanos a través de los canales oficiales listados arriba.
