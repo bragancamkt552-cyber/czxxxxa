@@ -9,25 +9,26 @@ interface PurchaseNotification {
   show: boolean;
 }
 
-const SecaFacilLanding: React.FC = () => {
+const PiseBienLanding: React.FC = () => {
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [modal, setModal] = useState<string | null>(null);
   const [spots, setSpots] = useState(37);
   const [showOffer, setShowOffer] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [notifications, setNotifications] = useState<PurchaseNotification[]>([]);
   const [showDelayedContent, setShowDelayedContent] = useState(false);
+  const [notifications, setNotifications] = useState<PurchaseNotification[]>([]);
 
   const purchaseData = [
-    { name: 'María L.', city: 'Ciudad de México', plan: 'Fórmula Completa' },
-    { name: 'Juan R.', city: 'Guadalajara', plan: 'Fórmula Completa' },
-    { name: 'Sofía M.', city: 'Monterrey', plan: 'Fórmula Completa' },
-    { name: 'Pedro S.', city: 'Bogotá', plan: 'Fórmula Completa' },
-    { name: 'Ana B.', city: 'Lima', plan: 'Fórmula Completa' },
-    { name: 'Carlos H.', city: 'Santiago', plan: 'Fórmula Completa' },
-    { name: 'Laura F.', city: 'Medellín', plan: 'Fórmula Completa' },
-    { name: 'Miguel C.', city: 'Tijuana', plan: 'Fórmula Completa' },
-    { name: 'Camila D.', city: 'Quito', plan: 'Fórmula Completa' },
-    { name: 'Daniel P.', city: 'San José', plan: 'Fórmula Completa' },
+    { name: 'María L.', city: 'Ciudad de México', plan: 'Vitalicio' },
+    { name: 'Juan R.', city: 'Guadalajara', plan: 'Vitalicio' },
+    { name: 'Sofía M.', city: 'Monterrey', plan: 'Vitalicio' },
+    { name: 'Pedro S.', city: 'Bogotá', plan: 'Vitalicio' },
+    { name: 'Ana B.', city: 'Lima', plan: 'Vitalicio' },
+    { name: 'Carlos H.', city: 'Santiago', plan: 'Vitalicio' },
+    { name: 'Laura F.', city: 'Medellín', plan: 'Vitalicio' },
+    { name: 'Miguel C.', city: 'Tijuana', plan: 'Vitalicio' },
+    { name: 'Camila D.', city: 'Quito', plan: 'Vitalicio' },
+    { name: 'Daniel P.', city: 'San José', plan: 'Vitalicio' },
   ];
 
   useEffect(() => {
@@ -38,9 +39,9 @@ const SecaFacilLanding: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!document.querySelector('[src*="68d069cd713fc4a513282283"]')) {
+    if (!document.querySelector('[src*="68d05dbb0450601628c9de09"]')) {
       const script = document.createElement('script');
-      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68d069cd713fc4a513282283/v4/player.js';
+      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68d05dbb0450601628c9de09/v4/player.js';
       script.async = true;
       document.head.appendChild(script);
 
@@ -118,11 +119,10 @@ const SecaFacilLanding: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowOffer(true);
-      setShowNotifications(true);
       setShowDelayedContent(true);
+      setShowNotifications(true);
       startNotifications();
     }, 462000); // 7 minutes and 42 seconds
-
     return () => clearTimeout(timer);
   }, []);
 
@@ -157,6 +157,10 @@ const SecaFacilLanding: React.FC = () => {
     }, 300000);
   };
 
+  const toggleFaq = (index: number) => {
+    setActiveFaq(activeFaq === index ? null : index);
+  };
+
   const showModal = (type: string) => {
     setModal(type);
   };
@@ -167,10 +171,10 @@ const SecaFacilLanding: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
-      <title>Seco Fácil</title>
+      <title>Pise Bien</title>
       <meta
         name="description"
-        content="Seco Fácil: Alivia el sudor excesivo en 7 días con una bebida natural casera. Sin químicos, con garantía de 60 días. ¡Órale! Solo $90,00 MXN de por vida."
+        content="Pise Bien: Alivia el dolor de la fascitis plantar en 7 días con nuestra bebida natural. Sin medicamentos, con garantía de 60 días. ¡Órale! Solo $90,00 MXN de por vida."
       />
       <noscript>
         <img
@@ -208,19 +212,19 @@ const SecaFacilLanding: React.FC = () => {
             ¡SOLUCIÓN NATURAL 2025!
           </div>
           <h1 className="text-[clamp(28px,6vw,64px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent overflow-visible whitespace-normal">
-            Alivia el Sudor Excesivo en Solo 7 Días
+            Alivia el Dolor de la Fascitis Plantar en Solo 7 Días
           </h1>
           <p className="text-[clamp(16px,2.5vw,20px)] text-gray-200 mb-10 max-w-[600px] mx-auto">
-            La solución natural para quienes sufren de sudor excesivo. Nuestra <span className="text-[#00FF88] font-bold">Bebida Natural de Alivio para Sudor</span> reduce la hiperhidrosis sin químicos agresivos, devolviéndote la confianza.
+            ¡Di adiós a los analgésicos! Alivia tu fascitis plantar de forma <span className="text-[#00FF88] font-bold">natural</span> con nuestra bebida natural, sin efectos secundarios.
           </p>
           <div className="mb-8 md:mb-12 flex justify-center">
-            <div className="w-full bg-gray-800 rounded-2xl p-2 shadow-2xl">
+            <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
               <vturb-smartplayer
-                id="vid-68d069cd713fc4a513282283"
-                style={{ display: 'block', margin: '0 auto', width: '100%' }}
+                id="vid-68d05dbb0450601628c9de09"
+                style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px' }}
               ></vturb-smartplayer>
               <script type="text/javascript">
-                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68d069cd713fc4a513282283/v4/player.js", s.async=!0,document.head.appendChild(s);`}
+                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68d05dbb0450601628c9de09/v4/player.js", s.async=!0,document.head.appendChild(s);`}
               </script>
             </div>
           </div>
@@ -239,180 +243,179 @@ const SecaFacilLanding: React.FC = () => {
       </section>
       {/* Delayed Content */}
       {showDelayedContent && (
-        <>
+        <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black">
           {/* Guarantee Section */}
-          <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-emerald-900/30 via-blue-900/20 to-purple-900/20">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="bg-gray-800/60 backdrop-blur-sm p-8 md:p-12 rounded-3xl border-2 border-emerald-500 shadow-2xl shadow-emerald-500/20">
-                <div className="text-5xl md:text-6xl mb-6 animate-bounce">🎁</div>
-                <h2 className="text-3xl md:text-5xl font-black text-white mb-6">
-                  Garantía de 60 Días
-                </h2>
-                <p className="text-xl md:text-2xl font-bold text-gray-200 mb-4">
-                  Prueba Seco Fácil sin riesgo
-                </p>
-                <p className="text-lg text-gray-200 mb-8 leading-relaxed">
-                  Usa nuestra bebida por 60 días completos. Si no sientes alivio, te devolvemos el 100% de tu dinero.
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-8 mb-8">
-                  {[
-                    { text: '60 DÍAS', subtitle: 'Garantía' },
-                    { text: '100%', subtitle: 'Reembolso' },
-                    { text: '0', subtitle: 'Riesgo' },
-                    { text: '24/7', subtitle: 'Soporte' }
-                  ].map((item, index) => (
-                    <div key={index} className="text-center">
-                      <div className="text-2xl md:text-4xl font-black text-white mb-1">{item.text}</div>
-                      <div className="text-gray-200 text-sm">{item.subtitle}</div>
-                    </div>
-                  ))}
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-gray-800/60 backdrop-blur-sm p-8 md:p-12 rounded-3xl border-2 border-emerald-500 shadow-2xl shadow-emerald-500/20">
+              <div className="text-5xl md:text-6xl mb-6 animate-bounce">🎁</div>
+              <h2 className="text-3xl md:text-5xl font-black text-white mb-6">
+                Garantía de 60 Días
+              </h2>
+              <p className="text-xl md:text-2xl font-bold text-gray-200 mb-4">
+                Prueba Pise Bien sin riesgo
+              </p>
+              <p className="text-lg text-gray-200 mb-8 leading-relaxed">
+                Usa nuestra bebida por 60 días completos. Si no sientes alivio, te devolvemos el 100% de tu dinero.
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-8 mb-8">
+                {[
+                  { text: '60 DÍAS', subtitle: 'Garantía' },
+                  { text: '100%', subtitle: 'Reembolso' },
+                  { text: '0', subtitle: 'Riesgo' },
+                  { text: '24/7', subtitle: 'Soporte' }
+                ].map((item, index) => (
+                  <div key={index} className="text-center">
+                    <div className="text-2xl md:text-4xl font-black text-white mb-1">{item.text}</div>
+                    <div className="text-gray-200 text-sm">{item.subtitle}</div>
+                  </div>
+                ))}
+              </div>
+              <a
+                href="https://pay.hotmart.com/T99329125R?checkoutMode=10"
+                className="inline-flex items-center gap-3 px-10 md:px-14 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
+              >
+                <span>🚀</span>
+                ¡COMPRA AHORA CON GARANTÍA!
+              </a>
+            </div>
+          </div>
+          {/* Pricing Section */}
+          <div className="max-w-5xl mx-auto mt-16">
+            <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
+              Adquiere Pise Bien Hoy
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-6 md:gap-8 mb-12">
+              <div className="relative bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border-2 border-emerald-500 scale-105 shadow-2xl shadow-emerald-500/20">
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-black px-4 py-1 rounded-full text-sm font-bold">
+                    ¡OFERTA EXCLUSIVA!
+                  </span>
                 </div>
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Pise Bien Vitalicio</h3>
+                  <div className="text-4xl md:text-5xl font-black mb-1 text-white">
+                    <span className="line-through text-gray-400 text-2xl mr-2">$299,00 MXN</span>
+                    $90,00 MXN
+                    <span className="text-base text-gray-200 font-normal">/de por vida</span>
+                  </div>
+                  <p className="text-sm text-white font-semibold">Garantía de 60 días, pago único</p>
+                </div>
+                <div className="mb-6">
+                  <img
+                    src="data:image/svg+xml,%3Csvg width='400' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23065F46'/%3E%3Ctext x='50%25' y='25%25' font-family='Arial' font-size='16' fill='%23FFFFFF' text-anchor='middle'%3EPISE BIEN%3C/text%3E%3Ctext x='50%25' y='40%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3EBebida Natural%3C/text%3E%3Ctext x='50%25' y='52%25' font-family='Arial' font-size='12' fill='%23FFFFFF' text-anchor='middle'%3EPara Fascitis Plantar%3C/text%3E%3Ctext x='50%25' y='68%25' font-family='Arial' font-size='10' fill='%23D1D5DB' text-anchor='middle'%3EPrograma Completo%3C/text%3E%3Ctext x='50%25' y='80%25' font-family='Arial' font-size='10' fill='%23D1D5DB' text-anchor='middle'%3EAlivio en 7 Días%3C/text%3E%3C/svg%3E"
+                    alt="Visualización del producto Pise Bien - Programa completo con bebida natural para fascitis plantar"
+                    className="w-full h-auto rounded-2xl shadow-lg max-w-md mx-auto"
+                  />
+                </div>
+                <ul className="space-y-3 mb-8">
+                  {[
+                    'Bebida natural comprobada para fascitis plantar',
+                    'Plan de 7 días para alivio rápido del dolor',
+                    'Acceso de por vida al programa completo',
+                    'Instrucciones detalladas para usar la bebida',
+                    'Soporte prioritario vía WhatsApp 24/7',
+                    'Garantía incondicional de 60 días',
+                    'Sin mensualidades ni costos extra'
+                  ].map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="text-white font-bold mt-1">✓</span>
+                      <span className="text-gray-200">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
                 <a
                   href="https://pay.hotmart.com/T99329125R?checkoutMode=10"
-                  className="inline-flex items-center gap-3 px-10 md:px-14 py-5 md:py-6 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
+                  className="block w-full text-center px-6 py-4 font-bold text-lg rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 text-black hover:shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
                 >
-                  <span>🚀</span>
-                  ¡COMPRA AHORA CON GARANTÍA!
+                  ¡COMPRA CON GARANTÍA DE 60 DÍAS!
                 </a>
+                <p className="text-center text-xs text-gray-200 mt-3">
+                  Pago único de $90,00 MXN • Sin costos adicionales • Acceso inmediato
+                </p>
               </div>
             </div>
-          </section>
-          {/* Pricing */}
-          <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-gray-900/50 to-black" id="pricing">
-            <div className="max-w-5xl mx-auto">
-              <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
-                Adquiere Seco Fácil Hoy
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-1 gap-6 md:gap-8 mb-12">
-                <div className="relative bg-gray-800/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border-2 border-emerald-500 scale-105 shadow-2xl shadow-emerald-500/20">
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-black px-4 py-1 rounded-full text-sm font-bold">
-                      ¡OFERTA EXCLUSIVA!
-                    </span>
-                  </div>
-                  <div className="text-center mb-6">
-                    <h3 className="text-2xl font-bold text-white mb-2">Seco Fácil de por Vida</h3>
-                    <div className="text-4xl md:text-5xl font-black mb-1 text-white">
-                      <span className="line-through text-gray-400 text-2xl mr-2">$299,00 MXN</span>
-                      $90,00 MXN
-                      <span className="text-base text-gray-200 font-normal">/de por vida</span>
-                    </div>
-                    <p className="text-sm text-white font-semibold">Garantía de 60 días, pago único</p>
-                  </div>
-                  <ul className="space-y-3 mb-8">
-                    {[
-                      'Fórmula completa de la bebida natural para hiperhidrosis',
-                      'Plan de 7 días para alivio rápido del sudor',
-                      'Acceso de por vida al programa completo',
-                      'Instrucciones detalladas para preparar la bebida',
-                      'Soporte prioritario vía WhatsApp 24/7',
-                      'Garantía incondicional de 60 días',
-                      'Sin mensualidades ni costos extra'
-                    ].map((feature, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="text-white font-bold mt-1">✓</span>
-                        <span className="text-gray-200">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a
-                    href="https://pay.hotmart.com/T99329125R?checkoutMode=10"
-                    className="block w-full text-center px-6 py-4 font-bold text-lg rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 text-black hover:shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300"
-                  >
-                    ¡COMPRA CON GARANTÍA DE 60 DÍAS!
-                  </a>
-                  <p className="text-center text-xs text-gray-200 mt-3">
-                    Pago único de $90,00 MXN • Sin costos adicionales • Acceso inmediato
-                  </p>
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="inline-flex items-center gap-4 px-6 py-3 bg-gray-800/40 rounded-2xl border border-gray-700">
-                  <span className="text-white">🔒</span>
-                  <span className="text-sm text-gray-200">Pago 100% seguro</span>
-                  <span className="text-white">💳</span>
-                  <span className="text-sm text-gray-200">Tarjeta • PayPal</span>
-                </div>
+            <div className="text-center">
+              <div className="inline-flex items-center gap-4 px-6 py-3 bg-gray-800/40 rounded-2xl border border-gray-700">
+                <span className="text-white">🔒</span>
+                <span className="text-sm text-gray-200">Pago 100% seguro</span>
+                <span className="text-white">💳</span>
+                <span className="text-sm text-gray-200">Tarjeta • PayPal</span>
               </div>
             </div>
-          </section>
+          </div>
           {/* Social Proof Stats */}
-          <section className="py-16 px-4 bg-emerald-500/5">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 text-center">
-                {[
-                  { number: '5,247', label: 'Usuarios Satisfechos' },
-                  { number: '95%', label: 'Tasa de Éxito' },
-                  { number: '4.8⭐', label: 'Calificación Promedio' },
-                  { number: '7 Días', label: 'Alivio Rápido' },
-                  { number: '24/7', label: 'Soporte' },
-                  { number: '100%', label: 'Garantía' }
-                ].map((stat, index) => (
-                  <div key={index} className="p-4">
-                    <div className="text-3xl md:text-4xl font-black text-white mb-2">{stat.number}</div>
-                    <div className="text-sm text-gray-200">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+          <div className="max-w-6xl mx-auto mt-16">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 text-center">
+              {[
+                { number: '5,247', label: 'Usuarios Satisfechos' },
+                { number: '95%', label: 'Tasa de Éxito' },
+                { number: '4.8⭐', label: 'Calificación Promedio' },
+                { number: '7 Días', label: 'Alivio Rápido' },
+                { number: '24/7', label: 'Soporte' },
+                { number: '100%', label: 'Garantía' }
+              ].map((stat, index) => (
+                <div key={index} className="p-4">
+                  <div className="text-3xl md:text-4xl font-black text-white mb-2">{stat.number}</div>
+                  <div className="text-sm text-gray-200">{stat.label}</div>
+                </div>
+              ))}
             </div>
-          </section>
+          </div>
           {/* FAQ */}
-          <section className="py-16 md:py-24 px-4 bg-black/50">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
-                Preguntas Frecuentes
-              </h2>
-              <div className="space-y-4">
-                {[
-                  {
-                    question: '¿Cómo funciona la garantía de 60 días?',
-                    answer: 'Adquieres Seco Fácil y tienes 60 días completos para probar la fórmula. Si no sientes un alivio significativo del sudor, puedes pedir el reembolso total del 100% de tu dinero, sin complicaciones.'
-                  },
-                  {
-                    question: '¿Necesito ingredientes especiales para la bebida?',
-                    answer: '¡No! La Bebida Natural de Alivio para Sudor de Seco Fácil se prepara con ingredientes sencillos que encuentras fácilmente. No necesitas nada caro o difícil de conseguir.'
-                  },
-                  {
-                    question: '¿La bebida es segura para todas las edades?',
-                    answer: 'Sí, Seco Fácil fue desarrollado por expertos y es seguro para la mayoría de la gente. La bebida es natural y de bajo riesgo. Te recomendamos checar con un doctor si tienes condiciones especiales.'
-                  },
-                  {
-                    question: '¿Cuánto tiempo tarda en verse resultados?',
-                    answer: 'La mayoría de nuestros usuarios reporta un alivio significativo del sudor en solo 7 días consumiendo la bebida. Algunos sienten mejora desde los primeros días.'
-                  },
-                  {
-                    question: '¿El acceso es de verdad de por vida por $90,00 MXN?',
-                    answer: '¡Órale! Por solo $90,00 MXN, tienes acceso ilimitado y de por vida a la fórmula completa. Sin mensualidades, costos extra ni trampas. Es un pago único.'
-                  },
-                  {
-                    question: '¿Cómo recibo el material después de la compra?',
-                    answer: 'Tras confirmar tu pago, recibes acceso inmediato a la fórmula completa por correo electrónico. Todo el material está disponible en una plataforma en línea exclusiva.'
-                  },
-                  {
-                    question: '¿Funciona para casos graves de hiperhidrosis?',
-                    answer: 'Seco Fácil está diseñado para ayudar a personas con diferentes niveles de sudor excesivo. Muchos con casos graves han reportado mejoras chidas. Para casos muy cañones, recomendamos un chequeo médico a la par.'
-                  }
-                ].map((faq, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-800/40 backdrop-blur-sm rounded-2xl border border-gray-700 overflow-hidden hover:border-emerald-500/50 transition-all"
+          <div className="max-w-4xl mx-auto mt-16">
+            <h2 className="text-3xl md:text-5xl font-black text-center mb-12 md:mb-16 text-white">
+              Preguntas Frecuentes
+            </h2>
+            <div className="space-y-4">
+              {[
+                {
+                  question: '¿Cómo funciona la garantía de 60 días?',
+                  answer: 'Adquieres Pise Bien y tienes 60 días completos para probar la bebida. Si no sientes alivio significativo del dolor, puedes pedir el reembolso total del 100% de tu dinero, sin complicaciones.'
+                },
+                {
+                  question: '¿Necesito ingredientes especiales para la bebida?',
+                  answer: '¡No! La bebida de Pise Bien es fácil de preparar en casa con instrucciones claras. No necesitas nada caro o difícil de conseguir.'
+                },
+                {
+                  question: '¿La bebida es segura para todas las edades?',
+                  answer: 'Sí, Pise Bien fue desarrollado por expertos y es seguro para la mayoría de las personas. Es una solución natural de bajo riesgo. Te recomendamos checar con un doctor si tienes condiciones especiales.'
+                },
+                {
+                  question: '¿Cuánto tiempo tarda en verse resultados?',
+                  answer: 'La mayoría de nuestros usuarios reporta alivio significativo del dolor en solo 7 días usando la bebida. Algunos sienten mejora desde los primeros días.'
+                },
+                {
+                  question: '¿El acceso es de verdad de por vida por $90,00 MXN?',
+                  answer: '¡Órale! Por solo $90,00 MXN, tienes acceso ilimitado y de por vida al programa completo. Sin mensualidades, costos extra ni trampas. Es un pago único.'
+                },
+                {
+                  question: '¿Cómo recibo el material después de la compra?',
+                  answer: 'Tras confirmar tu pago, recibes acceso inmediato al programa completo por correo electrónico. Todo el material está disponible en una plataforma en línea exclusiva.'
+                },
+                {
+                  question: '¿Funciona para casos graves de fascitis plantar?',
+                  answer: 'Pise Bien está diseñado para ayudar a personas con diferentes niveles de fascitis plantar. Muchos con casos graves han reportado mejoras chidas. Para casos muy cañones, recomendamos un chequeo médico a la par.'
+                }
+              ].map((faq, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-800/40 backdrop-blur-sm rounded-2xl border border-gray-700 overflow-hidden hover:border-emerald-500/50 transition-all"
+                >
+                  <button
+                    className="w-full p-6 text-left font-bold text-lg flex justify-between items-center hover:bg-emerald-500/5 transition-all text-white"
+                    onClick={() => toggleFaq(index)}
                   >
-                    <button
-                      className="w-full p-6 text-left font-bold text-lg flex justify-between items-center hover:bg-emerald-500/5 transition-all text-white"
-                      onClick={() => setModal(`faq-${index}`)}
-                    >
-                      <span className="pr-4">{faq.question}</span>
-                      <span className="text-2xl transition-transform duration-300 flex-shrink-0">+</span>
-                    </button>
-                    {modal === `faq-${index}` && (
-                      <div className="px-6 pb-6 text-gray-200 leading-relaxed">{faq.answer}</div>
-                    )}
+                    <span className="pr-4">{faq.question}</span>
+                    <span className={`text-2xl transition-transform duration-300 flex-shrink-0 ${activeFaq === index ? 'rotate-45' : ''}`}>+</span>
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${activeFaq === index ? 'max-h-96 pb-6' : 'max-h-0'}`}>
+                    <div className="px-6 text-gray-200 leading-relaxed">{faq.answer}</div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          </section>
-        </>
+          </div>
+        </section>
       )}
       {/* Purchase Notifications */}
       <div className="fixed bottom-6 left-6 z-40 space-y-3">
@@ -447,7 +450,7 @@ const SecaFacilLanding: React.FC = () => {
             {[
               { text: 'Términos de Uso', onClick: () => showModal('terms') },
               { text: 'Política de Privacidad', onClick: () => showModal('privacy') },
-              { text: 'Soporte', href: 'mailto:soporte@seco-facil.com' },
+              { text: 'Soporte', href: 'mailto:soporte@pisebien.com' },
               { text: 'Contacto', href: 'https://wa.me/52YOURNUMBER' }
             ].map((link, index) => (
               <a
@@ -461,11 +464,11 @@ const SecaFacilLanding: React.FC = () => {
             ))}
           </div>
           <p className="text-center text-gray-200 text-sm mb-8">
-            © 2025 Seco Fácil - Todos los derechos reservados
+            © 2025 Pise Bien - Todos los derechos reservados
           </p>
           <div className="text-center text-gray-200 text-xs leading-relaxed space-y-4 max-w-4xl mx-auto">
             <p>
-              <strong>Aviso Legal:</strong> Los resultados pueden variar individualmente. Seco Fácil es un programa de soluciones naturales para aliviar el sudor excesivo, desarrollado con base en conocimiento especializado. Este producto no sustituye el acompañamiento médico. Consulta a un profesional de la salud antes de iniciar cualquier programa. El éxito del programa depende de la dedicación individual y de factores específicos de cada caso.
+              <strong>Aviso Legal:</strong> Los resultados pueden variar individualmente. Pise Bien es un programa de soluciones naturales para aliviar el dolor de la fascitis plantar, desarrollado con base en conocimiento especializado. Este producto no sustituye el acompañamiento médico. Consulta a un profesional de la salud antes de iniciar cualquier programa. El éxito del programa depende de la dedicación individual y de factores específicos de cada caso.
             </p>
             <p>
               <strong>Garantía:</strong> Ofrecemos 60 días de acceso completo con garantía incondicional de reembolso. Si no estás satisfecho, solicita reembolso total dentro del plazo. Pago único de $90,00 MXN, sin mensualidades ni costos adicionales.
@@ -489,11 +492,11 @@ const SecaFacilLanding: React.FC = () => {
             <div className="p-6 text-gray-200 leading-relaxed space-y-6">
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">1. Aceptación de los Términos</h3>
-                <p>Al adquirir Seco Fácil, aceptas estos Términos de Uso. Si no estás de acuerdo con algún término, no utilices nuestros servicios.</p>
+                <p>Al adquirir Pise Bien, aceptas estos Términos de Uso. Si no estás de acuerdo con algún término, no utilices nuestros servicios.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">2. Descripción del Servicio</h3>
-                <p>Seco Fácil es un programa educativo de soluciones naturales para aliviar el sudor excesivo, basado en métodos naturales. No constituye asesoramiento médico ni sustituye la consulta con profesionales de la salud.</p>
+                <p>Pise Bien es un programa educativo de soluciones naturales para aliviar el dolor de la fascitis plantar, basado en métodos naturales. No constituye asesoramiento médico ni sustituye la consulta con profesionales de la salud.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">3. Garantía de 60 Días</h3>
@@ -505,7 +508,7 @@ const SecaFacilLanding: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">5. Limitación de Responsabilidad</h3>
-                <p>Seco Fácil no garantiza resultados específicos. Los resultados pueden variar entre individuos. No nos responsabilizamos por reacciones derivadas del uso indebido de la bebida.</p>
+                <p>Pise Bien no garantiza resultados específicos. Los resultados pueden variar entre individuos. No nos responsabilizamos por reacciones derivadas del uso indebido de la bebida.</p>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white mb-2">6. Propiedad Intelectual</h3>
@@ -549,8 +552,8 @@ const SecaFacilLanding: React.FC = () => {
                 <h3 className="text-lg font-bold text-white mb-2">6. Contacto</h3>
                 <p>
                   Para dudas sobre privacidad o ejercer tus derechos, contáctanos vía{' '}
-                  <a href="mailto:soporte@seco-facil.com" className="text-emerald-400 hover:underline">
-                    soporte@seco-facil.com
+                  <a href="mailto:soporte@pisebien.com" className="text-emerald-400 hover:underline">
+                    soporte@pisebien.com
                   </a>
                 </p>
               </div>
@@ -562,4 +565,4 @@ const SecaFacilLanding: React.FC = () => {
   );
 };
 
-export default SecaFacilLanding;
+export default PiseBienLanding;
