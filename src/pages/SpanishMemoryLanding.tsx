@@ -467,7 +467,7 @@ const PiseBienLanding: React.FC = () => {
           </p>
           <div className="text-center text-gray-200 text-xs leading-relaxed space-y-4 max-w-4xl mx-auto">
             <p>
-              <strong>Aviso Legal:</strong> Los resultados pueden variar individualmente. Pise Bien es un programa de soluciones naturales para aliviar el dolor de la fascitis plantar, desarrollado con base en conocimiento especializado. Este producto no sustituye el acompañamiento médico. Consulta a un profesional de la salud antes de iniciar cualquier programa. El éxito del programa depende de la dedicación individual y de factores específicos de cada caso.
+              <strong>Aviso Legal:</strong> Los resultados pueden variar en cada persona. La información presentada forma parte de un enfoque natural orientado al alivio del dolor causado por la fascitis plantar, basado en conocimientos especializados. No sustituye la orientación médica profesional. Se recomienda consultar a un profesional de la salud antes de realizar cualquier cambio en la rutina. La efectividad puede depender del compromiso personal y de las características individuales de cada caso.
             </p>
             <p>
               <strong>Soporte:</strong> Nuestro equipo está disponible para aclarar dudas y ofrecer soporte técnico. Contáctanos a través de los canales oficiales listados arriba.
