@@ -3,10 +3,25 @@ import '../index.css';
 
 const SecaFacilLanding: React.FC = () => {
   const [modal, setModal] = useState<string | null>(null);
-  const [showCta, setShowCta] = useState(false);
+  const [showOffer, setShowOffer] = useState(false);
+  const [spots, setSpots] = useState(43);
 
-  // Delay in milliseconds for showing the Urgency Bar and CTA button (adjustable)
-  const CTA_DELAY_MS = 30000;
+  useEffect(() => {
+    // Delay for Urgency Bar to sync with VTurb video button (adjustable, default 30s)
+    const delay = 30000; // 30 seconds
+    const timer = setTimeout(() => {
+      setShowOffer(true);
+    }, delay);
+
+    const interval = setInterval(() => {
+      setSpots((prev) => (prev > 20 ? prev - 1 : prev));
+    }, 12000);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     if (!document.querySelector('[src*="68d05dbb0450601628c9de09"]')) {
@@ -86,13 +101,6 @@ const SecaFacilLanding: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowCta(true);
-    }, CTA_DELAY_MS);
-    return () => clearTimeout(timer);
-  }, []);
-
   const showModal = (type: string) => {
     setModal(type);
   };
@@ -127,11 +135,11 @@ const SecaFacilLanding: React.FC = () => {
         <div className="absolute w-full h-full bg-[radial-gradient(circle_at_30%_40%,rgba(0,255,136,0.08)_0%,transparent_60%),radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.06)_0%,transparent_60%)] animate-pulse" />
       </div>
       {/* Urgency Bar */}
-      {showCta && (
+      {showOffer && (
         <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-red-600 to-red-500 text-white text-center font-bold py-3 px-4 z-50 shadow-lg animate-[slideDown_0.5s_ease-out]">
           <div className="flex items-center justify-center gap-2 text-sm md:text-base">
             <span className="animate-pulse">⚡</span>
-            <span>¡Atención! ⏳ ¡Tu oferta exclusiva está a punto de expirar! • Solo $92,00 MXN</span>
+            <span>¡OFERTA LIMITADA: $92,00 MXN DE POR VIDA! • Solo quedan <span className="bg-white text-red-600 px-2 py-1 rounded-full font-black">{spots}</span> lugares</span>
             <span className="animate-pulse">⚡</span>
           </div>
         </div>
@@ -139,6 +147,16 @@ const SecaFacilLanding: React.FC = () => {
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center px-4 py-12 md:py-20 pt-16 md:pt-20">
         <div className="max-w-6xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full font-semibold text-black mb-6 md:mb-8 text-sm md:text-base shadow-lg">
+            <span className="animate-bounce">🔥</span>
+            ¡SOLUCIÓN NATURAL 2025!
+          </div>
+          <h1 className="text-[clamp(28px,6vw,64px)] font-black leading-tight mb-5 bg-gradient-to-r from-white to-[#00FF88] bg-clip-text text-transparent overflow-visible whitespace-normal">
+            Alivia el Sudor Excesivo en Solo 7 Días
+          </h1>
+          <p className="text-[clamp(16px,2.5vw,20px)] text-gray-200 mb-10 max-w-[600px] mx-auto">
+            La solución natural para quienes sufren de sudor excesivo. Nuestro <span className="text-[#00FF88] font-bold">Gel Natural de Alivio para Sudor</span> reduce la hiperhidrosis sin químicos agresivos, devolviéndote la confianza.
+          </p>
           <div className="mb-8 md:mb-12 flex justify-center">
             <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
               <vturb-smartplayer
@@ -150,17 +168,15 @@ const SecaFacilLanding: React.FC = () => {
               </script>
             </div>
           </div>
-          {showCta && (
-            <div className="space-y-4">
-              <a
-                href="https://pay.hotmart.com/T99329125R?checkoutMode=10"
-                className="inline-flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-lg md:text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300 group w-full max-w-md"
-              >
-                <span>¡QUIERO ALIVIO AHORA!</span>
-                <span className="group-hover:translate-x-1 transition-transform">→</span>
-              </a>
-            </div>
-          )}
+          <div className="space-y-4">
+            <a
+              href="https://pay.hotmart.com/T99329125R?checkoutMode=10"
+              className="inline-flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-emerald-400 to-emerald-500 text-black font-bold text-lg md:text-xl rounded-full shadow-2xl hover:shadow-emerald-400/25 hover:-translate-y-1 transition-all duration-300 group w-full max-w-md"
+            >
+              <span>¡COMPRAR SECO FÁCIL AHORA!</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </div>
         </div>
       </section>
       {/* Footer */}
