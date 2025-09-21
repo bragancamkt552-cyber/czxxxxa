@@ -215,7 +215,7 @@ const PiseBienLanding: React.FC = () => {
             Alivia el Dolor de la Fascitis Plantar en Solo 7 Días
           </h1>
           <p className="text-[clamp(16px,2.5vw,20px)] text-gray-200 mb-10 max-w-[600px] mx-auto">
-            ¡Di adiós a los analgésicos! Alivia tu fascitis plantar de forma <span className="text-[#00FF88] font-bold">natural</span> con nuestra bebida natural, sin efectos secundarios.
+            ¡Di adiós a los analgésicos! Alivia tu fascitis plantar de forma <span className="text-[#00FF88] font-bold">natural</span>
           </p>
           <div className="mb-8 md:mb-12 flex justify-center">
             <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
