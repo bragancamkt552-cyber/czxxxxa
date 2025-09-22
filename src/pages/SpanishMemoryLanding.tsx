@@ -39,9 +39,9 @@ const PiseBienLanding: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!document.querySelector('[src*="68d05dbb0450601628c9de09"]')) {
+    if (!document.querySelector('[src*="68d069cd713fc4a513282283"]')) {
       const script = document.createElement('script');
-      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68d05dbb0450601628c9de09/v4/player.js';
+      script.src = 'https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68d069cd713fc4a513282283/v4/player.js';
       script.async = true;
       document.head.appendChild(script);
 
@@ -220,12 +220,9 @@ const PiseBienLanding: React.FC = () => {
           <div className="mb-8 md:mb-12 flex justify-center">
             <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-gray-800 rounded-2xl p-2 shadow-2xl">
               <vturb-smartplayer
-                id="vid-68d05dbb0450601628c9de09"
+                id="vid-68d069cd713fc4a513282283"
                 style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px' }}
               ></vturb-smartplayer>
-              <script type="text/javascript">
-                {`var s=document.createElement("script"); s.src="https://scripts.converteai.net/bddd3820-6eca-4c7d-898b-ece1995d6f03/players/68d05dbb0450601628c9de09/v4/player.js", s.async=!0,document.head.appendChild(s);`}
-              </script>
             </div>
           </div>
           {showDelayedContent && (
